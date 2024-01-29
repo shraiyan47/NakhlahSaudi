@@ -1,0 +1,1105 @@
+{
+	"info": {
+		"_postman_id": "838f6149-aac9-4ae2-b3cf-a761a5e1418f",
+		"name": "Nakhlah",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3133402",
+		"_collection_link": "https://planetary-station-546820.postman.co/workspace/Team-Workspace~445d947b-3e7a-48dc-89d2-1480df98ebab/collection/3133402-838f6149-aac9-4ae2-b3cf-a761a5e1418f?action=share&source=collection_link&creator=3133402"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "Registration",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"TOKEN\", pm.response.json().jwt)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"nakhlahllp@gmail.com\",\r\n    \"username\" : \"alam4\",\r\n    \"password\": \"Asdfgh@11\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{URL}}:1337/api/auth/local/register",
+									"protocol": "http",
+									"host": [
+										"{{URL}}"
+									],
+									"port": "1337",
+									"path": [
+										"api",
+										"auth",
+										"local",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Social Registration",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:1337/api/connect/google",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "1337",
+									"path": [
+										"api",
+										"connect",
+										"google"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Social Registration Copy",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://115.127.24.187:1337/api/connect/google/callback?code=4%2F0AfJohXmd1lkjq8l1gMl2qV8paSl9BxBbZx3M9mRXVWAvyofV4VKkyABhX0HSQ2IIOjOedQ&scope=email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+openid&authuser=3&prompt=consent",
+									"protocol": "http",
+									"host": [
+										"115",
+										"127",
+										"24",
+										"187"
+									],
+									"port": "1337",
+									"path": [
+										"api",
+										"connect",
+										"google",
+										"callback"
+									],
+									"query": [
+										{
+											"key": "code",
+											"value": "4%2F0AfJohXmd1lkjq8l1gMl2qV8paSl9BxBbZx3M9mRXVWAvyofV4VKkyABhX0HSQ2IIOjOedQ"
+										},
+										{
+											"key": "scope",
+											"value": "email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+openid"
+										},
+										{
+											"key": "authuser",
+											"value": "3"
+										},
+										{
+											"key": "prompt",
+											"value": "consent"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Log In",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"TOKEN\", pm.response.json().jwt)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"identifier\": \"a@a.com\",\r\n    \"password\": \"Asdfgh@11\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{URL}}:1337/api/auth/local",
+									"protocol": "http",
+									"host": [
+										"{{URL}}"
+									],
+									"port": "1337",
+									"path": [
+										"api",
+										"auth",
+										"local"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Forget Password",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"badhon.alam303@gmail.com\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:1337/api/auth/forgot-password",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "1337",
+									"path": [
+										"api",
+										"auth",
+										"forgot-password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Reset Password",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"code\":\"cae1112341b51114068d868bc688382e62261b1c54ae8baf42650a898a1ecca9e63c3736326af63f7b5ba1c49360ddd983f65b534166cb32809b273ef238ee5e\",\r\n    \"password\": \"Bsdfgh@11\",\r\n    \"passwordConfirmation\": \"Bsdfgh@11\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:1337/api/auth/reset-password",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "1337",
+									"path": [
+										"api",
+										"auth",
+										"reset-password"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "The auth section will be usning for registraion, login, social login and registration and token generation. Also user can reset their password and if they forget their password, they can request for a password reset option without login to the system.\n\n- **Registration:** User can register using their email. Also, other input fields are required. After registration, we will send an email to user for email verification. User can also validate their registration using their mobile number. But default system will send verification link or code to email.\n- **Social Registration:** User can register by using their social media accounts like Google, Facebook, X (Twitter). We will collect our required information from those social media account.\n- **Login:** User can login using their email/phone number and password. After that we will generate a token which will help us to maintain Access Control Layer.\n    \n- **Forget Password:** If user forget their password, we will first verify that users email and then we will send a code / link to users email / phone number. After input that code or if they clicked that link, we will give them a chance to change their password.\n    \n- **Reset Password:** If user logged in and want to change their password, we will just check the token and let them change their password also taking input their current password."
+				},
+				{
+					"name": "User Profile",
+					"item": [
+						{
+							"name": "Me Route",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{URL}}:1337/api/users/me",
+									"protocol": "http",
+									"host": [
+										"{{URL}}"
+									],
+									"port": "1337",
+									"path": [
+										"api",
+										"users",
+										"me"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Profile",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 2,\r\n    \"first_name\": \"Alam\",\r\n    \"last_name\": \"Badhon\",\r\n    \"learing_purpose\": \"travel\",\r\n    \"larner_level\": \"medium\",\r\n    \"learning_goal\": 20,\r\n    \"starting_point\": \"scratch\",\r\n    \"createdAt\": \"2023-11-02T06:08:26.805Z\",\r\n    \"updatedAt\": \"2023-11-02T06:08:26.805Z\",\r\n    \"publishedAt\": null,\r\n    \"lerner_test\": \"a\",\r\n    \"avatar\": null,\r\n    \"users_permissions_user\": {\r\n        \"disconnect\": [],\r\n        \"connect\": [\r\n            {\r\n                \"id\": 4,\r\n                \"position\": {\r\n                    \"end\": true\r\n                }\r\n            }\r\n        ]\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{URL}}:1337/api/user-profiles",
+									"protocol": "http",
+									"host": [
+										"{{URL}}"
+									],
+									"port": "1337",
+									"path": [
+										"api",
+										"user-profiles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Learning Purpose",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{URL}}:1337/api/learing-purposes",
+									"protocol": "http",
+									"host": [
+										"{{URL}}"
+									],
+									"port": "1337",
+									"path": [
+										"api",
+										"learing-purposes"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"description": "The User section is where users can manage their account information and progress on the platform. It includes the following features:\n\n- **Profile:** Users can view and edit their profile information, including their name, email address, and profile picture. They can also set their language goals and target proficiency level."
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "Log In",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"TOKEN\", pm.response.json().data.token)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"nakhlahllp@gmail.com\",\r\n    \"password\": \"pU8S3WR0yYbc^b@\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{URL}}:1337/admin/login",
+									"protocol": "http",
+									"host": [
+										"{{URL}}"
+									],
+									"port": "1337",
+									"path": [
+										"admin",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Forget Password",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"nakhlahllp@gmail.com\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://115.127.24.187:1337/admin/forgot-password",
+									"protocol": "http",
+									"host": [
+										"115",
+										"127",
+										"24",
+										"187"
+									],
+									"port": "1337",
+									"path": [
+										"admin",
+										"forgot-password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Reset Password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"TOKEN\", pm.response.json().data.token)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"password\": \"pU8S3WR0yYbc^b@\",\r\n    \"resetPasswordToken\": \"fc86c467d592c35ae9cce687c7da05fa50332f16\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{URL}}:1337/admin/reset-password",
+									"protocol": "http",
+									"host": [
+										"{{URL}}"
+									],
+									"port": "1337",
+									"path": [
+										"admin",
+										"reset-password"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Create User",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "a574b7fe65866e91cc1dd33baec80a604ad03dfb219ee8a14fafd1dac5e311a13a70d556c5b0204418a4b5e32581f85e86df1272e509c288cf7bdc9f708b8269b8b3bddd5fcc9c76a7a05d97b955840052717273c2deb39bc10e0af11323e97d4517b94c284b8ec1c60773aca9a516a356b92a0a5a2e23502ebfa54e4fe6893d",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"confirmed\": true,\r\n    \"blocked\": false,\r\n    \"role\": {\r\n        \"connect\": [\r\n            {\r\n                \"id\": 1\r\n            }\r\n        ]\r\n    },\r\n    \"username\": \"AdminCreated1\",\r\n    \"email\": \"admin1@created.com\",\r\n    \"password\": \"Asdfgh@11\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{URL}}:1337/api/users",
+									"protocol": "http",
+									"host": [
+										"{{URL}}"
+									],
+									"port": "1337",
+									"path": [
+										"api",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "a574b7fe65866e91cc1dd33baec80a604ad03dfb219ee8a14fafd1dac5e311a13a70d556c5b0204418a4b5e32581f85e86df1272e509c288cf7bdc9f708b8269b8b3bddd5fcc9c76a7a05d97b955840052717273c2deb39bc10e0af11323e97d4517b94c284b8ec1c60773aca9a516a356b92a0a5a2e23502ebfa54e4fe6893d",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    // \"id\": 7,\r\n    \"username\": \"AdminEdited\"\r\n    // \"email\": \"a@d.com\",\r\n    // \"confirmed\": true,\r\n    // \"blocked\": false,\r\n    // \"role\": {\r\n    //     \"disconnect\": [],\r\n    //     \"connect\": []\r\n    // },\r\n    // \"avatar\": null,\r\n    // \"password\": \"Csdfgh@11\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{URL}}:1337/api/users/11",
+									"protocol": "http",
+									"host": [
+										"{{URL}}"
+									],
+									"port": "1337",
+									"path": [
+										"api",
+										"users",
+										"11"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete User",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "a574b7fe65866e91cc1dd33baec80a604ad03dfb219ee8a14fafd1dac5e311a13a70d556c5b0204418a4b5e32581f85e86df1272e509c288cf7bdc9f708b8269b8b3bddd5fcc9c76a7a05d97b955840052717273c2deb39bc10e0af11323e97d4517b94c284b8ec1c60773aca9a516a356b92a0a5a2e23502ebfa54e4fe6893d",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://{{URL}}:1337/api/users/11",
+									"protocol": "http",
+									"host": [
+										"{{URL}}"
+									],
+									"port": "1337",
+									"path": [
+										"api",
+										"users",
+										"11"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get User",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "a574b7fe65866e91cc1dd33baec80a604ad03dfb219ee8a14fafd1dac5e311a13a70d556c5b0204418a4b5e32581f85e86df1272e509c288cf7bdc9f708b8269b8b3bddd5fcc9c76a7a05d97b955840052717273c2deb39bc10e0af11323e97d4517b94c284b8ec1c60773aca9a516a356b92a0a5a2e23502ebfa54e4fe6893d",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{URL}}:1337/api/users/11",
+									"protocol": "http",
+									"host": [
+										"{{URL}}"
+									],
+									"port": "1337",
+									"path": [
+										"api",
+										"users",
+										"11"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User Roles",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{URL}}:1337/users-permissions/roles",
+									"protocol": "http",
+									"host": [
+										"{{URL}}"
+									],
+									"port": "1337",
+									"path": [
+										"users-permissions",
+										"roles"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User Profile",
+					"item": [
+						{
+							"name": "Learning Purpose",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "a574b7fe65866e91cc1dd33baec80a604ad03dfb219ee8a14fafd1dac5e311a13a70d556c5b0204418a4b5e32581f85e86df1272e509c288cf7bdc9f708b8269b8b3bddd5fcc9c76a7a05d97b955840052717273c2deb39bc10e0af11323e97d4517b94c284b8ec1c60773aca9a516a356b92a0a5a2e23502ebfa54e4fe6893d",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "files.icon",
+											"type": "file",
+											"src": "/C:/Users/badho/Downloads/2.jpg",
+											"disabled": true
+										},
+										{
+											"key": "data",
+											"value": "{\"purpose\":\"Stu\",\"purposeId\":\"Code1021\"}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://{{URL}}:1337/api/learing-purposes/21",
+									"protocol": "http",
+									"host": [
+										"{{URL}}"
+									],
+									"port": "1337",
+									"path": [
+										"api",
+										"learing-purposes",
+										"21"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Learning Purpose by ID",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "a574b7fe65866e91cc1dd33baec80a604ad03dfb219ee8a14fafd1dac5e311a13a70d556c5b0204418a4b5e32581f85e86df1272e509c288cf7bdc9f708b8269b8b3bddd5fcc9c76a7a05d97b955840052717273c2deb39bc10e0af11323e97d4517b94c284b8ec1c60773aca9a516a356b92a0a5a2e23502ebfa54e4fe6893d",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "files.icon",
+											"type": "file",
+											"src": "/C:/Users/badho/Downloads/2.jpg"
+										},
+										{
+											"key": "data",
+											"value": "{\"purpose\":\"Study1\",\"purposeId\":\"Code1021\"}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://{{URL}}:1337/api/learing-purposes/21",
+									"protocol": "http",
+									"host": [
+										"{{URL}}"
+									],
+									"port": "1337",
+									"path": [
+										"api",
+										"learing-purposes",
+										"21"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Learning Purpose by ID",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "a574b7fe65866e91cc1dd33baec80a604ad03dfb219ee8a14fafd1dac5e311a13a70d556c5b0204418a4b5e32581f85e86df1272e509c288cf7bdc9f708b8269b8b3bddd5fcc9c76a7a05d97b955840052717273c2deb39bc10e0af11323e97d4517b94c284b8ec1c60773aca9a516a356b92a0a5a2e23502ebfa54e4fe6893d",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "files.icon",
+											"type": "file",
+											"src": "/C:/Users/badho/Downloads/2.jpg"
+										},
+										{
+											"key": "data",
+											"value": "{\"purpose\":\"Study1\",\"purposeId\":\"Code1021\"}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://{{URL}}:1337/api/learing-purposes/21",
+									"protocol": "http",
+									"host": [
+										"{{URL}}"
+									],
+									"port": "1337",
+									"path": [
+										"api",
+										"learing-purposes",
+										"21"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Learning Purpose",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "a574b7fe65866e91cc1dd33baec80a604ad03dfb219ee8a14fafd1dac5e311a13a70d556c5b0204418a4b5e32581f85e86df1272e509c288cf7bdc9f708b8269b8b3bddd5fcc9c76a7a05d97b955840052717273c2deb39bc10e0af11323e97d4517b94c284b8ec1c60773aca9a516a356b92a0a5a2e23502ebfa54e4fe6893d",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "files.icon",
+											"type": "file",
+											"src": "/C:/Users/badho/Downloads/2.jpg"
+										},
+										{
+											"key": "data",
+											"value": "{\"purpose\":\"Study1\",\"purposeId\":\"Code1021\"}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://{{URL}}:1337/api/learing-purposes",
+									"protocol": "http",
+									"host": [
+										"{{URL}}"
+									],
+									"port": "1337",
+									"path": [
+										"api",
+										"learing-purposes"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Learning Purposes",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "a574b7fe65866e91cc1dd33baec80a604ad03dfb219ee8a14fafd1dac5e311a13a70d556c5b0204418a4b5e32581f85e86df1272e509c288cf7bdc9f708b8269b8b3bddd5fcc9c76a7a05d97b955840052717273c2deb39bc10e0af11323e97d4517b94c284b8ec1c60773aca9a516a356b92a0a5a2e23502ebfa54e4fe6893d",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "files.icon",
+											"type": "file",
+											"src": "/C:/Users/badho/Downloads/2.jpg"
+										},
+										{
+											"key": "data",
+											"value": "{\"purpose\":\"Study1\",\"purposeId\":\"Code1021\"}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://{{URL}}:1337/api/learing-purposes",
+									"protocol": "http",
+									"host": [
+										"{{URL}}"
+									],
+									"port": "1337",
+									"path": [
+										"api",
+										"learing-purposes"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Upload",
+					"item": [
+						{
+							"name": "Upload Image",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "files",
+											"type": "file",
+											"src": "/C:/Users/badho/Downloads/AT&T_logo_2016.svg.png"
+										},
+										{
+											"key": "",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "http://{{URL}}:1337/upload",
+									"protocol": "http",
+									"host": [
+										"{{URL}}"
+									],
+									"port": "1337",
+									"path": [
+										"upload"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Images",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{URL}}:1337/upload/files?sort=createdAt:DESC&page=1&pageSize=10&filters[$and][0][folderPath][$eq]=/",
+									"protocol": "http",
+									"host": [
+										"{{URL}}"
+									],
+									"port": "1337",
+									"path": [
+										"upload",
+										"files"
+									],
+									"query": [
+										{
+											"key": "sort",
+											"value": "createdAt:DESC"
+										},
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "pageSize",
+											"value": "10"
+										},
+										{
+											"key": "folder",
+											"value": "3",
+											"disabled": true
+										},
+										{
+											"key": "filters[$and][0][folderPath][$eq]",
+											"value": "/"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"fileIds\": [16, 17]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{URL}}:1337/upload/actions/bulk-delete",
+									"protocol": "http",
+									"host": [
+										"{{URL}}"
+									],
+									"port": "1337",
+									"path": [
+										"upload",
+										"actions",
+										"bulk-delete"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "API Token",
+					"item": [
+						{
+							"name": "API Token Delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{URL}}:1337/admin/api-tokens/3",
+									"protocol": "http",
+									"host": [
+										"{{URL}}"
+									],
+									"port": "1337",
+									"path": [
+										"admin",
+										"api-tokens",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "API Token",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{URL}}:1337/admin/api-tokens",
+									"protocol": "http",
+									"host": [
+										"{{URL}}"
+									],
+									"port": "1337",
+									"path": [
+										"admin",
+										"api-tokens"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "API Token Regenerate",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:1337/admin/api-tokens/2/regenerate",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "1337",
+									"path": [
+										"admin",
+										"api-tokens",
+										"2",
+										"regenerate"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image and Title Upload</title>
+  </head>
+  <body>
+    <h2>Image and Title Upload</h2>
+
+    <form id="uploadForm" enctype="multipart/form-data">
+      <input type="file" id="fileInput" name="file" />
+      <input
+        type="text"
+        id="titleInput"
+        name="title"
+        placeholder="Enter title"
+      />
+      <button type="button" onclick="uploadFile()">Upload</button>
+    </form>
+
+    <div id="uploadStatus"></div>
+
+    <script>
+      function uploadFile() {
+        var fileInput = document.getElementById("fileInput")
+        var titleInput = document.getElementById("titleInput")
+        var uploadStatus = document.getElementById("uploadStatus")
+
+        var url = "https://api.nakhlah.xyz/api/learning-purposes"
+
+        if (fileInput.files.length > 0) {
+          var file = fileInput.files[0]
+          var formData = new FormData()
+          formData.append("files.icon", file)
+          formData.append("data", `{"purpose":"${titleInput.value}"}`)
+
+          fetch(url, {
+            method: "POST",
+            body: formData,
+            headers: {
+              Authorization:
+                "Bearer " +
+                "a040ca42e35c1c761a32f3166e19953056bf7163576137e47c01966247a3d630e5af4ca1c9f58256511a8a91079b1db1e794ca5527bd1cc6cfb04655ebfc1e0ad4ceedea704a2b68b30d14e15b7f44c4f680f73a50cc051981f0e390697d5181ae3a6ada78b3ccc4e6a721fb5e8dd28b34aaa73f01238d4250a09f9360519b0e",
+            },
+            redirect: "follow",
+          })
+            .then((response) => {
+              if (response.ok) {
+                return response.text()
+              } else {
+                throw new Error("Upload failed.")
+              }
+            })
+            .then((data) => {
+              uploadStatus.innerHTML =
+                "Upload complete! Server response: " + data
+            })
+            .catch((error) => {
+              uploadStatus.innerHTML = "Error: " + error.message
+            })
+        } else {
+          uploadStatus.innerHTML = "Please select a file to upload."
+        }
+      }
+    </script>
+  </body>
+</html>

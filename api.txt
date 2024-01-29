@@ -1,0 +1,66 @@
+que filter: {{URL}}/api/question-contents?populate[question][populate]=*&filters[question_type][title][$eq]=MCQ
+
+
+
+post with icon: {{URL}}/api/learning-purposes?populate=icon
+
+
+{{URL}}/api/learning-purposes?pagination[page]=1&pagination[pageSize]=10&populate=icon
+
+{{URL}}/api/contents?filters[content_type][title][$eq]=Boolean
+
+{{URL}}/api/contents?filters[content_type_category][title][$eq]=boolean
+
+{{URL}}/api/questions?filters[question_content][id][$null]=true
+
+{{URL}}/api/contents?filters[content_type_category][title][$eq]=boolean
+
+{{URL}}/api/learning-journey-units?populate=*&filters[learning_journey][title][$eq]=Basic
+
+
+For Lession --> {{URL}}/api/learning-journey-lessons??filters[learning_journey_level][learning_journey_unit][learning_journey][title][$eq]=Intermediet&filters[learning_journey_level][learning_journey_unit][title][$eq]=Unit 1 Name&filters[learning_journey_level][title][$eq]=Level 2&populate[learning_journey_level][populate][learning_journey_unit][populate][0]=learning_journey
+
+For Level --> {{URL}}/api/learning-journey-levels?filters[learning_journey_unit][learning_journey][title][$eq]=Basic&filters[learning_journey_unit][title][$eq]=Unit 1&populate[learning_journey_unit][populate][0]=learning_journey
+
+For Unit --> {{URL}}/api/learning-journey-units?populate=*&filters[learning_journey][title][$eq]=Basic
+
+
+{{URL}}/api/journey-map-question-contents?populate[question_content][populate]=**&populate[learning_journey_lesson][populate][learning_journey_level][populate][learning_journey_unit][populate][0]=learning_journey
+
+{{URL}}/api/journey-map-question-contents?populate[question_content][populate]=**&populate[learning_journey_lesson][populate][learning_journey_level][populate][learning_journey_unit][populate][learning_journey]=**&filters[question_content][question][id][$eq]=4
+
+{{URL}}/api/journey-map-question-contents?populate[question_content][populate]=**&populate[learning_journey_lesson][populate][learning_journey_level][populate][learning_journey_unit][populate][learning_journey]=**&filters[question_content][question][id][$eq]={questionId}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

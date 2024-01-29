@@ -1,0 +1,166 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --uDBg: #f3f4f7;
+  --uDText: #5b5b5b;
+  --uDSubText: #9d9d9d;
+  --uDHoverText: #4458e6;
+  --uDHoverButton: rgba(120, 137, 255, 1);
+  --bgPrimary: #f3f3f3;
+  --bgSecondary: #efeeee;
+  --buttonPrimary: linear-gradient(180deg, _#F790011_0%, _#F38908_100%);
+  --cardPrimary: #00913e;
+  --shadowPrimary: #dd800f;
+  --buttonSecondary: #5e2b76;
+  --inputBorderPrimary: #4c2a41;
+  --progressPrimary: linear-gradient(180deg, _#00A948_0%, _#005524_100%);
+}
+
+::-webkit-scrollbar {
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-track-piece {
+  background: #ffffff;
+}
+::-webkit-scrollbar-button {
+  background: #ffffff;
+  height: 0px;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background:#cccccc ;
+  height: 20px;
+  border-radius: 10px;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 224 71.4% 4.1%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 224 71.4% 4.1%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 71.4% 4.1%;
+
+    --primary: 220.9 39.3% 11%;
+    --primary-foreground: 210 20% 98%;
+
+    --secondary: 220 14.3% 95.9%;
+    --secondary-foreground: 220.9 39.3% 11%;
+
+    --muted: 220 14.3% 95.9%;
+    --muted-foreground: 220 8.9% 46.1%;
+
+    --accent: 220 14.3% 95.9%;
+    --accent-foreground: 220.9 39.3% 11%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 20% 98%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 224 71.4% 4.1%;
+
+    --radius: 0.5rem;
+  }
+ 
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+.brdr{
+  @apply border border-red-600
+}
+
+.headerText {
+  @apply lg:text-5xl md:text-3xl text-2xl;
+}
+.semiHeaderText {
+  @apply lg:text-4xl md:text-2xl text-xl;
+}
+.normalText {
+  @apply lg:text-2xl md:text-xl text-[18px];
+}
+.smallText {
+  @apply lg:text-xl md:text-[16px] text-[14px];
+}
+
+.progressPrimary {
+  @apply bg-gradient-to-b from-[#00A948]  to-[#005524];
+}
+.progressSecondary {
+  @apply bg-gradient-to-b from-[#F79001] to-[#F38908];
+}
+.buttonSecondary {
+  @apply bg-gradient-to-b from-[#5e2b76] to-[#4c2a41];
+}
+.buttonClick {
+  @apply bg-gradient-to-b from-[#f3f3f3] to-[#888888];
+}
+.right {
+  @apply bg-gradient-to-b from-[#8dff4b] to-[#17740e];
+}
+
+.wrong {
+  @apply bg-gradient-to-b from-[#ff4b4b] to-[#740e0e];
+}
+
+.buttonColor {
+  @apply bg-gradient-to-b from-[#F79011]  to-[#F38908] w-full  text-[--buttonSecondary] lg:text-[18px] md:text-[16px] text-[14px] shadow-4xl;
+}
+.border-2 {
+  @apply border-[3px];
+}
+
+/* admin dashboard css */
+.textHeader {
+  @apply text-3xl;
+}
+.textSemiHeader {
+  @apply text-2xl;
+}
+/* admin */
+.admin-input{
+  @apply border border-slate-400 py-2 px-1
+}
+
+.admin-btn{
+  @apply text-blue-800 w-full py-1 text-lg border border-slate-300
+}
+
+.textNormal {
+  @apply 2xl:text-xl text-[16px];
+}
+.textSmall {
+  @apply 2xl:text-[16px] text-[14px];
+}
+
+.textPrimaryColor {
+  @apply text-[--uDText];
+}
+.textSecondaryColor {
+  @apply text-slate-500;
+}
+
+.textHoverPrimaryColor {
+  @apply hover:text-[--uDHoverText];
+}
+
+.adminDashboard {
+  @apply w-[79%] 2xl:w-[15%] min-[1920px]:w-[12%];
+}
+ 
