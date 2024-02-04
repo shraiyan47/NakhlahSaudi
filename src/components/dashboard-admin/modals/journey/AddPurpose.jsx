@@ -41,7 +41,9 @@ export default function AddPurpose({ rowData, title, useForEdit }) {
     var file = fileInput.files[0];
     formData.append("files.icon", file);
     formData.append("data", `{"purpose":"${inputTilte.value}"}`);
-
+// console.log("file",file)
+// console.log(" fileInput", fileInput)
+console.log(formData);
     await fetch(
       useForEdit
         ? putMap["learner-purpose"] + `/${rowData.id}?populate=icon`
@@ -55,12 +57,11 @@ export default function AddPurpose({ rowData, title, useForEdit }) {
     )
       .then((res) => res.json())
       .then((data) => {
-        alert(">> " + JSON.stringify(data));
+        console.log("Updated Data >> " , data);
         let renderable = {
           id: data.data.id,
           purpose: data.data.attributes.purpose,
-          icon: data.data.attributes.icon?.data?.attributes?.formats?.small
-            ?.url,
+          icon: data.data.attributes.icon?.data?.attributes?.url,
         };
 
         useForEdit ? afterUpdate(renderable) : afterAdd(renderable);
