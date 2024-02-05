@@ -36,6 +36,7 @@ import {
 } from "@/lib/fetchFunctions";
 import { GitCommitHorizontal, Hash } from "lucide-react";
 import axios from "axios";
+import Image from "next/image";
 
 export default function AddQuePage({ rowData, useForEdit }) {
   const { toast } = useToast();
@@ -655,7 +656,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
               }}
             />
             {image && (
-              <img
+              <Image
                 alt=" image"
                 src={image}
                 className="w-5.0 h-5.0 rounded-full border border-slate-400 bg-slate-50"
@@ -674,9 +675,11 @@ export default function AddQuePage({ rowData, useForEdit }) {
             {/* <span className="text-red-700">{error.err2}</span> */}
           </div>
         </div>
+
+        {/* {JSON.stringify(selectedQueType)} */}
         {/* sao Set answer option */}
         <div className="flex flex-col gap-2 rounded-md w-2/3 py-0.75 px-2">
-          {selectedQueType.id && (
+          {selectedQueType && (
             <>
               <div className="flex gap-3 items-center">
                 <EnhancedText
@@ -692,6 +695,8 @@ export default function AddQuePage({ rowData, useForEdit }) {
               </div>
               <div className="flex flex-col gap-4 border-blue-400">
                 {/* option -1 */}
+
+                {/* {JSON.stringify(options)} */}
 
                 {selectedQueType.title == "True 0r False" && (
                   <div className="flex flex-col gap-3 font-mono text-sm rounded-md border-l-2 border-blue-400 py-3 px-2  ">
