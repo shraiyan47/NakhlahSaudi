@@ -31,6 +31,8 @@ export default function DataTable({ data, columns, view, filter }) {
     pageIndex: 0,
     pageSize: 10,
   });
+
+  console.log("Data Table Data ==> ",data)
   const table = useReactTable({
     data,
     columns,

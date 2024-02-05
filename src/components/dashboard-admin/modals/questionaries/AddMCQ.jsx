@@ -652,6 +652,7 @@ export default function AddMCQ({ rowData, useForEdit }) {
         </div>
         {/* sao Set answer option */}
         <div className="flex flex-col gap-2 rounded-md w-2/3 py-0.75 px-2">
+        {JSON.stringify(selectedQueType)}
           {selectedQueType.id && (
             <>
               <div className="flex gap-3 items-center">
@@ -668,7 +669,6 @@ export default function AddMCQ({ rowData, useForEdit }) {
               </div>
               <div className="flex flex-col gap-4 border-blue-400">
                 {/* option -1 */}
-
                 {selectedQueType.title == "True 0r False" && (
                   <div className="flex flex-col gap-3 font-mono text-sm rounded-md border-l-2 border-blue-400 py-3 px-2  ">
                     <div className="flex justify-between pb-1">
