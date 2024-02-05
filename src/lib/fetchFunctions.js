@@ -30,7 +30,7 @@ export function renderablePurpose(arr) {
     return {
       id: item.id,
       purpose: item.attributes.purpose,
-      icon: item.attributes.icon?.data?.attributes?.formats?.small?.url,
+      icon: item.attributes.icon?.data?.attributes?.formats?.thumbnail?.url,
     };
   });
   return renderable;
@@ -50,7 +50,7 @@ export function renderableLearnerLevel(arr) {
     return {
       id: item.id,
       level: item.attributes.level,
-      icon: item.attributes.icon?.data?.attributes?.formats.small?.url,
+      icon: item.attributes.icon?.data?.attributes?.formats?.small?.url,
     };
   });
 }

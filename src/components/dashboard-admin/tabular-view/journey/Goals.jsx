@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import goalColumns from "../../table/ColGoal";
 import DataTable from "../../table/DataTable";
+
 import {
   useLearnerGoal,
   useLoadingState,
@@ -32,9 +33,16 @@ export default function Goals() {
     }
   }, []);
 
+
+  console.log("learnerGoals",learnerGoals )
   return (
     <div className="w-full bg-white  rounded-xl">
-      {loading ? <CustomSkeleton /> : <span>disabled for a while</span>}
+      {loading ? <CustomSkeleton /> : 
+       <DataTable
+          data={learnerGoals}
+          columns={goalColumns}
+          view={"learner-goal"}
+        />}
     </div>
   );
 }

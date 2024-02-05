@@ -34,11 +34,11 @@ export default function AddGoal({ rowData, useForEdit }) {
     let err_0 = "";
     let err_1 = "";
 
-    if (goalName.length > 2 && targetTime.length > 0 && isNumeric(targetTime)) {
+    if (goalName?.length > 2 && targetTime?.length > 0 && isNumeric(targetTime)) {
       const result = await addEdit({
         useForEdit,
         data: {
-          goal: goalName,
+           goal: goalName,
           time: targetTime,
         },
         id: rowData?.id,
@@ -55,7 +55,7 @@ export default function AddGoal({ rowData, useForEdit }) {
       }
     } else {
       alert(":::: "+JSON.stringify(isNumeric(targetTime)));
-      if (goalName.length < 3) {
+      if (goalName?.length < 3) {
         err_0 = "Too Short";
       }
       if (isNumeric(targetTime) == false) {
@@ -79,7 +79,7 @@ export default function AddGoal({ rowData, useForEdit }) {
           onSubmit={handleSubmit}
           className="flex flex-col gap-4 py-2 text-black text-lg"
         >
-          <div className="flex flex-col">
+           <div className="flex flex-col">
             <label className="flex justify-between">
               <span>Goal Name</span>
             </label>
@@ -89,9 +89,9 @@ export default function AddGoal({ rowData, useForEdit }) {
               onChange={(e) => setGoalName(e.target.value)}
               ph="Goal name"
               style="py-0.25 px-1"
-            />
+            /> 
             <span className="text-red-700">{error.err0}</span>
-          </div>
+          </div>  
 
           <div className="flex flex-col">
             <label className="flex justify-between">
