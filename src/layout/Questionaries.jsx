@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import React, { useEffect, useState } from "react";
 import { tabsQuestionaries } from "@/static-data/interface";
@@ -194,7 +195,7 @@ export default function Questionaries({ content }) {
             click={() => {
               setTabularView({
                 currentPage: "questionaries",
-                currentView: "Questions",
+                currentView: "Questions asdf",
               });
             }}
             style={

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import DataTable from "../../table/DataTable";
 import ColQuestion from "../../table/ColQuestion";
@@ -42,6 +43,7 @@ export default function MCQ() {
         toggleLoading(false);
       }
       if (response.status === 200) {
+        console.log("Q Data =-==> ",response.data.data )
         setQuestions(renderableQuetions(response.data.data));
       }
     };

@@ -157,6 +157,7 @@ export function renderableQuetions(arr) {
     return {
       id: item.id,
       question: question.data?.attributes?.question,
+      content: question.data?.attributes?.content,
       audio: question.data?.attributes?.audio,
       question_type: {
         id: question_type?.data?.id,

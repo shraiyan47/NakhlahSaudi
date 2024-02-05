@@ -17,6 +17,9 @@ export default function CustomSkeleton() {
         <Skeleton className="h-4 w-[240px]" />
         <Skeleton className="h-4 w-[240px]" />
       </div>
+
+      <small>On the fly....</small>
+      <small>...على الطاير</small>
     </div>
   );
 }

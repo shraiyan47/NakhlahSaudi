@@ -2,36 +2,49 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+
 import { ArrowUpDown, ClipboardEdit, Info, Trash2 } from "lucide-react";
 import Deletion from "../modals/other/Deletion";
-import AddStartingPoint from "../modals/journey/AddStartPoint";
+// import AddStartingPoint from "../modals/journey/AddStartPoint";
 
 const ColQuestion = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
+  // {
+  //   id: "select",
+  //   header: ({ table }) => (
+  //     <Checkbox
+  //       checked={
+  //         table.getIsAllPageRowsSelected() ||
+  //         (table.getIsSomePageRowsSelected() && "indeterminate")
+  //       }
+  //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+  //       aria-label="Select all"
+  //     />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <Checkbox
+  //       checked={row.getIsSelected()}
+  //       onCheckedChange={(value) => row.toggleSelected(!!value)}
+  //       aria-label="Select row"
+  //     />
+  //   ),
+  //   enableSorting: false,
+  //   enableHiding: false,
+  // },
   {
     accessorKey: "id",
-    header: () => <div className="textNormal textPrimaryColor">ID</div>,
+    header: ({ column }) => <Button
+      onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      className="textPrimaryColor textNormal"
+    >
+      ID
+      <ArrowUpDown className="ml-2 h-4 w-4" />
+    </Button>,
     cell: ({ row }) => {
       const rowId = parseInt(row.id) + 1;
       return <div className="textSecondaryColor textNormal">{rowId}</div>;
@@ -214,8 +227,40 @@ const ColQuestion = [
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px] min-w-20. flex justify-center items-center">
-              <span className="font-semibold text-base">To Be Done </span>
-              <span>Whole Detail of the Particular question</span>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Question Details</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p>{JSON.stringify(row)}</p>
+                  <br/>
+                  <div className="flex justify-right">
+                    <label>Question : </label>
+                    <p> &nbsp; {row.original.question}</p>
+                  </div>
+                  <div className="flex justify-right">
+                    <label>Question Type : </label>
+                    <p> &nbsp; {row.original.question_type.title}</p>
+                  </div>
+                  <div className="flex justify-right">
+                    <label>Lesson : </label>
+                    <p> &nbsp; {row.original.lesson.title}</p>
+                  </div>
+                  <div className="flex justify-right">
+                    <label>Unit : </label>
+                    <p> &nbsp; {row.original.task.title}</p>
+                  </div>
+                  <div className="flex justify-right">
+                    <label>Level : </label>
+                    <p> &nbsp; {row.original.level.title}</p>
+                  </div>
+                </CardContent>
+                {/* <CardFooter>
+                  <p>Card Footer</p>
+                </CardFooter> */}
+              </Card>
+              {/* Question: {row.original.question} */}
             </DialogContent>
           </Dialog>
           <Dialog className="">
