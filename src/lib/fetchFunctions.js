@@ -143,7 +143,7 @@ export function renderableQueType(arr) {
 export function renderableQuetions(arr) {
   return arr.map((item) => {
     const { question } = item.attributes?.question_content?.data?.attributes;
-
+    const content = item.attributes?.question_content?.data?.attributes?.content?.data?.attributes?.title;
     const { question_type } =
       item.attributes?.question_content?.data?.attributes;
     const learning_journey_lesson = item?.attributes?.learning_journey_lesson;
@@ -157,7 +157,7 @@ export function renderableQuetions(arr) {
     return {
       id: item.id,
       question: question.data?.attributes?.question,
-      content: question.data?.attributes?.content,
+      content,
       audio: question.data?.attributes?.audio,
       question_type: {
         id: question_type?.data?.id,

@@ -233,27 +233,31 @@ const ColQuestion = [
                   <CardTitle>Question Details</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p>{JSON.stringify(row)}</p>
-                  <br/>
+                  {/* <p>{JSON.stringify(row)}</p> */}
+                  <br />
                   <div className="flex justify-right">
-                    <label>Question : </label>
-                    <p> &nbsp; {row.original.question}</p>
-                  </div>
-                  <div className="flex justify-right">
-                    <label>Question Type : </label>
-                    <p> &nbsp; {row.original.question_type.title}</p>
-                  </div>
-                  <div className="flex justify-right">
-                    <label>Lesson : </label>
-                    <p> &nbsp; {row.original.lesson.title}</p>
+                    <label>Level : </label>
+                    <p> &nbsp; {row.original.level.title}</p>
                   </div>
                   <div className="flex justify-right">
                     <label>Unit : </label>
                     <p> &nbsp; {row.original.task.title}</p>
                   </div>
                   <div className="flex justify-right">
-                    <label>Level : </label>
-                    <p> &nbsp; {row.original.level.title}</p>
+                    <label>Lesson : </label>
+                    <p> &nbsp; {row.original.lesson.title}</p>
+                  </div>
+                  <div className="flex justify-right">
+                    <label>Question Type : </label>
+                    <p> &nbsp; {row.original.question_type.title}</p>
+                  </div>
+                  <div className="flex justify-right">
+                    <label>Question : </label>
+                    <p> &nbsp; {row.original.question}</p>
+                  </div>
+                  <div className="flex justify-right">
+                    <label>Question Correct Answer: </label>
+                    <p> &nbsp; {row.original.content}</p>
                   </div>
                 </CardContent>
                 {/* <CardFooter>
