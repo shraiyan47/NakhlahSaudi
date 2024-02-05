@@ -33,6 +33,8 @@ export default function Purposes() {
     }
   }, []);
 
+  console.log("purpose", purposes)
+
   return (
     <div className="w-full  bg-white  rounded-xl">
       {loading ? (

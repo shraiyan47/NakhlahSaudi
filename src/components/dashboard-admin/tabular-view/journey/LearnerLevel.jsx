@@ -36,10 +36,12 @@ const LearnerLevel = () => {
     }
   }, []);
 
+  console.log("learner-level", setLearnerLevels , "11learnerLevels", learnerLevels)
   return (
     <div className="w-full  bg-white  rounded-xl">
       {loading ? (
-        <CustomSkeleton />
+         <CustomSkeleton />
+        // <span>hello</span>
       ) : (
         <DataTable
           data={learnerLevels}

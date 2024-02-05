@@ -21,7 +21,7 @@ export default function CustomInput({
       <Input
         id={id}
         type="text"
-        placeHolder={ph}
+        placeholder={ph}
         onChange={onChange}
         value={value}
         className={style ? `${style}  ` : `${cmn_style}`}
