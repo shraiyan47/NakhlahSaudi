@@ -156,7 +156,7 @@ export default function Questionaries({ content }) {
   }, [selectedLevel]);
 
   useEffect(() => {
-    if (currentView == "Questions") {
+    if (currentView == "Questions Mapping") {
       let url =
         "/api/journey-map-question-contents?populate[question_content][populate]=*";
       url += currentSubView
@@ -195,7 +195,7 @@ export default function Questionaries({ content }) {
             click={() => {
               setTabularView({
                 currentPage: "questionaries",
-                currentView: "Questions asdf",
+                currentView: "Questions Mapping",
               });
             }}
             style={
@@ -219,7 +219,7 @@ export default function Questionaries({ content }) {
                 setTabularView({
                   currentView: item,
                   currentSubView:
-                    item == "Questions" || item == "Contents" ? "MCQ" : "",
+                    item == "Questions Mapping" || item == "Contents" ? "MCQ" : "",
                   currentAct: "view",
                 });
               }}
@@ -228,7 +228,7 @@ export default function Questionaries({ content }) {
         })}
       </div>
       <div className="flex flex-col gap-0.4 items-end px-2 mt-0.25">
-        {currentView == "Questions" && (
+        {currentView == "Questions Mapping" && (
           <div className="flex gap-1 items-center">
             <CustomSelect2
               label="Journey"
@@ -286,19 +286,19 @@ export default function Questionaries({ content }) {
       </div>
 
       <div className="flex-grow overflow-y-scroll  ">
-        {currentView == "Questions" &&
+        {currentView == "Questions Mapping" &&
           currentAct == "view" &&
           currentSubView == "MCQ" && <MCQ />}
-        {currentView == "Questions" &&
+        {currentView == "Questions Mapping" &&
           currentAct == "view" &&
           currentSubView == "True Or False" && <TOF />}
-        {currentView == "Questions" &&
+        {currentView == "Questions Mapping" &&
           currentAct == "view" &&
           currentSubView == "Fill In The Blank" && <FITB />}
-        {currentView == "Questions" &&
+        {currentView == "Questions Mapping" &&
           currentAct == "view" &&
           currentSubView == "Pair Matching" && <PM />}
-        {currentView == "Questions" &&
+        {currentView == "Questions Mapping" &&
           currentAct == "view" &&
           currentSubView == "Sentence Making" && <SM />}
 
