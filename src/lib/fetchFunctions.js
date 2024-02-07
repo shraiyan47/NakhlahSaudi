@@ -138,6 +138,17 @@ export function renderableLessons(arr) {
 
 // ---------------------------------------- QUESTIONARIES
 
+export function renderableQuestionTitle(arr) {
+  return arr.map((item) => {
+    return {
+      id: item.id,
+      questionsTitle: item.attributes.questions,
+      questionsAudio: item.attributes.audio,
+      icon: item.attributes.icon?.data?.attributes?.formats?.small?.url,
+    };
+  });
+}
+
 export function renderableQueType(arr) {
   return arr.map((item) => {
     return {

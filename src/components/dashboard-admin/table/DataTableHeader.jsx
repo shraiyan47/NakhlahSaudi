@@ -73,7 +73,7 @@ export default function DataTableHeader({ table, view, filter }) {
           />
         </div>
       )}
-      {currentView == "Questions" ? (
+      {currentView == "Questions Mapping" ? (
         <CustomButton
           style={
             "flex gap-1 justify-center rounded-sm max-h-[28px] text-sm font-semibold font-sans bg-wh hover:bg-slate-50 hover:shadow-sm hover:drop-shadow-sm border border-slate-300  text-slate-600 py-0.25 px-3"

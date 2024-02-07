@@ -37,6 +37,7 @@ import AddFITB from "@/components/dashboard-admin/modals/questionaries/AddFITB";
 import AddTOF from "@/components/dashboard-admin/modals/questionaries/AddTOF";
 import AddSM from "@/components/dashboard-admin/modals/questionaries/AddSM";
 import AddPM from "@/components/dashboard-admin/modals/questionaries/AddPM";
+import QuestionTitle from "@/components/dashboard-admin/tabular-view/questionaries/QuestionTitle";
 
 export default function Questionaries({ content }) {
   //
@@ -195,7 +196,7 @@ export default function Questionaries({ content }) {
             click={() => {
               setTabularView({
                 currentPage: "questionaries",
-                currentView: "Questions Mapping",
+                currentView: "Questions",
               });
             }}
             style={
@@ -300,17 +301,18 @@ export default function Questionaries({ content }) {
           currentSubView == "Pair Matching" && <PM />}
         {currentView == "Questions Mapping" &&
           currentAct == "view" &&
-          currentSubView == "Sentence Making" && <SM />}
+          currentSubView == "Sentence Making" && <SM />} 
 
         {currentView == "Question Types" && <QueType />}
         {currentView == "Content Types" && <ContentType />}
         {currentView == "Content Data Types" && <ConTypeCategory />}
         {currentView == "Contents" && <Content />}
+        {currentView == "Questions" && <QuestionTitle />}
 
         {currentAct == "add" && currentSubView == "MCQ" && (
           <AddQuePage useForEdit={false} />
         )}
-        {currentAct == "add" && currentSubView == "Pair Matching" && (
+        {/* {currentAct == "add" && currentSubView == "Pair Matching" && (
           <div>{"Loading ... "}</div>
         )}
         {currentAct == "add" && currentSubView == "Sentence Making" && (
@@ -321,7 +323,7 @@ export default function Questionaries({ content }) {
         )}
         {currentAct == "add" && currentSubView == "Fill In The Blank" && (
           <AddQuePage useForEdit={false} />
-        )}
+        )} */}
       </div>
     </div>
   );
