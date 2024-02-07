@@ -63,7 +63,7 @@ export default function MCQ() {
           data={questionData}
           columns={ColQuestion}
           view={"question"}
-          filter={"Questions"}
+          filter={"Questions Mapping"}
         />
       )}
     </div>

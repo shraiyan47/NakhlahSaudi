@@ -61,7 +61,7 @@ export const tabsLesson = [
 ];
 
 export const tabsQuestionaries = {
-  Questions: [
+  "Questions Mapping": [
     "MCQ",
     "Fill In The Blank",
     "True Or False",

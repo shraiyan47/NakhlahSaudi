@@ -1,17 +1,17 @@
-// export async function fetchQueTypes() {
-//   const response = await getHandler("question-type");
-//   console.log(response.data);
-//   if (response.status === 200) {
-//     const data = response.data.data.map((item) => {
-//       return {
-//         id: item.id,
-//         title: item.attributes.title,
-//       };
-//     });
-//     setQueTypes(data);
-//   }
-// }
-//
+  // export async function fetchQueTypes() {
+  //   const response = await getHandler("question-type");
+  //   console.log(response.data);
+  //   if (response.status === 200) {
+  //     const data = response.data.data.map((item) => {
+  //       return {
+  //         id: item.id,
+  //         title: item.attributes.title,
+  //       };
+  //     });
+  //     setQueTypes(data);
+  //   }
+  // }
+  //
 
 // ---------------------------------------- LEARNING JOURNEY
 
@@ -25,6 +25,7 @@ export function renderableGoals(arr) {
   });
   return renderable;
 }
+
 export function renderablePurpose(arr) {
   const renderable = arr.map((item) => {
     return {
@@ -35,6 +36,7 @@ export function renderablePurpose(arr) {
   });
   return renderable;
 }
+
 export function renderableStartPoint(arr) {
   return arr.map((item) => {
     return {
@@ -45,6 +47,7 @@ export function renderableStartPoint(arr) {
     };
   });
 }
+
 export function renderableLearnerLevel(arr) {
   return arr.map((item) => {
     return {
@@ -66,6 +69,7 @@ export function renderableLearningLevels(arr) {
   });
   return renderable;
 }
+
 export function renderableTasks(arr) {
   return arr.map((item) => {
     // alert("item: " + JSON.stringify(item));
@@ -80,6 +84,7 @@ export function renderableTasks(arr) {
     };
   });
 }
+
 export function renderableTaskUnits(arr) {
   return arr.map((item) => {
     const { learning_journey_unit } = item.attributes;
@@ -98,6 +103,7 @@ export function renderableTaskUnits(arr) {
     };
   });
 }
+
 export function renderableLessons(arr) {
   return arr
     ?.filter((theData) => {
@@ -140,6 +146,7 @@ export function renderableQueType(arr) {
     };
   });
 }
+
 export function renderableQuetions(arr) {
   return arr.map((item) => {
     const { question } = item.attributes?.question_content?.data?.attributes;
@@ -184,6 +191,7 @@ export function renderableQuetions(arr) {
     };
   });
 }
+
 export function renderableContents(arr) {
   return arr?.map((item) => {
     return {
@@ -200,6 +208,7 @@ export function renderableContents(arr) {
     };
   });
 }
+
 export function renderableContTypes(arr) {
   return arr?.map((item) => {
     return {
@@ -208,6 +217,7 @@ export function renderableContTypes(arr) {
     };
   });
 }
+
 export function renderableContTypeCategories(arr) {
   return arr?.map((item) => {
     return {
