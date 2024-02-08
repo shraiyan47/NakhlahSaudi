@@ -142,9 +142,9 @@ export function renderableQuestionTitle(arr) {
   return arr.map((item) => {
     return {
       id: item.id,
-      questionsTitle: item.attributes.questions,
+      questionsTitle: item.attributes.question,
       questionsAudio: item.attributes.audio,
-      icon: item.attributes.icon?.data?.attributes?.formats?.small?.url,
+      icon: item.attributes.image?.data?.attributes?.formats?.small?.url,
     };
   });
 }

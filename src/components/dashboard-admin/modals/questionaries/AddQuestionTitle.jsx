@@ -9,6 +9,7 @@ import { useState } from "react";
 import CustomButton from "@/components/ui-custom/CustomButton";
 import CustomInput from "@/components/ui-custom/CustomInput";
 import { BASE_URL, config, postMap, putMap } from "@/lib/requestHandler";
+import Image from "next/image";
 
 export default function AddQuestionTitle({ rowData, useForEdit }) {
   //
@@ -17,8 +18,8 @@ export default function AddQuestionTitle({ rowData, useForEdit }) {
   const addEdit = useQuestionTitle((state) => state.addEdit);
   const afterAdd = useQuestionTitle((state) => state.afterAdd);
   const afterUpdate = useQuestionTitle((state) => state.afterUpdate);
-  const [title, setTitle] = useState(useForEdit ? rowData.title : "");
-  const [subtitle, setSubtitle] = useState(useForEdit ? rowData.subtitle : "");
+  const [questionTitle, setQuestionTitle] = useState(useForEdit ? rowData.questionsTitle : "");
+  const [questionAudio, setQuestionAudio] = useState(useForEdit ? rowData.questionsAudio : "");
   const [error, setError] = useState({
     err0: "",
     err1: "",
@@ -30,27 +31,30 @@ export default function AddQuestionTitle({ rowData, useForEdit }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (title.length < 3) {
+    if (questionTitle.length < 3) {
       setError({ ...error, err0: "Too Short" });
-    } else if (subtitle.length < 3) {
+    } else if (questionAudio.length < 3) {
       setError({ ...error, err1: "Too Short" });
     } else {
       let formData = new FormData();
-      var titleInput = document.getElementById("idInputTitle");
-      var subTitleInput = document.getElementById("idInputSubTitle");
+      var questionTitleInput = document.getElementById("inputQuestionTitle");
+      var questionAudioInput = document.getElementById("idInputQuestionAudio");
       var fileInput = document.getElementById("idInputFile");
 
       var file = fileInput.files[0];
-      formData.append("files.icon", file);
+      formData.append("files.image", file);
 
       formData.append(
         "data",
-        `{"title":"${titleInput.value}", "subtitle": "${subTitleInput.value}"}`
+        `{"question":"${questionTitleInput.value}", "audio": "${questionAudioInput.value}"}`
       );
+
+      console.log("Question Add : ",formData)
+
       await fetch(
         useForEdit
-          ? putMap["questions"] + `/${rowData.id}?populate=icon`
-          : postMap["questions"],
+          ? putMap["QuestionsTitleFull"] + `/${rowData.id}?populate=*`
+          : postMap["QuestionsTitleFull"],
         {
           method: useForEdit ? "PUT" : "POST",
           body: formData,
@@ -67,8 +71,8 @@ export default function AddQuestionTitle({ rowData, useForEdit }) {
           alert(JSON.stringify(data));
           let renderable = {
             id: data.data.id,
-            title: title,
-            subtitle: subtitle,
+            questionsTitle: title,
+            questionAudio: questionAudio,
             icon: data.data.attributes.icon?.data?.attributes?.formats?.small
               ?.url,
           };
@@ -83,6 +87,8 @@ export default function AddQuestionTitle({ rowData, useForEdit }) {
           alert("err: " + JSON.stringify(error));
           setError(JSON.stringify(error));
         });
+
+
     }
   }
 
@@ -102,11 +108,11 @@ export default function AddQuestionTitle({ rowData, useForEdit }) {
           <div className="flex flex-col ">
             <label>Question Title</label>
             <CustomInput
-              id="idInputTitle"
+              id="inputQuestionTitle"
               type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              ph="Enter Title"
+              value={questionTitle}
+              onChange={(e) => setQuestionTitle(e.target.value)}
+              ph="Enter Question Title"
               style="py-0.25 px-1"
             />
             <span className="text-red-700">{error.err0}</span>
@@ -114,10 +120,10 @@ export default function AddQuestionTitle({ rowData, useForEdit }) {
           <div className="flex flex-col ">
             <label>Audio of Question</label>
             <CustomInput
-              id="idInputSubTitle"
+              id="idInputQuestionAudio"
               type="text"
-              value={subtitle}
-              onChange={(e) => setSubtitle(e.target.value)}
+              value={questionAudio}
+              onChange={(e) => setQuestionAudio(e.target.value)}
               ph="Enter Audio Text"
               style="py-0.25 px-1"
             />
@@ -138,10 +144,12 @@ export default function AddQuestionTitle({ rowData, useForEdit }) {
               }}
             />
             {image && (
-              <img
+              <Image
                 alt=" image"
                 src={image}
                 className="w-5.0 h-5.0 rounded-full border border-slate-400 bg-slate-50"
+                width={50}
+                height={50}
               />
             )}
           </div>

@@ -46,7 +46,7 @@ export default function QuestionTitle() {
         <DataTable
           data={QuestionTitle}
           columns={ColQuestionTitle}
-          view={"learner-start-point"}
+          view={"questionTitle"}
         />
       )}
     </div>

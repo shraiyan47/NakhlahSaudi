@@ -8,7 +8,7 @@ import Deletion from "../modals/other/Deletion";
 import { BASE_URL } from "@/lib/requestHandler";
 import AddQuestionTitle from "../modals/questionaries/AddQuestionTitle";
 
-const ColStartPoint = [
+const ColQuestionTitle = [
   // {
   //   id: "select",
   //   header: ({ table }) => (
@@ -44,41 +44,41 @@ const ColStartPoint = [
     },
   },
   {
-    id: "id_learner_start_point",
-    accessorKey: "title",
+    id: "questionsTitle",
+    accessorKey: "questionsTitle",
     header: ({ column }) => {
       return (
         <Button
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="textPrimaryColor textNormal"
         >
-          Title
+          Question 
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => (
       <div className="lowercase textNormal textSecondaryColor">
-        {row.getValue("id_learner_start_point")}
+        {row.getValue("questionsTitle")}
       </div>
     ),
   },
   {
-    accessorKey: "subtitle",
+    accessorKey: "questionsAudio",
     header: ({ column }) => {
       return (
         <Button
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="textPrimaryColor textNormal"
         >
-          Subtitle
+          Audio
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => (
       <div className="lowercase textNormal textSecondaryColor pl-2">
-        {row.getValue("subtitle")}
+        {row.getValue("questionsAudio")}
       </div>
     ),
   },
@@ -88,6 +88,7 @@ const ColStartPoint = [
     cell: ({ row }) => {
       return (
         <div>
+          {(!!row.getValue("icon")) ?
           <Image
             src={`${BASE_URL}${row.getValue("icon")}`}
             alt=""
@@ -95,6 +96,11 @@ const ColStartPoint = [
             height={40}
             className="rounded-full border-2 border-black"
           />
+        :
+        <>
+          NO IMAGE
+        </>
+        }
         </div>
       );
     },
@@ -138,4 +144,4 @@ const ColStartPoint = [
   },
 ];
 
-export default ColStartPoint;
+export default ColQuestionTitle;

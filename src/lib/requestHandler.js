@@ -70,6 +70,7 @@ export const postMap = {
   "content-type": `${BASE_URL}/api/content-types`,
   content: `${BASE_URL}/api/contents`,
   "content-type-category": `${BASE_URL}/api/content-type-categories`,
+  "QuestionsTitleFull": `${BASE_URL}/api/questions?populate=*`,
   "question-content": `${BASE_URL}/api/question-contents`,
   "question-content-option": `${BASE_URL}/api/question-content-options`,
   "journey-map-question": `${BASE_URL}/api/journey-map-question-contents`,
@@ -87,6 +88,7 @@ export const putMap = {
   content: `${BASE_URL}/api/contents`,
   "content-type": `${BASE_URL}/api/content-types`,
   "content-type-category": `${BASE_URL}/api/content-type-categories`,
+  "QuestionsTitleFull": `${BASE_URL}/api/questions`,
   question: `${BASE_URL}/api/questions`,
   "question-content": `${BASE_URL}/api/question-contents`,
   "question-content-option": `${BASE_URL}/api/question-content-options`,
@@ -105,6 +107,7 @@ export const deleteMap = {
   "content-type": `${BASE_URL}/api/content-types`,
   "content-type-category": `${BASE_URL}/api/content-type-categories`,
   question: `${BASE_URL}/api/questions`,
+  "QuestionsTitleFull": `${BASE_URL}/api/questions`,
   "question-content": `${BASE_URL}/api/question-contents`,
   "question-content-option": `${BASE_URL}/api/question-content-options`,
 };
