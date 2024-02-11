@@ -18,9 +18,9 @@
 export function renderableGoals(arr) {
   const renderable = arr.map((item) => {
     return {
-      id: item.id,
-      goal: item.attributes.goal,
+      id: item.id, 
       time: item.attributes.time,
+      icon: item.attributes.icon?.data?.attributes?.url,
     };
   });
   return renderable;
@@ -207,6 +207,7 @@ export function renderableContents(arr) {
   return arr?.map((item) => {
     return {
       id: item.id,
+      audio: item.attributes?.audio,
       title: item.attributes?.title,
       content_type: {
         id: item.attributes?.content_type?.data?.id,
@@ -216,6 +217,7 @@ export function renderableContents(arr) {
         id: item.attributes?.content_type_category?.data?.id,
         title: item.attributes?.content_type_category?.data?.attributes?.title,
       },
+      icon: item.attributes?.image?.data?.attributes?.url,
     };
   });
 }
