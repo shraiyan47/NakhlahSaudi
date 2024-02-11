@@ -68,7 +68,11 @@ export const tabsQuestionaries = {
     "Sentence Making",
     "Pair Matching",
   ],
+
   "Question Content Types": [],
+
+  "Questions":[],
+
   "Question Types": [],
   Contents: [
     "MCQ",
@@ -78,7 +82,6 @@ export const tabsQuestionaries = {
     "Pair Matching",
   ],
   "Content Types": [],
-
   "Content Data Types": [],
 };
 
@@ -123,13 +126,13 @@ export const adminDashboard = {
       list: [
         {
           id: 1,
-          title: "Learning Journey",
+          title: "Learner Info",
           icon: <LineChart className="w-6 h-6 text-slate-600" />,
           link: "/admin/learning-journey",
         },
         {
           id: 2,
-          title: "Learning Lessons",
+          title: "Learning Journey",
           icon: <SiReacthookform className="w-6 h-6 text-slate-700" />,
           link: "/admin/learning-materials",
         },
@@ -139,13 +142,13 @@ export const adminDashboard = {
           icon: <ShieldQuestion className="w-6 h-6 text-slate-600" />,
           link: "/admin/questionaries",
         },
-        {
-          id: 4,
-          title: "Customer",
-          icon: <PersonStanding className="w-6 h-6 text-slate-600" />,
-          link: "#",
-          subLinks: null,
-        },
+        // {
+        //   id: 4,
+        //   title: "Customer",
+        //   icon: <PersonStanding className="w-6 h-6 text-slate-600" />,
+        //   link: "#",
+        //   subLinks: null,
+        // },
       ],
     },
   },

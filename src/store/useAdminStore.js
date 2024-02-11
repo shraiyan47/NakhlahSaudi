@@ -640,7 +640,73 @@ export const useQueType = create(
     },
   }))
 );
-export const useQuestion = create(
+
+export const useQuestionTitle = create( //// For Question Add Only
+  immer((set) => ({
+    data: [],
+    setQuestionTitle: (data) => {
+      set((state) => {
+        state.data = data;
+      });
+    },
+    addEdit: async ({ useForEdit, data, id }) => {
+      const response = useForEdit
+        ? await putHandler("questions", id, {
+            data,
+          })
+        : await postHandler("questions", {
+            data,
+          });
+
+      if (response.status == 400) {
+        let errors = response.data.error.details.errors;
+        return {
+          status: response.status,
+          errors: {
+            err0: errors[0].message,
+            err1: errors[1] ? errors[1].message : "",
+          },
+        };
+      }
+      if (response.status == 200) {
+        let data = response.data.data;
+        return {
+          status: response.status,
+          message: useForEdit ? "Updated Successfully" : "Added Successfully",
+          data: {
+            id: data.id,
+            title: data.attributes.title,
+            subtitle: data.attributes.subtitle,
+          },
+        };
+      }
+    },
+    afterAdd: (data) => {
+      set((state) => {
+        state.data = [data, ...state.data];
+      });
+    },
+    afterUpdate: (data) => {
+      set((state) => {
+        state.data = state.data.map((item) => {
+          if (item.id == data.id) {
+            return data;
+          } else {
+            return item;
+          }
+        });
+      });
+    },
+
+    afterDelete: (id) => {
+      set((state) => {
+        state.data = state.data.filter((item) => item.id != id);
+      });
+    },
+  }))
+);
+
+export const useQuestion = create( ///// For Question Mapping
   immer((set) => ({
     data: [],
     selectedJourney: initStateSelection,

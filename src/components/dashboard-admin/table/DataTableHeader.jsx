@@ -29,6 +29,7 @@ import AddQueContOption from "../modals/questionaries/AddQueContOption";
 import { useTabularView } from "@/store/useAdminStore";
 import CustomButton from "@/components/ui-custom/CustomButton";
 import QueFilter from "../tabular-view/questionaries/QueFilter";
+import AddQuestionTitle from "../modals/questionaries/AddQuestionTitle";
 
 const viewMap = {
   // learning journey
@@ -59,6 +60,7 @@ export default function DataTableHeader({ table, view, filter }) {
 
   return (
     <div className="flex items-center justify-between py-3  ">
+      {currentView}
       {filter && (
         <div className="flex items-center border-b border-slate-300 rounded-none">
           <Filter className="w-5 h-5 text-slate-600 border-0" />
@@ -73,7 +75,7 @@ export default function DataTableHeader({ table, view, filter }) {
           />
         </div>
       )}
-      {currentView == "Questions" ? (
+      {currentView == "Questions Mapping" ? (
         <CustomButton
           style={
             "flex gap-1 justify-center rounded-sm max-h-[28px] text-sm font-semibold font-sans bg-wh hover:bg-slate-50 hover:shadow-sm hover:drop-shadow-sm border border-slate-300  text-slate-600 py-0.25 px-3"
@@ -114,7 +116,7 @@ export default function DataTableHeader({ table, view, filter }) {
               {view == "content-type-category" && (
                 <AddConTypeCategory title={view} />
               )}
-              {/* {view == "question" && <AddQuestion title={view} />}{" "} */}
+              {view == "questionTitle" && <AddQuestionTitle title={view} />}{" "}
               {view == "content" && <AddContent title={view} />}
               {view == "question-content" && <AddQueContent title={view} />}
               {view == "question-content-option" && (
