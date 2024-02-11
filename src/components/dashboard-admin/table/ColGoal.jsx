@@ -34,7 +34,9 @@ const goalColumns = [
     accessorKey: "id",
     header: () => <div className="textNormal textPrimaryColor">ID</div>,
     cell: ({ row }) => {
+    
       const rowId = parseInt(row.id) + 1;
+      console.log("helllllllllllllllllllllllllllllowwwwwwwwwwwwwwwwwwww", row, rowId)
       return (
         <div className="textSecondaryColor textNormal  ">
           {rowId}
@@ -42,29 +44,30 @@ const goalColumns = [
       );
     },
   },
+  // {
+  
+  //   accessorKey: "goal",
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //         className="textPrimaryColor textNormal"
+  //       >
+  //         Goal
+  //         <ArrowUpDown className="ml-2 h-4 w-4" />
+  //       </Button>
+  //     );
+  //   },
+  //   cell: ({ row }) => {
+  //     return (
+  //       <div className="lowercase textNormal textSecondaryColor  ">
+  //         {row.getValue("id_learner_goal")}
+  //       </div>
+  //     );
+  //   },
+  // },
   {
-    id: "id_learner_goal",
-    accessorKey: "goal",
-    header: ({ column }) => {
-      return (
-        <Button
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="textPrimaryColor textNormal"
-        >
-          Goal
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      return (
-        <div className="lowercase textNormal textSecondaryColor  ">
-          {row.getValue("id_learner_goal")}
-        </div>
-      );
-    },
-  },
-  {
+    id : "id_learner_goal", 
     accessorKey: "time",
     header: ({ column }) => {
       return (
@@ -79,14 +82,14 @@ const goalColumns = [
     },
     cell: ({ row }) => (
       <div className="lowercase textNormal textSecondaryColor  ">
-        {row.getValue("time")}
+        {row.getValue("id_learner_goal")}
       </div>
     ),
   },
 
   {
     accessorKey: "icon",
-    header: () => <div className="textPrimaryColor textNormal">Image</div>,
+    header: () => <div className="textPrimaryColor textNormal">Image </div>,
     cell: ({ row }) => {
       return (
         <div>
@@ -118,7 +121,9 @@ const goalColumns = [
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
               <Deletion
-                rowData={{ id: row.original.id, title: row.original.goal }}
+                rowData={{ id: row.original.id
+                  
+               }  }
                 what="learner-goal"
               />
             </DialogContent>
@@ -130,7 +135,10 @@ const goalColumns = [
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <AddGoal useForEdit={true} rowData={row.original} />
+              <AddGoal 
+                title="goal"
+              useForEdit={true} 
+              rowData={row.original} />
             </DialogContent>
           </Dialog>
         </div>

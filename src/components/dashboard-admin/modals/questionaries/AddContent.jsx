@@ -18,7 +18,8 @@ import {
 } from "../../../../store/useAdminStore";
 import CustomSelect from "../../../ui-custom/CustomSelect";
 import CustomButton from "../../../ui-custom/CustomButton";
-import { getHandler, postHandler, putHandler } from "@/lib/requestHandler";
+
+import { BASE_URL, config, postMap, putMap, getHandler, postHandler, putHandler } from "@/lib/requestHandler";
 
 export default function AddContent({ rowData, useForEdit }) {
   //
@@ -32,18 +33,18 @@ export default function AddContent({ rowData, useForEdit }) {
   const [selectedCategory, setSelectedCategory] = useState(
     useForEdit
       ? {
-          id: rowData.content_type_category.id,
-          title: rowData.content_type_category.title,
-        }
+        id: rowData.content_type_category.id,
+        title: rowData.content_type_category.title,
+      }
       : initStateSelection
   );
 
   const [selectedType, setSelectedType] = useState(
     useForEdit
       ? {
-          id: rowData.content_type.id,
-          title: rowData.content_type.title,
-        }
+        id: rowData.content_type.id,
+        title: rowData.content_type.title,
+      }
       : initStateSelection
   );
   const [error, setError] = useState({
@@ -62,77 +63,148 @@ export default function AddContent({ rowData, useForEdit }) {
   //
   const afterUpdate = useContent((state) => state.afterUpdate);
   const afterAdd = useContent((state) => state.afterAdd);
+  const [image, setImage] = useState(
+    useForEdit ? BASE_URL + rowData.icon : null
+  );
 
+  const [queAudio, setQueAudio] = useState("");
+
+  // before
   async function handleSubmit(e) {
     e.preventDefault();
     let err_1 = "";
     let err_2 = "";
     let err_3 = "";
+    let formData = new FormData();
+    var categoryInput = document.getElementById("idSelectedCategory");
+    var questionTypeInput = document.getElementById("idQuestionType");
+    var contentInput = document.getElementById("idContent");
+
+
+    var audioTextInput = document.getElementById("idAudioText");
+    var fileInput = document.getElementById("idInputFile");
+    var file = fileInput.files[0];
+    formData.append("files.image", file);
+
+    // console.log("process", categoryInput, questionTypeInput, contentInput)
+
+
     if (
       selectedCategory.title != "" &&
       selectedType.title != "" &&
       !(content.length < 3)
     ) {
       const data = {
-        title: content,
+        title: contentInput.value,
         content_type: {
           connect: [selectedType.id],
         },
         content_type_category: {
           connect: [selectedCategory.id],
         },
+
+        audio: audioTextInput.value
+
       };
+      console.log("hello", selectedCategory, selectedType)
+      formData.append(
+        "data",
+        `{"title": "${contentInput.value}","audio": "${audioTextInput.value}","content_type": { "connect": [${selectedType.id}] },"content_type_category": { "connect": [${selectedCategory.id}] }}`
+      );
 
-      const result = useForEdit
-        ? await putHandler("content", rowData.id, { data })
-        : await postHandler("content", {
-            data,
-          });
+      // const result = useForEdit
+      //   ? await putHandler("content", rowData.id, { data })
+      //   : await postHandler("content", {
+      //       formData,
+      //     });
 
-      if (result.status == 200) {
-        let data = result.data.data;
 
-        data = {
-          id: data.id,
-          title: data.attributes.title,
+
+
+      await fetch(
+        useForEdit
+          ? putMap["content"] + `/${rowData.id}?populate=icon`
+          : postMap["content"],
+        {
+          method: useForEdit ? "PUT" : "POST",
+          body: formData,
+          headers: {
+            Authorization:
+              "Bearer " +
+              "5cb5acf4b96532cdad0e30d900772f5c8b5532d2dbf06e04483a3705c725ffbbdba593340718423a5975e86aa47ca1749de402ec9f3127648dbcec37b190107ba975e669811b2a2f4c8b41c27472d6fdb70e7b0be4f8490c57a406e29aedf47dd05dadb7171788ba9fa2af106d93b4f92423b8e194131891e712857b52e8ceef",
+          },
+          redirect: "follow",
+        }
+      )
+
+      .then((res) => res.json())
+      .then((data) => {
+        alert(JSON.stringify(data));
+        let renderable = {
+          id: data.data.id,
+          audio: data.data.attributes?.audio,
+          title: data.data.attributes?.title,
           content_type: {
-            id: selectedType.id,
-            title: selectedType.title,
+            id: item.attributes?.content_type?.data?.id,
+            title: item.attributes?.content_type?.data?.attributes?.title,
           },
           content_type_category: {
-            id: selectedCategory.id,
-            title: selectedCategory.title,
+            id: item.attributes?.content_type_category?.data?.id,
+            title: item.attributes?.content_type_category?.data?.attributes?.title,
           },
+          icon: data.data.attributes.image?.data?.attributes?.url,
         };
-
-        useForEdit ? afterUpdate(data) : afterAdd(data);
+         console.log("renderable ", renderable )
+        useForEdit ? afterUpdate(renderable) : afterAdd(renderable);
         toast({
-          title: useForEdit
-            ? "Item Updated Succesfully"
-            : "Item Added Successfully",
+          title: useForEdit ? "Successfully Updated" : "Successfully Added",
         });
         document.getElementById("closeDialog")?.click();
-      } else if (result.status == 400) {
-        let errors = result.data.error.details.errors;
-        setError({
-          err0: errors[0].message,
-          err1: errors[1]?.message,
-          err2: errors[2]?.message,
-        });
-      }
-    } else {
-      if (selectedCategory.id == null) {
-        err_1 = "Select content data type";
-      }
-      if (selectedType.id == null) {
-        err_2 = "Select question type";
-      }
-      if (content.length < 1) {
-        err_3 = "Too Short";
-      }
-      setError({ err1: err_1, err2: err_2, err3: err_3 });
+      })
+      .catch((error) => {
+        alert("err: " + JSON.stringify(error));
+        setError(JSON.stringify(error));
+      });
+  
+
+
+
+
+
+      // if (result.status == 200) {
+      //   let data = result.data.data;
+
+      //   data = {
+      //     id: data.id,
+      //     title: data.attributes.title,
+      //     content_type: {
+      //       id: selectedType.id,
+      //       title: selectedType.title,
+      //     },
+      //     content_type_category: {
+      //       id: selectedCategory.id,
+      //       title: selectedCategory.title,
+      //     },
+
+      //   };
+
+
     }
+
+
+    // formData.append("data", `{"question":"${question}"}`);
+    // formData.append(
+    //   "data",
+    //   queAudio.length > 0 ?  JSON.stringify(obj) : ""
+    // );
+
+
+
   }
+
+
+
+
 
   function filterUnitsByJourney(id) {
     setFilteredUnits(unitData.filter((item) => item.learning_journey.id == id));
@@ -158,6 +230,7 @@ export default function AddContent({ rowData, useForEdit }) {
   }, [categoryData]);
 
   useEffect(() => {
+
     const fetchTypes = async () => {
       const response = await getHandler("content-type");
 
@@ -196,6 +269,7 @@ export default function AddContent({ rowData, useForEdit }) {
         >
           <div className="flex flex-col gap-1">
             <CustomSelect
+              id="idSelectedCategory"
               label={"Content Data Type"}
               value={selectedCategory}
               options={categoryData}
@@ -207,8 +281,10 @@ export default function AddContent({ rowData, useForEdit }) {
             <span className="text-red-700">{error.err1}</span>
           </div>
           <div className="flex flex-col gap-1">
-            
+
             <CustomSelect
+
+              id="idQuestionType"
               label={"Question Type"}
               value={selectedType}
               options={typeData}
@@ -225,6 +301,7 @@ export default function AddContent({ rowData, useForEdit }) {
               <span className=" text-red-800">{error.err0}</span>
             </label>
             <CustomInput
+              id="idContent"
               type="text"
               value={content}
               onChange={(e) => setContent(e.target.value)}
@@ -233,7 +310,40 @@ export default function AddContent({ rowData, useForEdit }) {
             />
             <span className="text-red-700">{error.err3}</span>
           </div>
+          <div className="flex gap-2 flex-col items-start">
+            <input
+              type="file"
+              id="idInputFile"
+              name="file"
+              onChange={(e) => {
+                let files = e.target.files;
+                let reader = new FileReader();
+                reader.onload = (r) => {
+                  setImage(r.target.result);
+                };
+                reader.readAsDataURL(files[0]);
+              }}
+            />
+            {image && (
+              <img
+                alt=" image"
+                src={image}
+                className="w-5.0 h-5.0 rounded-full border border-slate-400 bg-slate-50"
+              />
+            )}
+          </div>
+          <div className="flex flex-col gap-1 w-2/3 ">
+            <span className="">Attach Audio Texthhhhhhhhhhhhhhhhh</span>
+            <textarea
+              id="idAudioText"
+              value={queAudio}
+              onChange={(e) => setQueAudio(e.target.value)}
+              rows={2}
+              className="py-0.12 px-1 rounded-md border border-slate-400 outline-none"
+            />
 
+            {/* <span className="text-red-700">{error.err2}</span> */}
+          </div>
           <CustomButton
             txt={useForEdit ? "Update" : "Add"}
             type="submit"
