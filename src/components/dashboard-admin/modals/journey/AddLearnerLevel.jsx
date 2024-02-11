@@ -37,7 +37,9 @@ export default function AddLearnerLevel({ rowData, title, useForEdit }) {
     useForEdit ? rowData.level : ""
   );
   const [error, setError] = useState("");
-  const [image, setImage] = useState(useForEdit ? BASE_URL + rowData.icon : "");
+  const [image, setImage] = useState(
+    useForEdit ? BASE_URL + rowData.icon : null
+  );
 
   async function handleSubmit(e) {
     e.preventDefault();

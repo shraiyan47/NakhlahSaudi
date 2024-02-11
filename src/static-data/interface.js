@@ -68,6 +68,7 @@ export const tabsQuestionaries = {
     "Sentence Making",
     "Pair Matching",
   ],
+  "Question Content Types": [],
   "Question Types": [],
   Contents: [
     "MCQ",

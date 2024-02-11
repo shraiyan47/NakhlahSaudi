@@ -23,7 +23,7 @@ export const fetchHeader = {
 
 export const getMap = {
   "learner-purpose": `${BASE_URL}/api/learning-purposes?populate=icon`,
-  "learner-goal": `${BASE_URL}/api/learning-goals`,
+  "learner-goal": `${BASE_URL}/api/learning-goals?populate=*`,
   "learner-start-point": `${BASE_URL}/api/learner-starting-points?populate=icon`,
   "learner-level": `${BASE_URL}/api/learner-levels?populate=icon`,
   "learning-journey": `${BASE_URL}/api/learning-journeys`,

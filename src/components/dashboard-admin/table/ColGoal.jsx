@@ -5,7 +5,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
 import Deletion from "../modals/other/Deletion";
 import AddGoal from "../modals/journey/AddGoal";
-
+import Image from "next/image";
+import { BASE_URL } from "@/lib/requestHandler";
 const goalColumns = [
   // {
   //   id: "select",
@@ -81,6 +82,24 @@ const goalColumns = [
         {row.getValue("time")}
       </div>
     ),
+  },
+
+  {
+    accessorKey: "icon",
+    header: () => <div className="textPrimaryColor textNormal">Image</div>,
+    cell: ({ row }) => {
+      return (
+        <div>
+          <Image
+            src={`${BASE_URL}${row.getValue("icon")}`}
+            alt=""
+            width={40}
+            height={40}
+            className="rounded-full border-2 border-black"
+          />
+        </div>
+      );
+    },
   },
   {
     id: "actions",
