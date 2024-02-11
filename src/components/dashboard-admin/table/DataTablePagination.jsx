@@ -6,7 +6,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { FaAnglesLeft, FaAnglesRight } from "react-icons/fa6";
 
 
-const DataTablePagination = ({ table }) => {
+const DataTablePagination = ({ table , onPageChange}) => {
     return (
         <div className="flex items-center justify-between px-2 py-3">
             {/* show selected section */}
@@ -20,7 +20,7 @@ const DataTablePagination = ({ table }) => {
                 <div className="flex   items-center justify-center text-sm font-medium border-[1px] textPrimaryColor">
                     <Button
                         className="h-8 w-8 p-0 border-r-[1px] rounded-none"
-                        onClick={() => table.previousPage()}
+                        onClick={() => {table.previousPage(), onPageChange(table.getState().pagination.pageIndex - 1)}}
                         disabled={!table.getCanPreviousPage()}
                     >
                         <span className="sr-only">Go to previous page</span>
@@ -32,7 +32,7 @@ const DataTablePagination = ({ table }) => {
                     </span>
                     <Button
                         className="h-8 w-8 p-0 border-l-[1px] rounded-none"
-                        onClick={() => table.nextPage()}
+                        onClick={() => {table.nextPage(), onPageChange(table.getState().pagination.pageIndex + 1)}}
                         disabled={!table.getCanNextPage()}
                     >
                         <span className="sr-only">Go to next page</span>

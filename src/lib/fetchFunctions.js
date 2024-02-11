@@ -141,10 +141,11 @@ export function renderableLessons(arr) {
 export function renderableQuestionTitle(arr) {
   return arr.map((item) => {
     return {
-      id: item.id,
-      questionsTitle: item.attributes.question,
-      questionsAudio: item.attributes.audio,
-      icon: item.attributes.image?.data?.attributes?.formats?.small?.url,
+      id: item.data.id,
+      questionsTitle: item.data.attributes.question,
+      questionsAudio: item.data.attributes.audio,
+      icon: item.data.attributes.image?.data?.attributes?.formats?.small?.url,
+      totalData: item.meta.pagination.total
     };
   });
 }
