@@ -63,7 +63,7 @@ console.log(formData);
           purpose: data.data.attributes.purpose,
           icon: data.data.attributes.icon?.data?.attributes?.url,
         };
-
+        console.log("icon", data )
         useForEdit ? afterUpdate(renderable) : afterAdd(renderable);
         toast({
           title: useForEdit ? "Successfully Updated" : "Successfully Added",
