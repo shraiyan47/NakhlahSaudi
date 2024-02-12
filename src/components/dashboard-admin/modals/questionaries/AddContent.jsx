@@ -15,6 +15,7 @@ import {
   useConType,
   useContent,
   useTabularView,
+  
 } from "../../../../store/useAdminStore";
 import CustomSelect from "../../../ui-custom/CustomSelect";
 import CustomButton from "../../../ui-custom/CustomButton";
@@ -30,6 +31,7 @@ export default function AddContent({ rowData, useForEdit }) {
   };
 
   const [content, setContent] = useState(useForEdit ? rowData.title : "");
+  const [queAudio, setQueAudio] = useState(useForEdit ? rowData.audio : "");
   const [selectedCategory, setSelectedCategory] = useState(
     useForEdit
       ? {
@@ -67,8 +69,6 @@ export default function AddContent({ rowData, useForEdit }) {
     useForEdit ? BASE_URL + rowData.icon : null
   );
 
-  const [queAudio, setQueAudio] = useState("");
-
   // before
   async function handleSubmit(e) {
     e.preventDefault();
@@ -79,47 +79,31 @@ export default function AddContent({ rowData, useForEdit }) {
     var categoryInput = document.getElementById("idSelectedCategory");
     var questionTypeInput = document.getElementById("idQuestionType");
     var contentInput = document.getElementById("idContent");
-
-
     var audioTextInput = document.getElementById("idAudioText");
     var fileInput = document.getElementById("idInputFile");
     var file = fileInput.files[0];
     formData.append("files.image", file);
-
-    // console.log("process", categoryInput, questionTypeInput, contentInput)
-
 
     if (
       selectedCategory.title != "" &&
       selectedType.title != "" &&
       !(content.length < 3)
     ) {
-      const data = {
-        title: contentInput.value,
-        content_type: {
-          connect: [selectedType.id],
-        },
-        content_type_category: {
-          connect: [selectedCategory.id],
-        },
-
-        audio: audioTextInput.value
-
-      };
-      console.log("hello", selectedCategory, selectedType)
+      // const data = {
+      //   title: contentInput.value,
+      //   content_type: {
+      //     connect: [selectedType.id],
+      //   },
+      //   content_type_category: {
+      //     connect: [selectedCategory.id],
+      //   },
+      //   audio: audioTextInput.value
+      // };
+  
       formData.append(
         "data",
         `{"title": "${contentInput.value}","audio": "${audioTextInput.value}","content_type": { "connect": [${selectedType.id}] },"content_type_category": { "connect": [${selectedCategory.id}] }}`
       );
-
-      // const result = useForEdit
-      //   ? await putHandler("content", rowData.id, { data })
-      //   : await postHandler("content", {
-      //       formData,
-      //     });
-
-
-
 
       await fetch(
         useForEdit
@@ -136,73 +120,44 @@ export default function AddContent({ rowData, useForEdit }) {
           redirect: "follow",
         }
       )
-
+        
       .then((res) => res.json())
       .then((data) => {
-        alert(JSON.stringify(data));
+        console.log("hello data ", data.data)
+        console.log("data.data.attributes?.content_type_category?.data?.attributes?.title", data.data.attributes?.content_type_category?.data?.attributes?.title)
+      //  alert(JSON.stringify(data));
         let renderable = {
           id: data.data.id,
           audio: data.data.attributes?.audio,
           title: data.data.attributes?.title,
           content_type: {
-            id: item.attributes?.content_type?.data?.id,
-            title: item.attributes?.content_type?.data?.attributes?.title,
+            id:  data.attributes?.content_type?.data?.id,
+            title:data.attributes?.content_type?.attributes?.title,
           },
           content_type_category: {
-            id: item.attributes?.content_type_category?.data?.id,
-            title: item.attributes?.content_type_category?.data?.attributes?.title,
+            id: data.data.attributes?.content_type_category?.data?.id,
+            title: data.data.attributes?.content_type_category?.data?.attributes?.title,
           },
           icon: data.data.attributes.image?.data?.attributes?.url,
         };
-         console.log("renderable ", renderable )
+    
         useForEdit ? afterUpdate(renderable) : afterAdd(renderable);
         toast({
           title: useForEdit ? "Successfully Updated" : "Successfully Added",
         });
         document.getElementById("closeDialog")?.click();
-      })
+      }) 
       .catch((error) => {
+        // console.log("hello FROM CATCH")
         alert("err: " + JSON.stringify(error));
         setError(JSON.stringify(error));
       });
-  
-
-
-
-
-
-      // if (result.status == 200) {
-      //   let data = result.data.data;
-
-      //   data = {
-      //     id: data.id,
-      //     title: data.attributes.title,
-      //     content_type: {
-      //       id: selectedType.id,
-      //       title: selectedType.title,
-      //     },
-      //     content_type_category: {
-      //       id: selectedCategory.id,
-      //       title: selectedCategory.title,
-      //     },
-
-      //   };
-
-
     }
-
-
-    // formData.append("data", `{"question":"${question}"}`);
-    // formData.append(
-    //   "data",
-    //   queAudio.length > 0 ?  JSON.stringify(obj) : ""
-    // );
-
-
-
   }
 
-
+  const currentView = useTabularView((state) => state.data.currentView);
+  const addWhat = currentView.slice(0, currentView.length - 1);
+  
 
 
 
@@ -250,8 +205,7 @@ export default function AddContent({ rowData, useForEdit }) {
     }
   }, [typeData]);
 
-  const currentView = useTabularView((state) => state.data.currentView);
-  const addWhat = currentView.slice(0, currentView.length - 1);
+ 
 
   return (
     <>
@@ -333,7 +287,7 @@ export default function AddContent({ rowData, useForEdit }) {
             )}
           </div>
           <div className="flex flex-col gap-1 w-2/3 ">
-            <span className="">Attach Audio Texthhhhhhhhhhhhhhhhh</span>
+            <span className="">Attach Audio Text</span>
             <textarea
               id="idAudioText"
               value={queAudio}

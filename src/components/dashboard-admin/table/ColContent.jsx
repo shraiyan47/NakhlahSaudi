@@ -6,7 +6,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
 import Deletion from "../modals/other/Deletion";
 import AddContent from "../modals/questionaries/AddContent";
-
+import Image from "next/image";
+import { BASE_URL } from "@/lib/requestHandler";
 const ColContent = [
   // {
   //   id: "select",
@@ -62,6 +63,8 @@ const ColContent = [
       </div>
     ),
   },
+
+
   {
     id: "id_type",
     accessorKey: "content_type.title",
@@ -98,10 +101,60 @@ const ColContent = [
     },
     cell: ({ row }) => (
       <div className="lowercase textNormal textSecondaryColor">
-        {row.getValue("id_category")}
+      
+
+        {row.getValue("id_category")
+            ? row.getValue("id_category")
+            : "Not attached"}
       </div>
     ),
   },
+
+  {
+    id: "id_question_audio",
+    accessorKey: "audio",
+    header: ({ column }) => {
+      return (
+        <Button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="textPrimaryColor textNormal"
+        >
+          Audio
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="lowercase textNormal textSecondaryColor pl-2">
+        {row.getValue("id_question_audio")
+            ? row.getValue("id_question_audio")
+            : "Not attached"}
+      </div>
+    ),
+  },
+
+  {
+    accessorKey: "icon",
+    header: () => <div className="textPrimaryColor textNormal">Image </div>,
+    cell: ({ row }) => {
+      return (
+       <div>
+        { (row.getValue("icon") ) ?
+          <Image
+            src={`${BASE_URL}${row.getValue("icon")}`}
+            alt=""
+            width={40}
+            height={40}
+            className="rounded-full border-2 border-black"
+          />
+       :
+     <div> No Image</div>
+    }
+        </div> 
+      );
+    },
+  },
+
   {
     id: "actions",
     header: () => (

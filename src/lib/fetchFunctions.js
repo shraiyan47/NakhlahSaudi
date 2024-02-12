@@ -17,9 +17,11 @@
 
 export function renderableGoals(arr) {
   const renderable = arr.map((item) => {
+
+    console.log("renderable", arr)
     return {
       id: item.id, 
-      time: item.attributes.time,
+      time: item.attributes?.time,
       icon: item.attributes.icon?.data?.attributes?.url,
     };
   });
@@ -204,7 +206,8 @@ export function renderableQuetions(arr) {
 }
 
 export function renderableContents(arr) {
-  return arr?.map((item) => {
+  const renderable = arr?.map((item) => {
+    console.log("arrrrr", arr)
     return {
       id: item.id,
       audio: item.attributes?.audio,
@@ -220,7 +223,9 @@ export function renderableContents(arr) {
       icon: item.attributes?.image?.data?.attributes?.url,
     };
   });
+  return renderable;
 }
+
 
 export function renderableContTypes(arr) {
   return arr?.map((item) => {

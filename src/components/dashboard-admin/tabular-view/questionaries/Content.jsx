@@ -34,11 +34,26 @@ const Content = () => {
         toggleLoading(false);
       }
     };
-    if (loading == false) {
+    if (loading == false && Array.isArray(contents) && contents.length === 0) {
       toggleLoading(true);
       fetch();
     }
   }, [currentSubView]);
+
+
+  // useEffect(() => {
+  //   const fetch = async () => {
+  //     const response = await getHandler("content-mcq");
+  //     if (response.status === 200) {
+  //       setContents(renderableContents(response.data.data));
+  //       toggleLoading(false);
+  //     }
+  //   };
+  //   if (loading == false && Array.isArray(contents) && contents.length === 0) {
+  //     toggleLoading(true);
+  //     fetch();
+  //   }
+  // }, []);
 
   return (
     <div className="w-full bg-white rounded-xl">
