@@ -74,10 +74,10 @@ export default function AddGoal({ rowData, useForEdit }) {
         .then((data) => {
           alert(JSON.stringify(data));
           let renderable = {
-            id: data.data.id,
-            time: data.data.time,
+            id: data.data?.id,
+            time: data.data?.attributes?.time,
            
-            icon: data.data.attributes.icon?.data?.attributes?.url,
+            icon: data.data.attributes?.icon?.data?.attributes?.url,
           };
            console.log("renderable from start point", renderable )
           useForEdit ? afterUpdate(renderable) : afterAdd(renderable);

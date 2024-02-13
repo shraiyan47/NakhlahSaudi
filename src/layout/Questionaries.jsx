@@ -303,7 +303,7 @@ export default function Questionaries({ content }) {
           currentAct == "view" &&
           currentSubView == "Sentence Making" && <SM />} 
 
-        {currentView == "Question Types" && <QueType />}
+        {currentView == "Question Content Types" && <QueType />}
         {currentView == "Content Types" && <ContentType />}
         {currentView == "Content Data Types" && <ConTypeCategory />}
         {currentView == "Contents" && <Content />}
