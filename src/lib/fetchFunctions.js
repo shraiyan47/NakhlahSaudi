@@ -207,7 +207,7 @@ export function renderableQuetions(arr) {
 
 export function renderableContents(arr) {
   const renderable = arr?.map((item) => {
-    console.log("arrrrr", arr)
+ 
     return {
       id: item.id,
       audio: item.attributes?.audio,

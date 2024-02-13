@@ -19,27 +19,38 @@ const requestKeyMap = {
   "Fill In The Blank": "content-fitb",
 };
 
-const Content = () => {
+export default function Content() {
   const contents = useContent((state) => state.data);
   const setContents = useContent((state) => state.setContents);
   const loading = useLoadingState((state) => state.loading);
   const toggleLoading = useLoadingState((state) => state.toggleLoading);
   const currentSubView = useTabularView((state) => state.data.currentSubView);
+  
+  
+  
+  
+  
 
+  
+  
+  
   useEffect(() => {
+
     const fetch = async () => {
+     
       const response = await getHandler(requestKeyMap[currentSubView]);
+
       if (response.status === 200) {
         setContents(renderableContents(response.data.data));
         toggleLoading(false);
       }
     };
+    
     if (loading == false && Array.isArray(contents) && contents.length === 0) {
       toggleLoading(true);
       fetch();
     }
-  }, [currentSubView]);
-
+  }, [contents, currentSubView]);
 
   // useEffect(() => {
   //   const fetch = async () => {
@@ -66,4 +77,4 @@ const Content = () => {
   );
 };
 
-export default Content;
+
