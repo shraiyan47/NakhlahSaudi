@@ -20,7 +20,8 @@ const DataTablePagination = ({ table , onPageChange}) => {
                 <div className="flex   items-center justify-center text-sm font-medium border-[1px] textPrimaryColor">
                     <Button
                         className="h-8 w-8 p-0 border-r-[1px] rounded-none"
-                        onClick={() => {table.previousPage(), onPageChange(table.getState().pagination.pageIndex - 1)}}
+                        // onClick={() => {table.previousPage(), onPageChange(table.getState().pagination.pageIndex - 1)}}
+                        onClick={() => {table.previousPage()}}
                         disabled={!table.getCanPreviousPage()}
                     >
                         <span className="sr-only">Go to previous page</span>
@@ -32,7 +33,8 @@ const DataTablePagination = ({ table , onPageChange}) => {
                     </span>
                     <Button
                         className="h-8 w-8 p-0 border-l-[1px] rounded-none"
-                        onClick={() => {table.nextPage(), onPageChange(table.getState().pagination.pageIndex + 1)}}
+                        // onClick={() => {table.nextPage(), onPageChange(table.getState().pagination.pageIndex + 1)}}
+                        onClick={() => {table.nextPage()}}
                         disabled={!table.getCanNextPage()}
                     >
                         <span className="sr-only">Go to next page</span>

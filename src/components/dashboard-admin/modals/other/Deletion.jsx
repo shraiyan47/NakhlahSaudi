@@ -17,8 +17,9 @@ import {
   useContent,
   useQueContent,
   useQueContOption,
+  useQuestionTitle,
 } from "@/store/useAdminStore";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import CustomButton from "../../../ui-custom/CustomButton";
 import { deleteHandler } from "@/lib/requestHandler";
 import { useToast } from "@/components/ui/use-toast";
@@ -40,6 +41,7 @@ export default function Deletion({ rowData, what }) {
     "question-type": useQueType((state) => state.afterDelete),
     "content-type": useConType((state) => state.afterDelete),
     "content-type-category": useConTypeCategory((state) => state.afterDelete),
+    "Question Title": useQuestionTitle((state) => state.afterDelete),
     question: useQuestion((state) => state.afterDelete),
     content: useContent((state) => state.afterDelete),
     "question-content": useQueContent((state) => state.afterDelete),
@@ -48,6 +50,7 @@ export default function Deletion({ rowData, what }) {
 
   function onSuccess() {
     document.getElementById("closeDialog")?.click();
+    
     toast({
       title: "Deleted successfully",
     });
@@ -71,8 +74,9 @@ export default function Deletion({ rowData, what }) {
           You are deleting the
           <span className="capitalize ms-2">{what}:</span>
         </span>
+        {/* {JSON.stringify(rowData)} */}
         <span className="text-lg underline font-semibold ">
-          {rowData.title}
+          {rowData.id}
         </span>
       </p>
 

@@ -109,7 +109,7 @@ export const deleteMap = {
   "content-type": `${BASE_URL}/api/content-types`,
   "content-type-category": `${BASE_URL}/api/content-type-categories`,
   question: `${BASE_URL}/api/questions`,
-  "QuestionsTitleFull": `${BASE_URL}/api/questions`,
+  "Question Title": `${BASE_URL}/api/questions`,
   "question-content": `${BASE_URL}/api/question-contents`,
   "question-content-option": `${BASE_URL}/api/question-content-options`,
 };

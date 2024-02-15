@@ -18,26 +18,27 @@ export default function QuestionTitle() {
 
   const loading = useLoadingState((state) => state.loading);
   const toggleLoading = useLoadingState((state) => state.toggleLoading);
+  console.log("Question Title ", QuestionTitle)
 
-  const [pagination, setPagination] = useState({
-    pageIndex: 1,
-    pageSize: 35,
-  });
+  // const [pagination, setPagination] = useState({
+  //   pageIndex: 1,
+  //   pageSize: 10,
+  // });
 
-  const handlePageChange = (newPageIndex) => {
-    setPagination((oldPagination) => ({
-      ...oldPagination,
-      pageIndex: newPageIndex,
-    }));
-  };
+  // const handlePageChange = (newPageIndex) => {
+  //   setPagination((oldPagination) => ({
+  //     ...oldPagination,
+  //     pageIndex: newPageIndex,
+  //   }));
+  // };
 
-  console.log("Pagination ____> ", pagination)
+  // console.log("Pagination ____> ", pagination)
 
   useEffect(() => {
 
     const fetch = async () => {
       // const response = await getHandler("QuestionsTitleFull");
-      const response = await getWithUrl("api/questions?pagination[page]="+(!!pagination?.pageIndex)?pagination.pageIndex:1+"&pagination[pageSize]="+(!!pagination?.pageSize)?pagination.pageSize:35+"&populate=*");
+      const response = await getWithUrl("api/questions?pagination[page]="+1+"&pagination[pageSize]="+999999+"&populate=*");
       console.log("Questions Title =------------->>>>> ", response.data)
       if (response.status === 200) {
         setQuestionTitle(renderableQuestionTitle(response.data));
@@ -60,11 +61,11 @@ export default function QuestionTitle() {
         <CustomSkeleton />
       ) : (
         <DataTable
-          data={QuestionTitle.data}
+          data={QuestionTitle}
           columns={ColQuestionTitle}
           view={"questionTitle"}
-          pagination={pagination}
-          onPageChange={handlePageChange}
+          // pagination={pagination}
+          // onPageChange={handlePageChange}
         />
       )}
     </div>

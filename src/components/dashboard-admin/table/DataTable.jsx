@@ -18,11 +18,11 @@ import {
 } from "@/components/ui/table";
 import DataTablePagination from "./DataTablePagination";
 import DataTableHeader from "./DataTableHeader";
-import { useLearningState } from "../../../store/useAdminStore";
-import { handleGetItem } from "../../../lib/handleGetData";
-import { useEffect, useState } from "react";
+// import { useLearningState } from "../../../store/useAdminStore";
+// import { handleGetItem } from "../../../lib/handleGetData";
+import {  useState } from "react";
 
-export default function DataTable({ data, columns, view, filter , onPageChange }) {
+export default function DataTable({ data, columns, view, filter }) {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
@@ -55,14 +55,14 @@ export default function DataTable({ data, columns, view, filter , onPageChange }
     onPaginationChange: setPagination,
   });
   
-  const handlePageChange = (newPageIndex) => {
-    setPagination((oldPagination) => ({
-      ...oldPagination,
-      pageIndex: newPageIndex,
-    }));
+  // const handlePageChange = (newPageIndex) => {
+  //   setPagination((oldPagination) => ({
+  //     ...oldPagination,
+  //     pageIndex: newPageIndex,
+  //   }));
 
-    onPageChange(newPageIndex);
-  };
+  //   onPageChange(newPageIndex);
+  // };
 
 
   return (
@@ -129,7 +129,8 @@ export default function DataTable({ data, columns, view, filter , onPageChange }
         </div>
       )}
       {/* pagination section */}
-      {data?.length > 0 ? <DataTablePagination table={table}  pagination={pagination} onPageChange={handlePageChange} /> : ""}
+      {/* {data?.length > 0 ? <DataTablePagination table={table}  pagination={pagination} onPageChange={handlePageChange} /> : ""} */}
+      {data?.length > 0 ? <DataTablePagination table={table} /> : ""}
     </div>
   );
 }

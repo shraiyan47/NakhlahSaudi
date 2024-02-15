@@ -139,13 +139,14 @@ export function renderableLessons(arr) {
 // ---------------------------------------- QUESTIONARIES
 
 export function renderableQuestionTitle(arr) {
-  return arr.map((item) => {
+  const data = arr.data
+  return data.map((item) => {
     return {
-      id: item.data.id,
-      questionsTitle: item.data.attributes.question,
-      questionsAudio: item.data.attributes.audio,
-      icon: item.data.attributes.image?.data?.attributes?.formats?.small?.url,
-      totalData: item.meta.pagination.total
+      id: item.id,
+      questionsTitle: item.attributes.question,
+      questionsAudio: item.attributes.audio,
+      icon: item.attributes.image?.data?.attributes?.formats?.small?.url,
+      // totalData: item.meta.pagination.total
     };
   });
 }
