@@ -30,7 +30,7 @@ export default function SMContent() {
   
   useEffect(() => {
     const fetchQuestions = async () => {
-      let url ="api/contents?populate=*&filters[content_type][id][$eq]=3"
+      let url ="api/contents?populate=*&filters[content_type][title][$eq]=Sentence Making"
      
       const response = await getWithUrl(url);
       

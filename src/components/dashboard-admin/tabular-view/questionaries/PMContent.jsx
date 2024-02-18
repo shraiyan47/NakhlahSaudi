@@ -48,7 +48,7 @@ export default function PMContent() {
   
   useEffect(() => {
     const fetchQuestions = async () => {
-      let url ="api/contents?populate=*&filters[content_type][id][$eq]=7"
+      let url ="api/contents?populate=*&filters[content_type][title][$eq]=Pair Matching"
      
       const response = await getWithUrl(url);
       

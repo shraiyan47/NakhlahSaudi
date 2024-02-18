@@ -48,7 +48,7 @@ export default function McqContent() {
   
   useEffect(() => {
     const fetchQuestions = async () => {
-      let url ="api/contents?populate=*&filters[content_type][id][$eq]=1"
+      let url ="api/contents?populate=*&filters[content_type][title][$eq]=MCQ"
      
       const response = await getWithUrl(url);
       
