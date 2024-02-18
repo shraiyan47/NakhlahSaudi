@@ -33,7 +33,7 @@ export default function TOFcontent() {
   console.log("conType", conType, contents)
   useEffect(() => {
     const fetchQuestions = async () => {
-      let url ="api/contents?populate=*&filters[content_type][id][$eq]=2"
+      let url ="api/contents?populate=*&filters[content_type][title][$eq]=True Or False"
      
       const response = await getWithUrl(url);
       
