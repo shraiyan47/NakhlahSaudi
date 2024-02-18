@@ -649,7 +649,7 @@ export const useQueType = create(
   }))
 );
 
-export const useQuestionTitle = create( //// For Question Add Only
+export const useQuestionTitle = create( //// For Question Title Add Only
   immer((set) => ({
     data: [],
     setQuestionTitle: (data) => {

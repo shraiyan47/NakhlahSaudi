@@ -141,12 +141,14 @@ export function renderableLessons(arr) {
 // ---------------------------------------- QUESTIONARIES
 
 export function renderableQuestionTitle(arr) {
-  return arr.map((item) => {
+  const data = arr.data
+  return data.map((item) => {
     return {
       id: item.id,
       questionsTitle: item.attributes.question,
       questionsAudio: item.attributes.audio,
       icon: item.attributes.image?.data?.attributes?.formats?.small?.url,
+      // totalData: item.meta.pagination.total
     };
   });
 }
@@ -207,7 +209,7 @@ export function renderableQuetions(arr) {
 
 export function renderableContents(arr) {
   const renderable = arr?.map((item) => {
-    console.log("arrrrr", arr)
+ 
     return {
       id: item.id,
       audio: item.attributes?.audio,

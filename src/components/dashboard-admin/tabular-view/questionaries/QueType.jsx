@@ -17,7 +17,7 @@ const QueType = () => {
   useEffect(() => {
     const fetch = async () => {
       const response = await getHandler("question-type");
-      console.log(response.data);
+      console.log("quest content type", response.data);
       if (response.status === 200) {
         setQueTypes(renderableQueType(response.data.data));
         toggleLoading(false);

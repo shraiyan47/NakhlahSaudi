@@ -107,8 +107,8 @@ export default function AddContent({ rowData, useForEdit }) {
 
       await fetch(
         useForEdit
-          ? putMap["content"] + `/${rowData.id}?populate=icon`
-          : postMap["content"],
+          ? putMap["content"] + `/${rowData.id}?populate=*`
+          : postMap["content"]+`?populate=*`,
         {
           method: useForEdit ? "PUT" : "POST",
           body: formData,
@@ -123,16 +123,15 @@ export default function AddContent({ rowData, useForEdit }) {
         
       .then((res) => res.json())
       .then((data) => {
-        console.log("hello data ", data.data)
-        console.log("data.data.attributes?.content_type_category?.data?.attributes?.title", data.data.attributes?.content_type_category?.data?.attributes?.title)
+      
       //  alert(JSON.stringify(data));
         let renderable = {
           id: data.data.id,
           audio: data.data.attributes?.audio,
           title: data.data.attributes?.title,
           content_type: {
-            id:  data.attributes?.content_type?.data?.id,
-            title:data.attributes?.content_type?.attributes?.title,
+            id:  data.data.attributes?.content_type?.data?.id,
+            title:data.data.attributes?.content_type?.data?.attributes?.title,
           },
           content_type_category: {
             id: data.data.attributes?.content_type_category?.data?.id,
@@ -148,7 +147,7 @@ export default function AddContent({ rowData, useForEdit }) {
         document.getElementById("closeDialog")?.click();
       }) 
       .catch((error) => {
-        // console.log("hello FROM CATCH")
+     
         alert("err: " + JSON.stringify(error));
         setError(JSON.stringify(error));
       });

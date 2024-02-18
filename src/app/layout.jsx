@@ -15,6 +15,7 @@ export default function RootLayout({ children }) {
       <body className={gumelaArabic.className}>
         <MainLayout child={children}/>
         <Toaster />
+      {/* <script src="https://code.responsivevoice.org/responsivevoice.js?key=iXY3jNNL"></script> */}
       </body>
     </html>
   )

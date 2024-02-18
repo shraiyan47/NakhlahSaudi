@@ -18,21 +18,22 @@ import {
 } from "@/components/ui/table";
 import DataTablePagination from "./DataTablePagination";
 import DataTableHeader from "./DataTableHeader";
-import { useLearningState } from "../../../store/useAdminStore";
-import { handleGetItem } from "../../../lib/handleGetData";
-import { useEffect, useState } from "react";
+// import { useLearningState } from "../../../store/useAdminStore";
+// import { handleGetItem } from "../../../lib/handleGetData";
+import {  useState } from "react";
 
 export default function DataTable({ data, columns, view, filter }) {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
-  const [pagination, setPagination] = useState({
-    pageIndex: 0,
+  const [pagination, setPagination] = useState({ //https://example.com/api/data?pageIndex=1&pageSize=10
+    pageIndex: 1,
     pageSize: 10,
   });
 
-  console.log("Data Table Data ==> ",data)
+  
+
   const table = useReactTable({
     data,
     columns,
@@ -53,6 +54,17 @@ export default function DataTable({ data, columns, view, filter }) {
     },
     onPaginationChange: setPagination,
   });
+  
+  // const handlePageChange = (newPageIndex) => {
+  //   setPagination((oldPagination) => ({
+  //     ...oldPagination,
+  //     pageIndex: newPageIndex,
+  //   }));
+
+  //   onPageChange(newPageIndex);
+  // };
+
+
   return (
     <div className="w-[98%] mx-auto flex flex-col ">
       <div className="">
@@ -117,6 +129,7 @@ export default function DataTable({ data, columns, view, filter }) {
         </div>
       )}
       {/* pagination section */}
+      {/* {data?.length > 0 ? <DataTablePagination table={table}  pagination={pagination} onPageChange={handlePageChange} /> : ""} */}
       {data?.length > 0 ? <DataTablePagination table={table} /> : ""}
     </div>
   );

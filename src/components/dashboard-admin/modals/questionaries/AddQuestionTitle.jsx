@@ -10,6 +10,9 @@ import CustomButton from "@/components/ui-custom/CustomButton";
 import CustomInput from "@/components/ui-custom/CustomInput";
 import { BASE_URL, config, postMap, putMap } from "@/lib/requestHandler";
 import Image from "next/image";
+import TextToAudio from "@/app/textToAudio";
+import ArabicSpeechResponsiveVoice from "@/app/ArabicResponsiveVoice.js";
+import ReactSpeechKit from "@/app/reactSpeechKit";
 
 export default function AddQuestionTitle({ rowData, useForEdit }) {
   //
@@ -127,6 +130,10 @@ export default function AddQuestionTitle({ rowData, useForEdit }) {
               ph="Enter Audio Text"
               style="py-0.25 px-1"
             />
+            <label>Alif Baa Taa Saa Jim Ha Kha Daal Zaal</label>
+            {/* <TextToAudio audioData={questionAudio} /> */}
+            <ArabicSpeechResponsiveVoice  audioData={questionAudio} />
+            {/* <ReactSpeechKit /> */}
             <span className="text-red-700">{error.err1}</span>
           </div>
           <div className="flex gap-2 flex-col items-start">
