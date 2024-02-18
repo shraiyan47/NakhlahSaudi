@@ -185,7 +185,11 @@ export const useLearnerPurpose = create(
     afterUpdate: (data) => {
       set((state) => {
         state.data = state.data.map((item) => {
+         // console.log("item.id == data.id", item.id == data.id, item.id, data.id)
+         // console.log("item", item)
+          //console.log("data", data)
           if (item.id == data.id) {
+            console.log("data", data)
             return data;
           } else {
             return item;
@@ -374,8 +378,8 @@ export const useLearnerGoal = create(
           message: useForEdit ? "Updated Successfully" : "Added Successfully",
           data: {
             id: data.id,
-            time: data.attributes.time,
-            goal: data.attributes.goal,
+            time: data.time,
+            icon: data.icon
           },
         };
       }
@@ -388,7 +392,11 @@ export const useLearnerGoal = create(
     afterUpdate: (data) => {
       set((state) => {
         state.data = state.data.map((item) => {
+          // console.log("item.id == data.id", item.id == data.id, item.id, data.id)
+          // console.log("item", item)
           if (item.id == data.id) {
+            console.log("data", data)
+            
             return data;
           } else {
             return item;
@@ -946,16 +954,28 @@ export const useContent = create(
           data: {
             id: data.id,
             title: data.attributes.title,
+            audio: data.attributes.audio,
+            content_type: {
+              id:  data.attributes?.content_type?.data?.id,
+              title:data.attributes?.content_type?.attributes?.title,
+            },
+            content_type_category: {
+              id: data.attributes?.content_type_category?.data?.id,
+              title: data.attributes?.content_type_category?.data?.attributes?.title,
+            },
+            icon: data.attributes.image?.data?.attributes?.url,
           },
         };
       }
     },
     afterAdd: (data) => {
+      console.log("daaaaaaaaaaataaaaaaaaaaaaa", data)
       set((state) => {
         state.data = [data, ...state.data];
       });
     },
     afterUpdate: (data) => {
+      console.log("daaaaaaaaaaataaaaaaaaaaaaa", data)
       set((state) => {
         state.data = state.data.map((item) => {
           if (item.id == data.id) {

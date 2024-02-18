@@ -5,76 +5,59 @@ import {
   useContent,
   useLoadingState,
   useTabularView,
+  useConType
 } from "../../../../store/useAdminStore";
 import { useEffect } from "react";
 import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
-import { getHandler, putHandler } from "@/lib/requestHandler";
+import { getHandler, putHandler,getWithUrl } from "@/lib/requestHandler";
 import { renderableContents } from "@/lib/fetchFunctions";
-
 const requestKeyMap = {
+  "all-content": "content-all",
   "Sentence Making": "content-sm",
   "Pair Matching": "content-pm",
   "True Or False": "content-tof",
-  MCQ: "content-mcq",
+ "MCQ": "content-mcq",
   "Fill In The Blank": "content-fitb",
 };
 
-export default function Content() {
+export default function TOFcontent() {
   const contents = useContent((state) => state.data);
+  const conType = useConType((state) => state.data);
   const setContents = useContent((state) => state.setContents);
   const loading = useLoadingState((state) => state.loading);
   const toggleLoading = useLoadingState((state) => state.toggleLoading);
   const currentSubView = useTabularView((state) => state.data.currentSubView);
   
-  
-  
-  
-  
 
-  
-  
-  
+
+  console.log("conType", conType, contents)
   useEffect(() => {
-
-    const fetch = async () => {
+    const fetchQuestions = async () => {
+      let url ="api/contents?populate=*&filters[content_type][id][$eq]=2"
      
-      const response = await getHandler(requestKeyMap[currentSubView]);
-
-      if (response.status === 200) {
-        setContents(renderableContents(response.data.data));
+      const response = await getWithUrl(url);
+      
+      if (response) {
         toggleLoading(false);
       }
+      if (response.status === 200) {
+        setContents(renderableContents(response.data.data));
+      }
     };
-    
-    if (loading == false && Array.isArray(contents) && contents.length === 0) {
+    if (loading == false) {
       toggleLoading(true);
-      fetch();
+      fetchQuestions();
     }
-  }, [contents, currentSubView]);
-
-  // useEffect(() => {
-  //   const fetch = async () => {
-  //     const response = await getHandler("content-mcq");
-  //     if (response.status === 200) {
-  //       setContents(renderableContents(response.data.data));
-  //       toggleLoading(false);
-  //     }
-  //   };
-  //   if (loading == false && Array.isArray(contents) && contents.length === 0) {
-  //     toggleLoading(true);
-  //     fetch();
-  //   }
-  // }, []);
+  }, []);
+  
 
   return (
     <div className="w-full bg-white rounded-xl">
-      {loading ? (
-        <CustomSkeleton />
-      ) : (
-        <DataTable data={contents} columns={ColContent} view="content" />
-      )}
-    </div>
+    {loading ? (
+      <CustomSkeleton />
+    ) : (
+      <DataTable data={contents} columns={ColContent} view="content" />
+    )}
+  </div>
   );
-};
-
-
+}

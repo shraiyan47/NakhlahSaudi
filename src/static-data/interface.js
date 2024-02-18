@@ -69,19 +69,20 @@ export const tabsQuestionaries = {
     "Pair Matching",
   ],
 
-  "Question Content Types": [],
+  // "Question Content Types": [],
 
   "Questions":[],
 
-  "Question Types": [],
+  "Question Content Types": [],
   Contents: [
+    "All Contents",
     "MCQ",
     "Fill In The Blank",
     "True Or False",
     "Sentence Making",
     "Pair Matching",
   ],
-  "Content Types": [],
+  // "Content Types": [],
   "Content Data Types": [],
 };
 

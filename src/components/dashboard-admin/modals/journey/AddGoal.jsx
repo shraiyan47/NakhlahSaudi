@@ -25,6 +25,7 @@ export default function AddGoal({ rowData, useForEdit }) {
     err0: "",
     err1: "",
   });
+ 
   const [image, setImage] = useState(
     useForEdit ? BASE_URL + rowData.icon : null
   );
@@ -32,57 +33,66 @@ export default function AddGoal({ rowData, useForEdit }) {
     return !isNaN(parseFloat(n)) && isFinite(n);
   }
 
+
+
+
+
   async function handleSubmit(e) {
     e.preventDefault();
-    let err_0 = "";
-    let err_1 = "";
-    let formData = new FormData();
-    var goalNameInput = document.getElementById("idGoalName");
+    if (targetTime<0) {
+      setError({ ...error, err0: "can not be 0 and negative" });
+    
+    } else {
+      let formData = new FormData();
+      var goalNameInput = document.getElementById("idGoalName");
     var targetTimeInput = document.getElementById("idTargetTime");
-    var fileInput = document.getElementById("idInputFile");
-    var file = fileInput.files[0];
-    formData.append("files.icon", file);
-    formData.append(
-      "data",
-      `{"goal":"${goalNameInput.value}", "time": "${targetTimeInput.value}" }`
-    );
-  
-    await fetch(
-      useForEdit
-        ? putMap["learner-goal"] + `/${rowData.id}?populate=*`
-        : postMap["learner-goal"]+ `?populate=*`,
-      {
-        method: useForEdit ? "PUT" : "POST",
-        body: formData,
-        headers: {
-          Authorization:
-            "Bearer " +
-            "5cb5acf4b96532cdad0e30d900772f5c8b5532d2dbf06e04483a3705c725ffbbdba593340718423a5975e86aa47ca1749de402ec9f3127648dbcec37b190107ba975e669811b2a2f4c8b41c27472d6fdb70e7b0be4f8490c57a406e29aedf47dd05dadb7171788ba9fa2af106d93b4f92423b8e194131891e712857b52e8ceef",
-        },
-        redirect: "follow",
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        alert(JSON.stringify(data));
-        let renderable = {
-          id: data.data.id,
-          goal: goalName,
-          time: targetTime,
-          icon: data.data.attributes.icon?.data?.attributes?.url,
-        };
-console.log("icon", data )
-        useForEdit ? afterUpdate(renderable) : afterAdd(renderable);
-        toast({
-          title: useForEdit ? "Successfully Updated" : "Successfully Added",
+      var fileInput = document.getElementById("idInputFile");
+
+      var file = fileInput.files[0];
+      formData.append("files.icon", file);
+
+      formData.append(
+        "data",
+       `{ "time": "${targetTimeInput.value}"}`
+      );
+      await fetch(
+        useForEdit
+          ? putMap["learner-goal"] + `/${rowData.id}?populate=icon`
+          : postMap["learner-goal"],
+        {
+          method: useForEdit ? "PUT" : "POST",
+          body: formData,
+          headers: {
+            Authorization:
+              "Bearer " +
+              "5cb5acf4b96532cdad0e30d900772f5c8b5532d2dbf06e04483a3705c725ffbbdba593340718423a5975e86aa47ca1749de402ec9f3127648dbcec37b190107ba975e669811b2a2f4c8b41c27472d6fdb70e7b0be4f8490c57a406e29aedf47dd05dadb7171788ba9fa2af106d93b4f92423b8e194131891e712857b52e8ceef",
+          },
+          redirect: "follow",
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          alert(JSON.stringify(data));
+          let renderable = {
+            id: data.data?.id,
+            time: data.data?.attributes?.time,
+           
+            icon: data.data.attributes?.icon?.data?.attributes?.url,
+          };
+           console.log("renderable from start point", renderable )
+          useForEdit ? afterUpdate(renderable) : afterAdd(renderable);
+          toast({
+            title: useForEdit ? "Successfully Updated" : "Successfully Added",
+          });
+          document.getElementById("closeDialog")?.click();
+        })
+        .catch((error) => {
+          alert("err: " + JSON.stringify(error));
+          setError(JSON.stringify(error));
         });
-        document.getElementById("closeDialog")?.click();
-      })
-      .catch((error) => {
-        alert("err: " + JSON.stringify(error));
-        setError(JSON.stringify(error));
-      });
+    }
   }
+
   const currentView = useTabularView((state) => state.data.currentView);
   const addWhat = currentView.slice(0, currentView.length - 1);
   //   if (goalName?.length > 2 && targetTime?.length > 0 && isNumeric(targetTime)) {
@@ -129,20 +139,6 @@ console.log("icon", data )
           onSubmit={handleSubmit}
           className="flex flex-col gap-4 py-2 text-black text-lg"
         >
-           <div className="flex flex-col">
-            <label className="flex justify-between">
-              <span>Goal Name</span>
-            </label>
-            <CustomInput
-              id="idGoalName"
-              type="text"
-              value={goalName}
-              onChange={(e) => setGoalName(e.target.value)}
-              ph="Goal name"
-              style="py-0.25 px-1"
-            /> 
-            <span className="text-red-700">{error.err0}</span>
-          </div>  
 
           <div className="flex flex-col">
             <label className="flex justify-between">

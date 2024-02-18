@@ -37,7 +37,13 @@ import AddFITB from "@/components/dashboard-admin/modals/questionaries/AddFITB";
 import AddTOF from "@/components/dashboard-admin/modals/questionaries/AddTOF";
 import AddSM from "@/components/dashboard-admin/modals/questionaries/AddSM";
 import AddPM from "@/components/dashboard-admin/modals/questionaries/AddPM";
+// contents/////////
+import McqContent from "../components/dashboard-admin/tabular-view/questionaries/McqContent";
 import QuestionTitle from "@/components/dashboard-admin/tabular-view/questionaries/QuestionTitle";
+import TOFcontent from "../components/dashboard-admin/tabular-view/questionaries/TOFcontent";
+import FITBContent from "../components/dashboard-admin/tabular-view/questionaries/FITBContent";
+import PMContent from "../components/dashboard-admin/tabular-view/questionaries/PMContent";
+import SMContent from "../components/dashboard-admin/tabular-view/questionaries/SMContent";
 
 export default function Questionaries({ content }) {
   //
@@ -303,10 +309,10 @@ export default function Questionaries({ content }) {
           currentAct == "view" &&
           currentSubView == "Sentence Making" && <SM />} 
 
-        {currentView == "Question Types" && <QueType />}
+        {currentView == "Question Content Types" && <QueType />}
         {currentView == "Content Types" && <ContentType />}
         {currentView == "Content Data Types" && <ConTypeCategory />}
-        {currentView == "Contents" && <Content />}
+        {/* {currentView == "Contents" && <Content />} */}
         {currentView == "Questions" && <QuestionTitle />}
 
         {currentAct == "add" && currentSubView == "MCQ" && (
@@ -325,6 +331,43 @@ export default function Questionaries({ content }) {
           <AddQuePage useForEdit={false} />
         )} */}
       </div>
+
+{/* contentssss */}
+<div className="flex-grow overflow-y-scroll  ">
+        {currentView == "Contents" &&
+          currentAct == "view" &&
+          currentSubView == "MCQ" && <McqContent/>}
+
+        {currentView == "Contents" &&
+          currentAct == "view" &&
+          currentSubView == "True Or False" && <TOFcontent />}
+
+        {currentView == "Contents" &&
+          currentAct == "view" &&
+          currentSubView == "Pair Matching" && <PMContent />}
+
+{currentView == "Contents" &&
+          currentAct == "view" &&
+          currentSubView == "Fill In The Blank" && <FITBContent/>}
+          
+        {currentView == "Contents" &&
+          currentAct == "view" &&
+          currentSubView == "Sentence Making" && <SMContent/>}
+        
+        {/* {currentAct == "add" && currentSubView == "Pair Matching" && (
+          <div>{"Loading ... "}</div>
+        )}
+        {currentAct == "add" && currentSubView == "Sentence Making" && (
+          <AddQuePage useForEdit={false} />
+        )}
+        {currentAct == "add" && currentSubView == "True Or False" && (
+          <AddQuePage useForEdit={false} />
+        )}
+        {currentAct == "add" && currentSubView == "Fill In The Blank" && (
+          <AddQuePage useForEdit={false} />
+        )} */}
+      </div>
+
     </div>
   );
 }
