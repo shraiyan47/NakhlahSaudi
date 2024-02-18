@@ -46,7 +46,7 @@ const viewMap = {
   "question-type": "id_question_type",
   "content-type": "id_content_type",
   "content-type-category": "id_content_type_category",
-  question: "id_question",
+  question: "id_question_title",
   content: "id_content",
   "question-content": "id_question_content",
   "question-content-option": "id_question_content_option",

@@ -14,10 +14,13 @@ import {
   useLearningLesson,
   useLearningLevel,
   useLearningUnit,
+  useQueContent,
 } from "../../../../store/useAdminStore";
 import { useEffect, useState } from "react";
 import {
   getHandler,
+  getQuestionUrl,
+  getWithUrl,
   postHandler,
   postMap,
   putHandler,
@@ -31,14 +34,19 @@ import {
   renderableLearningLevels,
   renderableLessons,
   renderableQueType,
+  renderableQuestion,
+  renderableQuestionContent,
+  renderableQuetions,
   renderableTaskUnits,
   renderableTasks,
 } from "@/lib/fetchFunctions";
 import { GitCommitHorizontal, Hash } from "lucide-react";
 import axios from "axios";
 import Image from "next/image";
+import CustomSearchableDropdown from "@/components/ui-custom/CustomSearchableDropdown";
 
 export default function AddQuePage({ rowData, useForEdit }) {
+  console.log(rowData);
   const { toast } = useToast();
   //
 
@@ -50,20 +58,27 @@ export default function AddQuePage({ rowData, useForEdit }) {
   const afterUpdate = useQuestion((state) => state.afterUpdate);
   const afterAdd = useQuestion((state) => state.afterAdd);
 
-  const [question, setQuestion] = useState(useForEdit ? rowData.question : "");
+  // const [question, setQuestion] = useState(useForEdit ? rowData.question : "");
 
   const initErrors = {
     err0: "",
   };
   const [error, setError] = useState(initErrors);
   //
+  const [questionContentOptions, setQuestionContentOptions] = useState([]);
+  console.log(questionContentOptions);
   const queTypeData = useQueType((state) => state.data);
   const setQueTypes = useQueType((state) => state.setQueTypes);
   const [selectedQueType, setSelectedQueType] = useState(
     useForEdit
       ? {
-          id: rowData.question_type.id,
-          title: rowData.question_type.title,
+          id: rowData?.question_type?.id,
+          title: rowData?.question_type?.title,
+        }
+      : rowData?.question_type
+      ? {
+          id: rowData?.question_type?.id,
+          title: rowData?.question_type?.title,
         }
       : initStateSelection //{ id: 1, title: "MCQ" }
   );
@@ -73,18 +88,28 @@ export default function AddQuePage({ rowData, useForEdit }) {
   const setContents = useContent((state) => state.setContents);
   const currentView = useTabularView((state) => state.data.currentView);
 
+  const questionsData = useQueContent((state) => state.data);
+  const setQuestionData = useQueContent((state) => state.setQueContents);
+  const [question, setQuestion] = useState(
+    useForEdit
+      ? {
+          id: rowData?.question?.id,
+          title: rowData?.question?.title,
+        }
+      : initStateSelection // { id: 8, title: "quesion" }
+  );
   //  -------------------------------------------------------------- journey portion
   const journeyData = useLearningJourney((state) => state.data);
   const setJournies = useLearningJourney((state) => state.setJournies);
   const [selectedJourney, setSelectedJourney] = useState(
     useForEdit
       ? {
-          id: rowData.level.id,
-          title: rowData.level.title,
+          id: rowData?.level?.id,
+          title: rowData?.level?.title,
         }
       : initStateSelection // { id: 3, title: "Advanced" }
   );
-
+  console.log(selectedJourney);
   useEffect(() => {
     if (selectedJourney.id != null) {
       useForEdit ? "" : setSelectedUnit(initStateSelection);
@@ -105,12 +130,12 @@ export default function AddQuePage({ rowData, useForEdit }) {
   const [selectedUnit, setSelectedUnit] = useState(
     useForEdit
       ? {
-          id: rowData.task.id,
-          title: rowData.task.title,
+          id: rowData?.task?.id,
+          title: rowData?.task?.title,
         }
       : initStateSelection //{ id: 9, title: "Pokath" }
   );
-
+  const [questionContentOptionId, setQuestionContentOptionId] = useState(0);
   useEffect(() => {
     if (selectedUnit.id != null) {
       useForEdit ? "" : setSelectedLevel(initStateSelection);
@@ -130,8 +155,8 @@ export default function AddQuePage({ rowData, useForEdit }) {
   const [selectedLevel, setSelectedLevel] = useState(
     useForEdit
       ? {
-          id: rowData.task_unit.id,
-          title: rowData.task_unit.title,
+          id: rowData?.task_unit?.id,
+          title: rowData?.task_unit?.title,
         }
       : initStateSelection // { id: 7, title: "Level adv pokath" }
   );
@@ -145,16 +170,32 @@ export default function AddQuePage({ rowData, useForEdit }) {
 
   const fetchMapContent = {
     MCQ: "content-mcq",
-    "Fill in the blank": "content-fib",
-    "True 0r False": "content-boolean",
+    "Fill In The Blank": "content-fib",
+    "True Or False": "content-boolean",
     "Sentence Making": "content-sm",
     "Pair Matching": "content-pm",
   };
   useEffect(() => {
     const fetch = async () => {
-      const response = await getHandler(fetchMapContent[selectedQueType.title]);
+      const url = `api/contents?filters[content_type][title][$eq]=${selectedQueType.title}`;
+      const response = await getWithUrl(url);
       if (response.status === 200) {
         setContents(renderableContents(response.data.data));
+      }
+    };
+    if (selectedQueType.id != null) {
+      setError({ ...error, err3: "" });
+      fetch();
+      selectedQueType.title == "Sentence Making" ? setQuestion("") : "";
+    }
+  }, [selectedQueType]);
+  useEffect(() => {
+    const fetch = async () => {
+      const url = getQuestionUrl(selectedQueType.id);
+      const response = await getWithUrl(url);
+      if (response.status === 200) {
+        setQuestionData(renderableQuestion(response.data.data));
+        // setQuestion({ id: null, title: "" });
       }
     };
     if (selectedQueType.id != null) {
@@ -170,8 +211,8 @@ export default function AddQuePage({ rowData, useForEdit }) {
   const [selectedLesson, setSelectedLesson] = useState(
     useForEdit
       ? {
-          id: rowData.lesson.id,
-          title: rowData.lesson.title,
+          id: rowData?.lesson?.id,
+          title: rowData?.lesson?.title,
         }
       : initStateSelection // { id: 8, title: "Lesson 2" }
   );
@@ -243,28 +284,105 @@ export default function AddQuePage({ rowData, useForEdit }) {
     }
   }, [lessonData]);
 
+  useEffect(() => {
+    const fetch = async () => {
+      let url = `api/question-content-options?populate[question_content][populate][0]=question,question_type,content&filters[question_content][id][$eq]=${rowData.question_content}`;
+      const response = await getWithUrl(url);
+      if (response.status === 200) {
+        if (response?.data?.data[0]?.id) {
+          let url1 = `api/question-content-options/${response?.data?.data[0]?.id}?populate=*`;
+          console.log(url1);
+          const response1 = await getWithUrl(url1);
+          if (response1.status === 200) {
+            console.log(response1.data.data);
+            setQuestionContentOptionId(response?.data?.data[0]?.id);
+            setQuestionContentOptions(
+              response1?.data?.data?.attributes?.contents?.data
+            );
+          }
+        }
+      }
+    };
+    if (rowData.question_content) {
+      fetch();
+    }
+  }, [rowData?.question_content]);
   const initOptionData = {
     content: initStateSelection,
   };
-
   const initOptions = {
-    optionOne: initOptionData,
-    optionTwo: initOptionData,
-    optionThree: initOptionData,
-    optionFour: initOptionData,
+    optionOne: useForEdit ? { content: rowData?.content } : initOptionData,
+    optionTwo:
+      (useForEdit && questionContentOptions.length) > 0
+        ? {
+            content: {
+              id: questionContentOptions[0]?.id,
+              title: questionContentOptions[0]?.attributes?.title,
+            },
+          }
+        : initOptionData,
+    optionThree:
+      (useForEdit && questionContentOptions.length) > 0
+        ? {
+            content: {
+              id: questionContentOptions[1]?.id,
+              title: questionContentOptions[1]?.attributes?.title,
+            },
+          }
+        : initOptionData,
+    optionFour:
+      (useForEdit && questionContentOptions.length) > 0
+        ? {
+            content: {
+              id: questionContentOptions[2]?.id,
+              title: questionContentOptions[2]?.attributes?.title,
+            },
+          }
+        : initOptionData,
   };
-
+  console.log(initOptions);
   const initRightWrong = {
-    optionOne: false,
+    optionOne: useForEdit ? true : false,
     optionTwo: false,
     optionThree: false,
     optionFour: false,
   };
 
   const [options, setOptions] = useState(initOptions);
-
+  console.log(options);
   const [rightAndWrong, setRightAndWrong] = useState(initRightWrong);
-
+  useEffect(() => {
+    setOptions({
+      optionOne: useForEdit ? { content: rowData?.content } : initOptionData,
+      optionTwo:
+        (useForEdit && questionContentOptions.length) > 0
+          ? {
+              content: {
+                id: questionContentOptions[0]?.id,
+                title: questionContentOptions[0]?.attributes?.title,
+              },
+            }
+          : initOptionData,
+      optionThree:
+        (useForEdit && questionContentOptions.length) > 0
+          ? {
+              content: {
+                id: questionContentOptions[1]?.id,
+                title: questionContentOptions[1]?.attributes?.title,
+              },
+            }
+          : initOptionData,
+      optionFour:
+        (useForEdit && questionContentOptions.length) > 0
+          ? {
+              content: {
+                id: questionContentOptions[2]?.id,
+                title: questionContentOptions[2]?.attributes?.title,
+              },
+            }
+          : initOptionData,
+    });
+  }, questionContentOptions);
   function handleMark(obj) {
     setRightAndWrong({ ...initRightWrong, ...obj });
   }
@@ -282,27 +400,42 @@ export default function AddQuePage({ rowData, useForEdit }) {
     let rightAns = Object.keys(rightAndWrong).find(
       (item) => rightAndWrong[item] == true
     );
+    console.log(rightAns);
     let wrongAns = Object.keys(rightAndWrong).filter(
       (item) => rightAndWrong[item] == false
     );
-
+    console.log(question);
+    console.log(tFAns);
+    console.log(
+      question?.title.length > 2 &&
+        selectedLesson.id &&
+        ((selectedQueType.title == "MCQ" && wrongAns.length == 3 && rightAns) ||
+          (selectedQueType.title == "True Or False" && tFAns.id != null) ||
+          (selectedQueType.title == "Sentence Making" && smAns.id != null) ||
+          (selectedQueType.title == "Fill In The Blank" &&
+            wrongAns.length == 3 &&
+            rightAns &&
+            question?.title.includes("-") == true))
+    );
     if (
-      question.length > 2 &&
+      question?.title.length > 2 &&
       selectedLesson.id &&
       ((selectedQueType.title == "MCQ" && wrongAns.length == 3 && rightAns) ||
-        (selectedQueType.title == "True 0r False" && tFAns.id != null) ||
+        (selectedQueType.title == "True Or False" && tFAns.id != null) ||
         (selectedQueType.title == "Sentence Making" && smAns.id != null) ||
-        (selectedQueType.title == "Fill in the blank" &&
+        (selectedQueType.title == "Fill In The Blank" &&
           wrongAns.length == 3 &&
           rightAns &&
-          question.includes("-") == true))
+          question?.title.includes("-") == true))
     ) {
+      console.log("called");
       //
       let formData = new FormData();
       var fileInput = document.getElementById("idInputFile");
       var file = fileInput.files[0];
+      console.log(file);
       formData.append("files.image", file);
-
+      console.log(formData);
       let obj = {
         question: question,
         question_type: { connect: [selectedQueType.id] },
@@ -312,74 +445,246 @@ export default function AddQuePage({ rowData, useForEdit }) {
         question_type: { connect: [selectedQueType.id] },
         audio: queAudio,
       };
-
+      console.log(obj, obj2);
       // formData.append("data", `{"question":"${question}"}`);
       formData.append(
         "data",
         queAudio.length > 0 ? JSON.stringify(obj2) : JSON.stringify(obj)
       );
-
+      console.log(
+        "formData : " + JSON.stringify(formData.get("files.image")),
+        JSON.stringify(formData.get("data"))
+      );
       try {
-        const queResult = await axios.post(
-          "https://api.nakhlah.xyz/api/questions?populate=image",
-          formData,
-          {
-            headers: {
-              Authorization:
-                "Bearer " +
-                "",
-            },
+        if (file) {
+          const queResult = await axios.post(
+            "https://api.nakhlah.xyz/api/questions?populate=image",
+            formData,
+            {
+              headers: {
+                Authorization:
+                  "Bearer " +
+                  "5cb5acf4b96532cdad0e30d900772f5c8b5532d2dbf06e04483a3705c725ffbbdba593340718423a5975e86aa47ca1749de402ec9f3127648dbcec37b190107ba975e669811b2a2f4c8b41c27472d6fdb70e7b0be4f8490c57a406e29aedf47dd05dadb7171788ba9fa2af106d93b4f92423b8e194131891e712857b52e8ceef",
+              },
+              redirect: "follow",
+            }
+          );
+          console.log(queResult);
+          // alert(
+          //   "formData : " +
+          //     JSON.stringify(formData.get("files.image")) +
+          //     JSON.stringify(formData.get("data"))
+          // );
+          // alert("queResult: " + JSON.stringify(data));
+
+          // const queResult = useForEdit
+          //   ? await putHandler("question", rowData.id, {
+          //       data: { question: question },
+          //     })
+          //   : await postHandler("question", {
+          //       data: {
+          //         question: question,
+          //         question_type: { connect: [selectedQueType.id] },
+          //         audio: queAudio,
+          //       },
+          //     });
+
+          // alert("queResult: " + JSON.stringify(queResult));
+          if (queResult?.data?.data?.id) {
+            const queContResult = useForEdit
+              ? await putHandler("question-content", rowData.id, {
+                  data: {},
+                })
+              : await postHandler("question-content", {
+                  data: {
+                    question: { connect: [queResult.data.data.id] },
+                    question_type: { connect: [selectedQueType.id] },
+                    content: { connect: [getQueContent(rightAns)] },
+                  },
+                });
+
+            // alert("queContResult: " + JSON.stringify(queContResult));
+
+            // if mcq or fib
+            if (
+              selectedQueType.title == "Fill In The Blank" ||
+              selectedQueType.title == "MCQ"
+            ) {
+              const queOptionResult = useForEdit
+                ? await putHandler(
+                    "question-content-option",
+                    questionContentOptionId,
+                    {
+                      data: {},
+                    }
+                  )
+                : await postHandler("question-content-option", {
+                    data: {
+                      question_content: {
+                        connect: [queContResult.data.data.id],
+                      },
+                      contents: {
+                        connect: [
+                          options[wrongAns[0]].content.id,
+                          options[wrongAns[1]].content.id,
+                          options[wrongAns[2]].content.id,
+                        ],
+                      },
+                    },
+                  });
+              // alert("queOptionResult: " + JSON.stringify(queOptionResult));
+
+              if (queOptionResult.status == 200) {
+                const journeyMapResult = useForEdit
+                  ? await putHandler("journey-map-question", rowData.id, {
+                      data: {},
+                    })
+                  : await postHandler("journey-map-question", {
+                      data: {
+                        learning_journey_lesson: {
+                          connect: [selectedLesson.id],
+                        },
+                        question_content: {
+                          connect: [queContResult.data.data.id],
+                        },
+                      },
+                    });
+                console.log(journeyMapResult);
+                if (journeyMapResult.status == 200) {
+                  toast({
+                    title: "Question Added Successfully",
+                  });
+                }
+                // alert("journeyMapResult: " + JSON.stringify(journeyMapResult));
+              }
+            }
+
+            useForEdit
+              ? afterUpdate({
+                  id: queResult.data.data.id,
+                  question: question,
+                  audio: queAudio,
+                  question_type: {
+                    id: selectedQueType.id,
+                    title: selectedQueType.title,
+                  },
+                  lesson: {
+                    id: selectedLesson.id,
+                    title: selectedLesson.title,
+                  },
+                  task_unit: {
+                    id: selectedLevel.id,
+                    title: selectedLevel.title,
+                  },
+                  task: {
+                    id: selectedUnit.id,
+                    title: selectedUnit.title,
+                  },
+                  level: {
+                    id: selectedJourney.id,
+                    title: selectedJourney.title,
+                  },
+                })
+              : afterAdd({
+                  id: queResult.data.data.id,
+                  question: question,
+                  audio: queAudio,
+                  question_type: {
+                    id: selectedQueType.id,
+                    title: selectedQueType.title,
+                  },
+                  lesson: {
+                    id: selectedLesson.id,
+                    title: selectedLesson.title,
+                  },
+                  task_unit: {
+                    id: selectedLevel.id,
+                    title: selectedLevel.title,
+                  },
+                  task: {
+                    id: selectedUnit.id,
+                    title: selectedUnit.title,
+                  },
+                  level: {
+                    id: selectedJourney.id,
+                    title: selectedJourney.title,
+                  },
+                });
+            toast({
+              title: useForEdit
+                ? "Item Updated Succesfully"
+                : "Item Added Successfully",
+            });
+            resetForm();
+          } else if (queResult.status == 400) {
+            let errors = queResult.data.error.details.errors;
+            alert("errors: " + JSON.stringify(errors));
+            setError({
+              err2: errors[0]?.message,
+            });
           }
-        );
-
-        // alert(
-        //   "formData : " +
-        //     JSON.stringify(formData.get("files.image")) +
-        //     JSON.stringify(formData.get("data"))
-        // );
-        // alert("queResult: " + JSON.stringify(data));
-
-        // const queResult = useForEdit
-        //   ? await putHandler("question", rowData.id, {
-        //       data: { question: question },
-        //     })
-        //   : await postHandler("question", {
-        //       data: {
-        //         question: question,
-        //         question_type: { connect: [selectedQueType.id] },
-        //         audio: queAudio,
-        //       },
-        //     });
-
-        // alert("queResult: " + JSON.stringify(queResult));
-        if (queResult?.data?.data?.id) {
+        } else {
+          let content = "";
+          if (
+            selectedQueType.title == "Fill In The Blank" ||
+            selectedQueType.title == "MCQ"
+          ) {
+            content = getQueContent(rightAns);
+          } else if (selectedQueType.title == "True Or False") {
+            content = tFAns.id;
+          }
           const queContResult = useForEdit
-            ? await putHandler("question-content", rowData.id, {
-                data: {},
+            ? await putHandler("question-content", rowData?.question_content, {
+                data: {
+                  question: { connect: [question.id] },
+                  question_type: { connect: [selectedQueType.id] },
+                  content: { connect: [content] },
+                },
               })
             : await postHandler("question-content", {
                 data: {
-                  question: { connect: [queResult.data.data.id] },
+                  question: { connect: [question.id] },
                   question_type: { connect: [selectedQueType.id] },
-                  content: { connect: [getQueContent(rightAns)] },
+                  content: { connect: [content] },
                 },
               });
-
-          // alert("queContResult: " + JSON.stringify(queContResult));
-
-          // if mcq or fib
+          console.log(queContResult);
           if (
-            selectedQueType.title == "Fill in the blank" ||
+            selectedQueType.title == "Fill In The Blank" ||
             selectedQueType.title == "MCQ"
           ) {
+            console.log(
+              "options",
+              options,
+              "rightAns",
+              queContResult,
+              queContResult.data.data.id
+            );
             const queOptionResult = useForEdit
-              ? await putHandler("question-content-option", rowData.id, {
-                  data: {},
-                })
+              ? await putHandler(
+                  "question-content-option",
+                  questionContentOptionId,
+                  {
+                    data: {
+                      question_content: {
+                        connect: [queContResult.data.data.id],
+                      },
+                      content: {
+                        connect: [
+                          options[wrongAns[0]].content.id,
+                          options[wrongAns[1]].content.id,
+                          options[wrongAns[2]].content.id,
+                        ],
+                      },
+                    },
+                  }
+                )
               : await postHandler("question-content-option", {
                   data: {
-                    question_content: { connect: [queContResult.data.data.id] },
-                    content: {
+                    question_content: {
+                      connect: [queContResult.data.data.id],
+                    },
+                    contents: {
                       connect: [
                         options[wrongAns[0]].content.id,
                         options[wrongAns[1]].content.id,
@@ -393,11 +698,20 @@ export default function AddQuePage({ rowData, useForEdit }) {
             if (queOptionResult.status == 200) {
               const journeyMapResult = useForEdit
                 ? await putHandler("journey-map-question", rowData.id, {
-                    data: {},
+                    data: {
+                      learning_journey_lesson: {
+                        connect: [selectedLesson.id],
+                      },
+                      question_content: {
+                        connect: [queContResult.data.data.id],
+                      },
+                    },
                   })
                 : await postHandler("journey-map-question", {
                     data: {
-                      learning_journey_lesson: { connect: [selectedLesson.id] },
+                      learning_journey_lesson: {
+                        connect: [selectedLesson.id],
+                      },
                       question_content: {
                         connect: [queContResult.data.data.id],
                       },
@@ -410,12 +724,63 @@ export default function AddQuePage({ rowData, useForEdit }) {
               }
               // alert("journeyMapResult: " + JSON.stringify(journeyMapResult));
             }
+          } else if (selectedQueType.title == "True Or False") {
+            const journeyMapResult = useForEdit
+              ? await putHandler("journey-map-question", rowData.id, {
+                  data: {
+                    learning_journey_lesson: {
+                      connect: [selectedLesson.id],
+                    },
+                    question_content: {
+                      connect: [queContResult.data.data.id],
+                    },
+                  },
+                })
+              : await postHandler("journey-map-question", {
+                  data: {
+                    learning_journey_lesson: {
+                      connect: [selectedLesson.id],
+                    },
+                    question_content: {
+                      connect: [queContResult.data.data.id],
+                    },
+                  },
+                });
+            if (journeyMapResult.status == 200) {
+              toast({
+                title: "Question Added Successfully",
+              });
+            }
           }
 
           useForEdit
-            ? afterUpdate(data)
+            ? afterUpdate({
+                id: rowData?.id,
+                question: question,
+                audio: queAudio,
+                question_type: {
+                  id: selectedQueType.id,
+                  title: selectedQueType.title,
+                },
+                lesson: {
+                  id: selectedLesson.id,
+                  title: selectedLesson.title,
+                },
+                task_unit: {
+                  id: selectedLevel.id,
+                  title: selectedLevel.title,
+                },
+                task: {
+                  id: selectedUnit.id,
+                  title: selectedUnit.title,
+                },
+                level: {
+                  id: selectedJourney.id,
+                  title: selectedJourney.title,
+                },
+              })
             : afterAdd({
-                id: queResult.data.data.id,
+                id: question.id,
                 question: question,
                 audio: queAudio,
                 question_type: {
@@ -445,15 +810,10 @@ export default function AddQuePage({ rowData, useForEdit }) {
               : "Item Added Successfully",
           });
           resetForm();
-        } else if (queResult.status == 400) {
-          let errors = queResult.data.error.details.errors;
-          alert("errors: " + JSON.stringify(errors));
-          setError({
-            err2: errors[0]?.message,
-          });
         }
       } catch (error) {
-        alert(JSON.stringify(error.response.data)); // NOTE - use "error.response.data` (not "error")
+        console.log(error);
+        alert(JSON.stringify(error)); // NOTE - use "error.response.data` (not "error")
       }
     }
     //  specific errors
@@ -469,7 +829,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
       }
       if (
         question.length > 2 &&
-        selectedQueType.title == "Fill in the blank" &&
+        selectedQueType.title == "Fill In The Blank" &&
         question.includes("-") == false
       ) {
         err_2 = `Put a blank ("-") within question`;
@@ -479,7 +839,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
       }
       if (
         selectedQueType.title == "MCQ" ||
-        selectedQueType.title == "Fill in the blank"
+        selectedQueType.title == "Fill In The Blank"
       ) {
         if (
           options.optionOne.content.id == null ||
@@ -507,7 +867,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
 
   function getQueContent(rightAns) {
     if (
-      selectedQueType.title == "Fill in the blank" ||
+      selectedQueType.title == "Fill In The Blank" ||
       selectedQueType.title == "MCQ"
     ) {
       return options[rightAns].content.id;
@@ -528,7 +888,10 @@ export default function AddQuePage({ rowData, useForEdit }) {
     setImage("");
   }
 
-  const [tFAns, setTFAns] = useState(initStateSelection);
+  const [tFAns, setTFAns] = useState(
+    useForEdit ? rowData?.content : initStateSelection
+  );
+  console.log(tFAns);
   const trueFalseOptions = [
     { id: 31, title: "False" },
     { id: 30, title: "True " },
@@ -565,7 +928,16 @@ export default function AddQuePage({ rowData, useForEdit }) {
             Learning Lesson
           </EnhancedText>
           <div className="flex flex-col gap-2 w-2/3">
-            <CustomSelect
+            {/* <CustomSelect
+              label={"Learner Level"}
+              value={selectedJourney}
+              options={journeyData}
+              bg="wh"
+              onChange={(value) =>
+                setSelectedJourney({ id: value.id, title: value.title })
+              }
+            /> */}
+            <CustomSearchableDropdown
               label={"Learner Level"}
               value={selectedJourney}
               options={journeyData}
@@ -574,7 +946,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
                 setSelectedJourney({ id: value.id, title: value.title })
               }
             />
-            <CustomSelect
+            <CustomSearchableDropdown
               label={"Task"}
               value={selectedUnit}
               options={filteredUnits}
@@ -584,7 +956,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
               }
             />
 
-            <CustomSelect
+            <CustomSearchableDropdown
               label={"Task level"}
               value={selectedLevel}
               options={filteredLevels}
@@ -594,7 +966,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
               }
             />
 
-            <CustomSelect
+            <CustomSearchableDropdown
               label={"Task Lesson"}
               value={selectedLesson}
               options={filteredLessons}
@@ -617,7 +989,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
             Question
           </EnhancedText>
           <div className="flex flex-col gap-1 w-2/3">
-            <CustomSelect
+            <CustomSearchableDropdown
               label={"Select Question Type"}
               value={selectedQueType}
               options={queTypeData}
@@ -625,19 +997,24 @@ export default function AddQuePage({ rowData, useForEdit }) {
               onChange={(value) =>
                 setSelectedQueType({ id: value.id, title: value.title })
               }
+              addNewText="New Question"
+              addNewAfterClick={handleAdd}
             />
             {/* {error.err1 !== "" && (
               <span className="text-red-700">{error.err1}</span>
             )} */}
           </div>
           <div className="flex flex-col gap-1 w-2/3">
-            <span className="">Question</span>
-            <CustomInput
-              type="text"
+            <CustomSearchableDropdown
+              label={"Select Question"}
               value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              ph="Enter the question"
-              style="py-0.25 px-1"
+              options={questionsData}
+              bg="wh"
+              onChange={(value) =>
+                setQuestion({ id: value.id, title: value.title })
+              }
+              addNewText="New Question"
+              addNewAfterClick={handleAdd}
             />
             {/* <span className="text-red-700">{error.err2}</span> */}
           </div>
@@ -656,7 +1033,12 @@ export default function AddQuePage({ rowData, useForEdit }) {
               }}
             />
             {image && (
-              <Image
+              /*  <Image
+                alt=" image"
+                src={image}
+                className="w-5.0 h-5.0 rounded-full border border-slate-400 bg-slate-50"
+              /> */
+              <img
                 alt=" image"
                 src={image}
                 className="w-5.0 h-5.0 rounded-full border border-slate-400 bg-slate-50"
@@ -698,7 +1080,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
 
                 {/* {JSON.stringify(options)} */}
 
-                {selectedQueType.title == "True 0r False" && (
+                {selectedQueType.title == "True Or False" && (
                   <div className="flex flex-col gap-3 font-mono text-sm rounded-md border-l-2 border-blue-400 py-3 px-2  ">
                     <div className="flex justify-between pb-1">
                       <span className="px-2 bg-blue-100 rounded-full h-[1.2rem]">
@@ -706,7 +1088,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
                       </span>
                     </div>
 
-                    <CustomSelect
+                    <CustomSearchableDropdown
                       label={"(true/false)"}
                       value={tFAns}
                       options={contents}
@@ -721,7 +1103,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
                       <span className="">
                         Select Sentence That's In Correct Order
                       </span>
-                      <CustomSelect
+                      <CustomSearchableDropdown
                         value={smAns}
                         label="Select Content"
                         options={contents}
@@ -736,8 +1118,9 @@ export default function AddQuePage({ rowData, useForEdit }) {
                 )}
 
                 {(selectedQueType.title == "MCQ" ||
-                  selectedQueType.title == "Fill in the blank") &&
+                  selectedQueType.title == "Fill In The Blank") &&
                   Object.keys(options).map((option, index) => {
+                    console.log(options[option]);
                     return (
                       <div
                         key={index}
@@ -766,8 +1149,8 @@ export default function AddQuePage({ rowData, useForEdit }) {
                           </div>
                         </div>
 
-                        <CustomSelect
-                          value={options[option].content}
+                        <CustomSearchableDropdown
+                          value={options[option]?.content}
                           label="Content"
                           options={contents}
                           onChange={(selected) =>
