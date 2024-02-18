@@ -51,11 +51,13 @@ export const getMap = {
   "Sentence Making": "",
   "True Or False": "",
   "Fill In The Blank": "",
-  "QuestionsTitleFull": `${BASE_URL}/api/questions?populate=*`,
+  "QuestionsTitleFull": `${BASE_URL}/api/questions?pagination[page]=1&pagination[pageSize]=999999&populate=*`,
   question: `${BASE_URL}/api/journey-map-question-contents?populate[question_content][populate]=*&populate=image&populate[learning_journey_lesson][populate][learning_journey_level][populate][learning_journey_unit][populate][0]=learning_journey`,
   "question-content": `${BASE_URL}/api/question-contents?populate=*`,
   "question-content-option": `${BASE_URL}/api/question-content-options?populate[question_content][populate][0]=id`,
 };
+
+
 export const postMap = {
   "learner-purpose": `${BASE_URL}/api/learning-purposes?populate=icon`,
   "learner-goal": `${BASE_URL}/api/learning-goals`,
@@ -107,7 +109,7 @@ export const deleteMap = {
   "content-type": `${BASE_URL}/api/content-types`,
   "content-type-category": `${BASE_URL}/api/content-type-categories`,
   question: `${BASE_URL}/api/questions`,
-  "QuestionsTitleFull": `${BASE_URL}/api/questions`,
+  "Question Title": `${BASE_URL}/api/questions`,
   "question-content": `${BASE_URL}/api/question-contents`,
   "question-content-option": `${BASE_URL}/api/question-content-options`,
 };

@@ -60,16 +60,16 @@ export default function DataTableHeader({ table, view, filter }) {
 
   return (
     <div className="flex items-center justify-between py-3  ">
-      {currentView}
+      {/* {currentView} */}
       {filter && (
         <div className="flex items-center border-b border-slate-300 rounded-none">
           <Filter className="w-5 h-5 text-slate-600 border-0" />
 
           <Input
             placeholder={`Filter ${currentView}`}
-            value={table.getColumn(viewMap[view])?.getFilterValue() ?? ""}
+            value={table?.getColumn(viewMap[view])?.getFilterValue() ?? ""}
             onChange={(event) =>
-              table.getColumn(viewMap[view])?.setFilterValue(event.target.value)
+              table?.getColumn(viewMap[view])?.setFilterValue(event.target.value)
             }
             className="max-h-[28px] max-w-[350px] min-w-[220px] text-center text-slate-700 px-3 py-1 placeholder:text-slate-500 "
           />
