@@ -75,7 +75,7 @@ export const tabsQuestionaries = {
 
   "Question Content Types": [],
   Contents: [
-    "All Contents",
+   
     "MCQ",
     "Fill In The Blank",
     "True Or False",
