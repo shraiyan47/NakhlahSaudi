@@ -121,7 +121,7 @@ const ColQuestionTitle = [
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <Deletion rowData={row.original} what="learner-start-point" />
+              <Deletion rowData={row.original} what="Question Title" />
             </DialogContent>
           </Dialog>
           <Dialog className="">

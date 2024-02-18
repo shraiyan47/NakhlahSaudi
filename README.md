@@ -2,6 +2,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+// "responsivevoice": "^0.4.1",
 
 to do 
 1. deletion data mising t deleting goal
