@@ -13,6 +13,7 @@ import Image from "next/image";
 import TextToAudio from "@/app/textToAudio";
 import ArabicSpeechResponsiveVoice from "@/app/ArabicResponsiveVoice.js";
 import ReactSpeechKit from "@/app/reactSpeechKit";
+import * as googleTTS from 'google-tts-api';
 
 export default function AddQuestionTitle({ rowData, useForEdit }) {
   //
