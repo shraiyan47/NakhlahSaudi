@@ -19,25 +19,77 @@ export default function ConTypeCategory() {
   const loading = useLoadingState((state) => state.loading);
   const toggleLoading = useLoadingState((state) => state.toggleLoading);
 
+//   useEffect(() => {
+
+// console.log("beboooooooo")
+//   }, [])
+
+
+  // useEffect(() => {
+    
+  //   const fetch = async () => {
+     
+  //     const response = await getHandler("content-type-category");
+   
+  //     if (response.status === 200) {
+  //       console.log("beboooooooo  empty", response)
+  //       setConTypeCategories(renderableContTypeCategories(response.data.data));
+  //       toggleLoading(false);
+  //     }
+
+  //   };
+  //   if (
+  //    loading == false &&
+  //     Array.isArray(conTypeCatagories) &&
+  //     conTypeCatagories.length === 0
+  //   ) {
+  //     toggleLoading(true);
+  //     fetch();
+  //   }
+  // }, [conTypeCatagories, loading, setConTypeCategories, toggleLoading]);
+
+  // useEffect(() => {
+    
+  
+  //   const fetch = async () => {
+  //     console.log("beboooooooo no empty", conTypeCatagories)
+  //     const response = await getHandler("content-type-category");
+  //     console.log("response", response)
+  //     if (response.status === 200) {
+  //       setConTypeCategories(renderableContTypeCategories(response.data.data));
+  //       toggleLoading(false);
+  //     }
+  //   };
+  //   if (
+  //     loading == false &&
+  //     Array.isArray(conTypeCatagories) &&
+  //     conTypeCatagories.length === 0
+  //   ) {
+  //     toggleLoading(true);
+  //     fetch();
+  //   }
+  // }, []);
+
+
   useEffect(() => {
+
     const fetch = async () => {
-      const response = await getHandler("content-type-category");
+      // const response = await getHandler("QuestionsTitleFull");
+      const response = await getHandler("content-type-category")
+      console.log("Questions Title =------------->>>>> ", response.data)
       if (response.status === 200) {
         setConTypeCategories(renderableContTypeCategories(response.data.data));
         toggleLoading(false);
       }
     };
-    if (
-      loading == false &&
-      Array.isArray(conTypeCatagories) &&
-      conTypeCatagories.length === 0
-    ) {
-      toggleLoading(true);
-      fetch();
-    }
+    
+    fetch();
+   
   }, []);
 
+
   return (
+    
     <div className="w-full bg-white  rounded-xl">
       {loading ? (
         <CustomSkeleton />
