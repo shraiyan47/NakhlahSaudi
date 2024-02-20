@@ -38,21 +38,47 @@ const QueType = () => {
   // }, []);
 
 
-  useEffect(() => {
 
-    const fetch = async () => {
-      // const response = await getHandler("QuestionsTitleFull");
+
+
+  // useEffect(() => {
+
+  //   const fetch = async () => {
+  //     // const response = await getHandler("QuestionsTitleFull");
+  //     const response = await getHandler("question-type");
+  //   //  console.log("Questions Title =------------->>>>> ", response.data)
+  //     if (response.status === 200) {
+  //       setQueTypes(renderableQueType(response.data.data));
+  //       toggleLoading(false);
+  //     }
+  //   };
+    
+  //   fetch();
+   
+  // }, []);
+
+
+  useEffect(() => {
+    const fetch = async () => { 
       const response = await getHandler("question-type");
-      console.log("Questions Title =------------->>>>> ", response.data)
       if (response.status === 200) {
         setQueTypes(renderableQueType(response.data.data));
         toggleLoading(false);
       }
     };
-    
+
+    if (
+      loading == false &&
+      Array.isArray(queTypeData) &&
+     queTypeData.length === 0
+    ) {
+      toggleLoading(true);
+      fetch();
+    }
     fetch();
-   
   }, []);
+
+
 
   return (
     <div className="w-full h-full bg-white  rounded-xl">

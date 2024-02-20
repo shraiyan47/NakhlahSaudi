@@ -52,7 +52,7 @@ export default function SMContent() {
     const fetch = async () => {
       // const response = await getHandler("QuestionsTitleFull");
       const response = await getHandler("content-sm")
-      console.log("Questions Title =------------->>>>> ", response.data)
+      //console.log("Questions Title =------------->>>>> ", response.data)
       if (response.status === 200) {
         setContents(renderableContents(response.data.data));
         toggleLoading(false);
