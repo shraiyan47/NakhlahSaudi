@@ -17,9 +17,8 @@ const CustomSearchableDropdown = ({
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState(value ? value.title : "");
   const dropdownRef = useRef(null);
-  const labelRef = useRef(null);
-
-  const filteredOptions = options.filter((option) =>
+  const labelRef = useRef(null); 
+  const filteredOptions = options?.filter((option) =>
     option.title.toLowerCase().includes(searchTerm?.toLowerCase())
   );
 
@@ -48,10 +47,6 @@ const CustomSearchableDropdown = ({
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
-  const active_style = (val) =>
-    val ? " border-b  border-slate-800 " : "border-x border-slate-400";
-  const active_txt_style = (val) =>
-    val ? "text-slate-800 text-sm font-semibold " : "text-slate-800 text-sm";
   const styles = {
     wh: "bg-wh border border-slate-300",
     light: "bg-slate-200 text-black border border-slate-500",
@@ -61,7 +56,7 @@ const CustomSearchableDropdown = ({
     <div className="relative " ref={dropdownRef}>
       <div
         ref={labelRef}
-        className={` px-0.5 min-w-[110px] h-full rounded-md capitalize cursor-pointer flex justify-between items-center ${styles[bg]}`}
+        className={` px-0.5 min-w-[110px] h-full rounded-md capitalize cursor-pointer flex justify-between items-center ${styles[bg]} whitespace-nowrap`}
         onClick={toggleDropdown}
       >
         {label && (
