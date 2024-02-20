@@ -44,6 +44,7 @@ import TOFcontent from "../components/dashboard-admin/tabular-view/questionaries
 import FITBContent from "../components/dashboard-admin/tabular-view/questionaries/FITBContent";
 import PMContent from "../components/dashboard-admin/tabular-view/questionaries/PMContent";
 import SMContent from "../components/dashboard-admin/tabular-view/questionaries/SMContent";
+import QuestionFiles from "../components/dashboard-admin/tabular-view/questionaries/QuestionFiles";
 
 export default function Questionaries({ content }) {
   //
@@ -314,6 +315,7 @@ export default function Questionaries({ content }) {
         {currentView == "Content Data Types" && <ConTypeCategory />}
         {/* {currentView == "Contents" && <Content />} */}
         {currentView == "Questions" && <QuestionTitle />}
+        {currentView == "Content Files" && <QuestionFiles />}
 
         {currentAct == "add" && currentSubView == "MCQ" && (
           <AddQuePage useForEdit={false} />
@@ -332,7 +334,7 @@ export default function Questionaries({ content }) {
         )} */}
       </div>
 
-{/* contentssss */}
+{/* contents*/}
 <div className="flex-grow overflow-y-scroll  ">
         {currentView == "Contents" &&
           currentAct == "view" &&
