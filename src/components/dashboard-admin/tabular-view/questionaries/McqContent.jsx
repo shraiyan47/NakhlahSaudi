@@ -26,23 +26,23 @@ export default function McqContent() {
   const toggleLoading = useLoadingState((state) => state.toggleLoading);
   const currentSubView = useTabularView((state) => state.data.currentSubView);
   
-   useEffect(() => {
+  //  useEffect(() => {
 
-    const fetch = async () => {
-      // const response = await getHandler("QuestionsTitleFull");
-      const response = await getHandler("content-mcq")
-      console.log("Questions Title =------------->>>>> ", response.data)
-      if (response.status === 200) {
-        setContents(renderableContents(response.data.data));
-        toggleLoading(false);
-      }
-    };
-    if (loading == false  && Array.isArray(contents) && contents.length === 0) {
-      console.log("no stop3")
-      toggleLoading(true);
-      fetch();
-    }
-  }, [contents]);
+  //   const fetch = async () => {
+  //     // const response = await getHandler("QuestionsTitleFull");
+  //     const response = await getHandler("content-mcq")
+  //     console.log("Questions Title =------------->>>>> ", response.data)
+  //     if (response.status === 200) {
+  //       setContents(renderableContents(response.data.data));
+  //       toggleLoading(false);
+  //     }
+  //   };
+  //   if (loading == false  && Array.isArray(contents) && contents.length === 0) {
+  //     console.log("no stop3")
+  //     toggleLoading(true);
+  //     fetch();
+  //   }
+  // }, [contents]);
   
 
 
@@ -62,6 +62,29 @@ export default function McqContent() {
   //   fetch();
    
   // }, []);
+
+  useEffect(() => {
+    const fetch = async () => { 
+      const response = await getHandler("content-mcq")
+      if (response.status === 200) {
+        setContents(renderableContents(response.data.data));
+        toggleLoading(false);
+      }
+    };
+
+    if (
+      loading == false &&
+       Array.isArray(contents) && contents.length === 0
+    ) {
+      toggleLoading(true);
+      fetch();
+    }
+    fetch();
+  }, []);
+
+
+
+  
   return (
     <div className="w-full bg-white rounded-xl">
     {loading ? (

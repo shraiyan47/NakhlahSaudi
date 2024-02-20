@@ -39,7 +39,7 @@ export default function QuestionTitle() {
     const fetch = async () => {
       // const response = await getHandler("QuestionsTitleFull");
       const response = await getWithUrl("api/questions?pagination[page]="+1+"&pagination[pageSize]="+999999+"&populate=*");
-      console.log("Questions Title =------------->>>>> ", response.data)
+      //console.log("Questions Title =------------->>>>> ", response.data)
       if (response.status === 200) {
         setQuestionTitle(renderableQuestionTitle(response.data));
         toggleLoading(false);
