@@ -15,7 +15,7 @@ const QueType = () => {
   const toggleLoading = useLoadingState((state) => state.toggleLoading);
 
 
-  console.log("helooooo fr5om quetype")
+  // console.log("helooooo fr5om quetype")
   // useEffect(() => {
   //   console.log("helooooo fr5om quetype")
   //   const fetch = async () => {
