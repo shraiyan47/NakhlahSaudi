@@ -50,6 +50,7 @@ export default function Content() {
       toggleLoading(true);
       fetch();
     }
+    fetch();
   }, [contents, currentSubView]);
 
   // useEffect(() => {

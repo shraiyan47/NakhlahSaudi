@@ -48,44 +48,40 @@ export default function ConTypeCategory() {
   //   }
   // }, [conTypeCatagories, loading, setConTypeCategories, toggleLoading]);
 
-  // useEffect(() => {
-    
-  
-  //   const fetch = async () => {
-  //     console.log("beboooooooo no empty", conTypeCatagories)
-  //     const response = await getHandler("content-type-category");
-  //     console.log("response", response)
-  //     if (response.status === 200) {
-  //       setConTypeCategories(renderableContTypeCategories(response.data.data));
-  //       toggleLoading(false);
-  //     }
-  //   };
-  //   if (
-  //     loading == false &&
-  //     Array.isArray(conTypeCatagories) &&
-  //     conTypeCatagories.length === 0
-  //   ) {
-  //     toggleLoading(true);
-  //     fetch();
-  //   }
-  // }, []);
-
-
   useEffect(() => {
-
-    const fetch = async () => {
-      // const response = await getHandler("QuestionsTitleFull");
+    const fetch = async () => { 
       const response = await getHandler("content-type-category")
-      console.log("Questions Title =------------->>>>> ", response.data)
       if (response.status === 200) {
         setConTypeCategories(renderableContTypeCategories(response.data.data));
         toggleLoading(false);
       }
     };
-    
+
+    if (
+      loading == false &&
+      Array.isArray(conTypeCatagories) &&
+      conTypeCatagories.length === 0
+    ) {
+      toggleLoading(true);
+      fetch();
+    }
     fetch();
-   
   }, []);
+
+
+  // useEffect(() => {
+  //   const fetch = async () => {
+  //     const response = await getHandler("content-type-category")
+  //     console.log("Questions Title =------------->>>>> ", response.data)
+  //     if (response.status === 200) {
+  //       setConTypeCategories(renderableContTypeCategories(response.data.data));
+  //       toggleLoading(false);
+  //     }
+  //   };
+    
+  //   fetch();
+   
+  // }, []);
 
 
   return (
