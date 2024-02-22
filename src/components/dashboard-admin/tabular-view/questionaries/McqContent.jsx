@@ -29,16 +29,14 @@ export default function McqContent() {
   //  useEffect(() => {
 
   //   const fetch = async () => {
-  //     console.log("no stop")
-  //     const response = await getHandler(requestKeyMap["Fill In The Blank"]);
-    
+  //     // const response = await getHandler("QuestionsTitleFull");
+  //     const response = await getHandler("content-mcq")
+  //     console.log("Questions Title =------------->>>>> ", response.data)
   //     if (response.status === 200) {
-  //       console.log("no stop2")
   //       setContents(renderableContents(response.data.data));
   //       toggleLoading(false);
   //     }
   //   };
-    
   //   if (loading == false  && Array.isArray(contents) && contents.length === 0) {
   //     console.log("no stop3")
   //     toggleLoading(true);
@@ -46,24 +44,47 @@ export default function McqContent() {
   //   }
   // }, [contents]);
   
+
+
+
+  // useEffect(() => {
+
+  //   const fetch = async () => {
+  //     // const response = await getHandler("QuestionsTitleFull");
+  //     const response = await getHandler("content-mcq")
+  //     console.log("Questions Title =------------->>>>> ", response.data)
+  //     if (response.status === 200) {
+  //       setContents(renderableContents(response.data.data));
+  //       toggleLoading(false);
+  //     }
+  //   };
+    
+  //   fetch();
+   
+  // }, []);
+
   useEffect(() => {
-    const fetchQuestions = async () => {
-      let url ="api/contents?populate=*&filters[content_type][title][$eq]=MCQ"
-     
-      const response = await getWithUrl(url);
-      
-      if (response) {
-        toggleLoading(false);
-      }
+    const fetch = async () => { 
+      const response = await getHandler("content-mcq")
       if (response.status === 200) {
         setContents(renderableContents(response.data.data));
+        toggleLoading(false);
       }
     };
-    if (loading == false) {
+
+    if (
+      loading == false &&
+       Array.isArray(contents) && contents.length === 0
+    ) {
       toggleLoading(true);
-      fetchQuestions();
+      fetch();
     }
+    fetch();
   }, []);
+
+
+
+  
   return (
     <div className="w-full bg-white rounded-xl">
     {loading ? (

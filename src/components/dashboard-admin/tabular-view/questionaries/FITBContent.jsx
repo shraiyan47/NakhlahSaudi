@@ -26,26 +26,41 @@ export default function FITBContent() {
   const toggleLoading = useLoadingState((state) => state.toggleLoading);
   const currentSubView = useTabularView((state) => state.data.currentSubView);
   
-  useEffect(() => {
-    const fetchQuestions = async () => {
-      let url ="api/contents?populate=*&filters[content_type][id][$eq]=11"
+  // useEffect(() => {
+  //   const fetchQuestions = async () => {
+  //     let url ="api/contents?populate=*&filters[content_type][id][$eq]=11"
      
-      const response = await getWithUrl(url);
+  //     const response = await getWithUrl(url);
       
-      if (response) {
-        toggleLoading(false);
-      }
-      if (response.status === 200) {
-        setContents(renderableContents(response.data.data));
-      }
-    };
-    if (loading == false) {
-      toggleLoading(true);
-      fetchQuestions();
-    }
-  }, []);
+  //     if (response) {
+  //       toggleLoading(false);
+  //     }
+  //     if (response.status === 200) {
+  //       setContents(renderableContents(response.data.data));
+  //     }
+  //   };
+  //   if (loading == false) {
+  //     toggleLoading(true);
+  //     fetchQuestions();
+  //   }
+  // }, []);
   
 
+  useEffect(() => {
+
+    const fetch = async () => {
+      // const response = await getHandler("QuestionsTitleFull");
+      const response = await getHandler( "content-fitb")
+     // console.log("Questions Title =------------->>>>> ", response.data)
+      if (response.status === 200) {
+        setContents(renderableContents(response.data.data));
+        toggleLoading(false);
+      }
+    };
+    
+    fetch();
+   
+  }, []);
   return (
     <div className="w-full bg-white rounded-xl">
     {loading ? (

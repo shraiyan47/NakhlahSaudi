@@ -1,4 +1,4 @@
-"use client";
+//"use client";
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
 import {
@@ -13,6 +13,7 @@ import Image from "next/image";
 import TextToAudio from "@/app/textToAudio";
 import ArabicSpeechResponsiveVoice from "@/app/ArabicResponsiveVoice.js";
 import ReactSpeechKit from "@/app/reactSpeechKit";
+import * as googleTTS from 'google-tts-api';
 
 export default function AddQuestionTitle({ rowData, useForEdit }) {
   //
@@ -31,6 +32,29 @@ export default function AddQuestionTitle({ rowData, useForEdit }) {
   const [image, setImage] = useState(
     useForEdit ? BASE_URL + rowData.icon : null
   );
+
+    googleTTS
+    .getAllAudioBase64("لِنَذْهَبْ إِلَى السِّيْنَمَا", {
+      lang: 'ar',
+      slow: false,
+      host: 'https://translate.google.com',
+      timeout: 10000,
+      splitPunct: ',.?',
+    })
+    .then((base64String) => {
+      console.log("base 64 String ======>",base64String)
+      const decodedData = atob(base64String) // Decode base64 string
+      const buffer = new Uint8Array(decodedData.length)
+      for (let i = 0; i < decodedData.length; i++) {
+        buffer[i] = decodedData.charCodeAt(i)
+      }
+      const blob = new Blob([buffer], { type: "audio/mpeg" }) // Create a Blob object representing the audio data
+      const audioURL = URL.createObjectURL(blob) // Generate a URL for the Blob object
+      console.log("audio URL ------> ", audioURL)
+      const audio = new Audio(audioURL) // Create a new Audio object using the generated URL
+      audio.play() // Play the audio
+    })
+    .catch(console.error);
 
   async function handleSubmit(e) {
     e.preventDefault();

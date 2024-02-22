@@ -33,18 +33,22 @@ export const getMap = {
   "question-type": `${BASE_URL}/api/question-types`,
   "content-type": `${BASE_URL}/api/content-types`,
   "content-type-category": `${BASE_URL}/api/content-type-categories`,
- // "content-all": `${BASE_URL}/api/contents?populate=*`,
+
  // "content-pm": `${BASE_URL}/api/contents?filters[content_type][title][$eq]=Pair_Matching`,
  // "content-sm": `${BASE_URL}/api/contents?filters[content_type][title][$eq]=Sentence_Making`,
-  "content-fitb": `${BASE_URL}/api/contents?filters[content_type][title][$eq]=Fill_In_The_Blank`,
+ // "content-fitb": `${BASE_URL}/api/contents?filters[content_type][title][$eq]=Fill_In_The_Blank`,
+
   //"content-tof": `${BASE_URL}/api/contents?filters[content_type][title][$eq]=Boolean`,
   //"content-mcq": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=MCQ`,
 
   // "content-boolean": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Boolean`,
-  // "content-fib": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Fill_In_The_Blank`,
-  // "content-mcq": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=MCQ`,
-  // "content-sm": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Sentence_Making`,
-  // "content-pm": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Pair_Matching`,
+  // api for contents with filtering
+   // "content-all": `${BASE_URL}/api/contents?populate=*`,
+  "content-fitb": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Fill In The Blank`,
+ "content-tof": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=True Or False`,
+ "content-mcq": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=MCQ`,
+ "content-sm": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Sentence Making`,
+"content-pm": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Pair Matching`,
   // question: `${BASE_URL}/api/questions?populate=*`,
   MCQ: "{{URL}}/api/question-contents?populate[question][populate]=*&filters[question_type][title][$eq]=MCQ",
   "Pair Matching": "",

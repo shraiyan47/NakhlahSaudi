@@ -31,26 +31,40 @@ export default function TOFcontent() {
 
 
   console.log("conType", conType, contents)
-  useEffect(() => {
-    const fetchQuestions = async () => {
-      let url ="api/contents?populate=*&filters[content_type][title][$eq]=True Or False"
+  // useEffect(() => {
+  //   const fetchQuestions = async () => {
+  //     let url ="api/contents?populate=*&filters[content_type][title][$eq]=True Or False"
      
-      const response = await getWithUrl(url);
+  //     const response = await getWithUrl(url);
       
-      if (response) {
-        toggleLoading(false);
-      }
+  //     if (response) {
+  //       toggleLoading(false);
+  //     }
+  //     if (response.status === 200) {
+  //       setContents(renderableContents(response.data.data));
+  //     }
+  //   };
+  //   if (loading == false) {
+  //     toggleLoading(true);
+  //     fetchQuestions();
+  //   }
+  // }, []);
+  
+  useEffect(() => {
+
+    const fetch = async () => {
+      // const response = await getHandler("QuestionsTitleFull");
+      const response = await getHandler("content-tof")
+    // console.log("Questions Title =------------->>>>> ", response.data)
       if (response.status === 200) {
         setContents(renderableContents(response.data.data));
+        toggleLoading(false);
       }
     };
-    if (loading == false) {
-      toggleLoading(true);
-      fetchQuestions();
-    }
+    
+    fetch();
+   
   }, []);
-  
-
   return (
     <div className="w-full bg-white rounded-xl">
     {loading ? (

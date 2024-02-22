@@ -34,6 +34,7 @@ export default function ContentType() {
       toggleLoading(true);
       fetch();
     }
+    fetch();
   }, []);
 
   return (
