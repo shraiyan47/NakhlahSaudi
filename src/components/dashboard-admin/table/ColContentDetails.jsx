@@ -6,9 +6,10 @@ import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Deletion from "../modals/other/Deletion"; 
 import { BASE_URL } from "@/lib/requestHandler";
-import AddQuestionTitle from "../modals/questionaries/AddQuestionTitle";
 
-const ColContentFiles = [
+import AddContentDetails from "../modals/questionaries/AddContentDetails";
+
+const ColContentDetails = [
  
 
   {
@@ -39,14 +40,37 @@ const ColContentFiles = [
     },
     cell: ({ row }) => (
       <div className="lowercase textNormal textSecondaryColor">
-        {row.getValue("id_content")}
+        {row.getValue("id_content")
+         ? row.getValue("id_content")
+         : "Not attached"}
       </div>
     ),
   },
-  
   {
-    id: "id_question_audio",
-    accessorKey: "audio",
+    id: "id_content_title",
+    accessorKey: "content.title",
+    header: ({ column }) => {
+      return (
+        <Button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="textPrimaryColor textNormal"
+        >
+         Contents
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="lowercase textNormal textSecondaryColor">
+        {row.getValue("id_content_title")
+         ? row.getValue("id_content_title")
+         : "Not attached"}
+      </div>
+    ),
+  },
+  {
+    id: "id_content_Audio",
+    accessorKey: "contentAudio",
     header: ({ column }) => {
       return (
         <Button
@@ -60,8 +84,8 @@ const ColContentFiles = [
     },
     cell: ({ row }) => (
       <div className="lowercase textNormal textSecondaryColor pl-2">
-        {row.getValue("id_question_audio")
-            ? row.getValue("id_question_audio")
+        {row.getValue("id_content_Audio")
+            ? row.getValue("id_content_Audio")
             : "Not attached"}
       </div>
     ),
@@ -105,7 +129,7 @@ const ColContentFiles = [
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <Deletion rowData={row.original} what="Question Title" />
+              <Deletion rowData={row.original} what="content-details" />
             </DialogContent>
           </Dialog>
           <Dialog className="">
@@ -115,8 +139,8 @@ const ColContentFiles = [
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <AddQuestionTitle
-                title="startingPoint"
+              <AddContentDetails
+                title="content-details"
                 useForEdit={true}
                 rowData={row.original}
               />
@@ -128,4 +152,4 @@ const ColContentFiles = [
   },
 ];
 
-export default ColContentFiles;
+export default ColContentDetails;

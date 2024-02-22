@@ -44,7 +44,7 @@ import TOFcontent from "../components/dashboard-admin/tabular-view/questionaries
 import FITBContent from "../components/dashboard-admin/tabular-view/questionaries/FITBContent";
 import PMContent from "../components/dashboard-admin/tabular-view/questionaries/PMContent";
 import SMContent from "../components/dashboard-admin/tabular-view/questionaries/SMContent";
-import QuestionFiles from "../components/dashboard-admin/tabular-view/questionaries/QuestionFiles";
+import ContentDetails from "../components/dashboard-admin/tabular-view/questionaries/ContentDetails";
 
 export default function Questionaries({ content }) {
   //
@@ -315,7 +315,7 @@ export default function Questionaries({ content }) {
         {currentView == "Content Data Types" && <ConTypeCategory />}
         {/* {currentView == "Contents" && <Content />} */}
         {currentView == "Questions" && <QuestionTitle />}
-        {currentView == "Content Files" && <QuestionFiles />}
+        {currentView == "Content Details" && <ContentDetails />}
 
         {currentAct == "add" && currentSubView == "MCQ" && (
           <AddQuePage useForEdit={false} />

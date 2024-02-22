@@ -33,7 +33,7 @@ export const getMap = {
   "question-type": `${BASE_URL}/api/question-types`,
   "content-type": `${BASE_URL}/api/content-types`,
   "content-type-category": `${BASE_URL}/api/content-type-categories`,
-
+  "content-details" : `${BASE_URL}/api/content-details?populate=*`,
  // "content-pm": `${BASE_URL}/api/contents?filters[content_type][title][$eq]=Pair_Matching`,
  // "content-sm": `${BASE_URL}/api/contents?filters[content_type][title][$eq]=Sentence_Making`,
  // "content-fitb": `${BASE_URL}/api/contents?filters[content_type][title][$eq]=Fill_In_The_Blank`,
@@ -43,7 +43,7 @@ export const getMap = {
 
   // "content-boolean": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Boolean`,
   // api for contents with filtering
-   // "content-all": `${BASE_URL}/api/contents?populate=*`,
+   "content-all": `${BASE_URL}/api/contents?populate=*`,
   "content-fitb": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Fill In The Blank`,
  "content-tof": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=True Or False`,
  "content-mcq": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=MCQ`,
@@ -80,6 +80,7 @@ export const postMap = {
   "question-content": `${BASE_URL}/api/question-contents`,
   "question-content-option": `${BASE_URL}/api/question-content-options`,
   "journey-map-question": `${BASE_URL}/api/journey-map-question-contents`,
+  "content-details" : `${BASE_URL}/api/content-details`,
 };
 export const putMap = {
   "learner-purpose": `${BASE_URL}/api/learning-purposes`,
@@ -98,6 +99,7 @@ export const putMap = {
   question: `${BASE_URL}/api/questions`,
   "question-content": `${BASE_URL}/api/question-contents`,
   "question-content-option": `${BASE_URL}/api/question-content-options`,
+  "content-details" : `${BASE_URL}/api/content-details`,
 };
 export const deleteMap = {
   "learner-purpose": `${BASE_URL}/api/learning-purposes`,
@@ -116,6 +118,7 @@ export const deleteMap = {
   "Question Title": `${BASE_URL}/api/questions`,
   "question-content": `${BASE_URL}/api/question-contents`,
   "question-content-option": `${BASE_URL}/api/question-content-options`,
+  "content-details" : `${BASE_URL}/api/content-details`,
 };
 
 export const getWithUrl = async (url) => {

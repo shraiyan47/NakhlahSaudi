@@ -2,18 +2,18 @@
 import { useEffect, useState } from "react";
 import DataTable from "../../table/DataTable";
 import {
-  useQuestionTitle,
+  useContentDetails,
   useLoadingState,
 } from "../../../../store/useAdminStore";
-import ColContentFiles from "../../table/ColContentFiles";
+import ColContentDetails from "../../table/ColContentDetails";
 import { getHandler, getWithUrl } from "@/lib/requestHandler";
 import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
-import { renderableContentFiles } from "@/lib/fetchFunctions";
-export default function QuestionFiles() {
+import { renderableContentDetails } from "@/lib/fetchFunctions";
+export default function ContentDetails() {
 
  
-    const ContentFiles = useQuestionTitle((state) => state.data);
-    const setContentFiles = useQuestionTitle((state) => state.setQuestionTitle);
+    const ContentFiles = useContentDetails((state) => state.data);
+    const setContentFiles = useContentDetails((state) => state.setContents);
   
     const loading = useLoadingState((state) => state.loading);
     const toggleLoading = useLoadingState((state) => state.toggleLoading);
@@ -24,10 +24,11 @@ export default function QuestionFiles() {
   
       const fetch = async () => {
         // const response = await getHandler("QuestionsTitleFull");
-        const response = await getWithUrl("api/questions?pagination[page]="+1+"&pagination[pageSize]="+999999+"&populate=*");
+        const response = await getHandler("content-details")
         //console.log("Questions Title =------------->>>>> ", response.data)
         if (response.status === 200) {
-            setContentFiles(renderableContentFiles(response.data));
+          console.log("response", response, response.data.data.data)
+             setContentFiles(renderableContentDetails(response.data?.data));
           toggleLoading(false);
         }
       };
@@ -48,8 +49,8 @@ export default function QuestionFiles() {
         ) : (
           <DataTable
             data={ContentFiles}
-            columns={ColContentFiles}
-            view={"questionTitle"}
+            columns={ColContentDetails}
+            view={"content-details"}
             // pagination={pagination}
             // onPageChange={handlePageChange}
           />

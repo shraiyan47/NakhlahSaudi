@@ -81,8 +81,8 @@ export default function AddContent({ rowData, useForEdit }) {
     var contentInput = document.getElementById("idContent");
     var audioTextInput = document.getElementById("idAudioText");
     var fileInput = document.getElementById("idInputFile");
-    var file = fileInput.files[0];
-    formData.append("files.image", file);
+    //var file = fileInput.files[0];
+   // formData.append("files.image", file);
 
     if (
       selectedCategory.title != "" &&
@@ -102,7 +102,7 @@ export default function AddContent({ rowData, useForEdit }) {
   
       formData.append(
         "data",
-        `{"title": "${contentInput.value}","audio": "${audioTextInput.value}","content_type": { "connect": [${selectedType.id}] },"content_type_category": { "connect": [${selectedCategory.id}] }}`
+        `{"title": "${contentInput.value}","content_type": { "connect": [${selectedType.id}] },"content_type_category": { "connect": [${selectedCategory.id}] }}`
       );
 
       await fetch(
