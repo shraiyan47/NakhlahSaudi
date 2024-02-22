@@ -16,7 +16,7 @@ import {
   useLearningUnit,
   useQueContent,
 } from "../../../../store/useAdminStore";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   getHandler,
   getQuestionUrl,
@@ -191,9 +191,11 @@ export default function AddQuePage({ rowData, useForEdit }) {
   }, [selectedQueType]);
   useEffect(() => {
     const fetch = async () => {
+      console.log(selectedQueType.id);
       const url = getQuestionUrl(selectedQueType.id);
       const response = await getWithUrl(url);
       if (response.status === 200) {
+        console.log(response.data.data);
         setQuestionData(renderableQuestion(response.data.data));
         // setQuestion({ id: null, title: "" });
       }
@@ -311,8 +313,8 @@ export default function AddQuePage({ rowData, useForEdit }) {
     content: initStateSelection,
   };
   const initOptions = {
-    optionOne: useForEdit ? { content: rowData?.content } : initOptionData,
-    optionTwo:
+    option1: useForEdit ? { content: rowData?.content } : initOptionData,
+    option2:
       (useForEdit && questionContentOptions.length) > 0
         ? {
             content: {
@@ -321,7 +323,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
             },
           }
         : initOptionData,
-    optionThree:
+    /* optionThree:
       (useForEdit && questionContentOptions.length) > 0
         ? {
             content: {
@@ -338,23 +340,24 @@ export default function AddQuePage({ rowData, useForEdit }) {
               title: questionContentOptions[2]?.attributes?.title,
             },
           }
-        : initOptionData,
+        : initOptionData, */
   };
   console.log(initOptions);
   const initRightWrong = {
-    optionOne: useForEdit ? true : false,
-    optionTwo: false,
-    optionThree: false,
-    optionFour: false,
+    option1: useForEdit ? true : false,
+    option2: false,
+    /* optionThree: false,
+    optionFour: false, */
   };
 
   const [options, setOptions] = useState(initOptions);
   console.log(options);
   const [rightAndWrong, setRightAndWrong] = useState(initRightWrong);
+  console.log(rightAndWrong);
   useEffect(() => {
     setOptions({
-      optionOne: useForEdit ? { content: rowData?.content } : initOptionData,
-      optionTwo:
+      option1: useForEdit ? { content: rowData?.content } : initOptionData,
+      option2:
         (useForEdit && questionContentOptions.length) > 0
           ? {
               content: {
@@ -363,28 +366,27 @@ export default function AddQuePage({ rowData, useForEdit }) {
               },
             }
           : initOptionData,
-      optionThree:
-        (useForEdit && questionContentOptions.length) > 0
-          ? {
-              content: {
-                id: questionContentOptions[1]?.id,
-                title: questionContentOptions[1]?.attributes?.title,
-              },
-            }
-          : initOptionData,
-      optionFour:
-        (useForEdit && questionContentOptions.length) > 0
-          ? {
-              content: {
-                id: questionContentOptions[2]?.id,
-                title: questionContentOptions[2]?.attributes?.title,
-              },
-            }
-          : initOptionData,
     });
   }, questionContentOptions);
   function handleMark(obj) {
-    setRightAndWrong({ ...initRightWrong, ...obj });
+    // setRightAndWrong({ ...rightAndWrong, ...obj });
+    const updatedRightAndWrong = {};
+
+    // Iterate over the keys of the passed object
+    Object.keys(obj).forEach((key) => {
+      // Set the specified option to true
+      updatedRightAndWrong[key] = obj[key];
+
+      // Set all other options to false
+      Object.keys(rightAndWrong).forEach((option) => {
+        if (option !== key) {
+          updatedRightAndWrong[option] = false;
+        }
+      });
+    });
+
+    // Update the state
+    setRightAndWrong(updatedRightAndWrong);
   }
   //   hs()
   async function handleSubmit(e) {
@@ -409,28 +411,28 @@ export default function AddQuePage({ rowData, useForEdit }) {
     console.log(
       question?.title.length > 2 &&
         selectedLesson.id &&
-        ((selectedQueType.title == "MCQ" && wrongAns.length == 3 && rightAns) ||
+        ((selectedQueType.title == "MCQ" && wrongAns.length > 0 && rightAns) ||
           (selectedQueType.title == "True Or False" && tFAns.id != null) ||
           (selectedQueType.title == "Sentence Making" && smAns.id != null) ||
           (selectedQueType.title == "Fill In The Blank" &&
-            wrongAns.length == 3 &&
+            wrongAns.length > 0 &&
             rightAns &&
             question?.title.includes("-") == true))
     );
     if (
       question?.title.length > 2 &&
       selectedLesson.id &&
-      ((selectedQueType.title == "MCQ" && wrongAns.length == 3 && rightAns) ||
+      ((selectedQueType.title == "MCQ" && wrongAns.length > 0 && rightAns) ||
         (selectedQueType.title == "True Or False" && tFAns.id != null) ||
         (selectedQueType.title == "Sentence Making" && smAns.id != null) ||
         (selectedQueType.title == "Fill In The Blank" &&
-          wrongAns.length == 3 &&
+          wrongAns.length > 0 &&
           rightAns &&
           question?.title.includes("-") == true))
     ) {
       console.log("called");
       //
-      let formData = new FormData();
+      /*  let formData = new FormData();
       var fileInput = document.getElementById("idInputFile");
       var file = fileInput.files[0];
       console.log(file);
@@ -454,277 +456,80 @@ export default function AddQuePage({ rowData, useForEdit }) {
       console.log(
         "formData : " + JSON.stringify(formData.get("files.image")),
         JSON.stringify(formData.get("data"))
-      );
+      ); */
       try {
-        if (file) {
-          const queResult = await axios.post(
-            "https://api.nakhlah.xyz/api/questions?populate=image",
-            formData,
-            {
-              headers: {
-                Authorization:
-                  "Bearer " +
-                  "5cb5acf4b96532cdad0e30d900772f5c8b5532d2dbf06e04483a3705c725ffbbdba593340718423a5975e86aa47ca1749de402ec9f3127648dbcec37b190107ba975e669811b2a2f4c8b41c27472d6fdb70e7b0be4f8490c57a406e29aedf47dd05dadb7171788ba9fa2af106d93b4f92423b8e194131891e712857b52e8ceef",
+        let content = "";
+        if (
+          selectedQueType.title == "Fill In The Blank" ||
+          selectedQueType.title == "MCQ"
+        ) {
+          content = getQueContent(rightAns);
+        } else if (selectedQueType.title == "True Or False") {
+          content = tFAns.id;
+        }
+        const queContResult = useForEdit
+          ? await putHandler("question-content", rowData?.question_content, {
+              data: {
+                question: { connect: [question.id] },
+                question_type: { connect: [selectedQueType.id] },
+                content: { connect: [content] },
               },
-              redirect: "follow",
-            }
+            })
+          : await postHandler("question-content", {
+              data: {
+                question: { connect: [question.id] },
+                question_type: { connect: [selectedQueType.id] },
+                content: { connect: [content] },
+              },
+            });
+        console.log(queContResult);
+        if (
+          selectedQueType.title == "Fill In The Blank" ||
+          selectedQueType.title == "MCQ"
+        ) {
+          console.log(
+            "options",
+            options,
+            "rightAns",
+            queContResult,
+            queContResult.data.data.id
           );
-          console.log(queResult);
-          // alert(
-          //   "formData : " +
-          //     JSON.stringify(formData.get("files.image")) +
-          //     JSON.stringify(formData.get("data"))
-          // );
-          // alert("queResult: " + JSON.stringify(data));
-
-          // const queResult = useForEdit
-          //   ? await putHandler("question", rowData.id, {
-          //       data: { question: question },
-          //     })
-          //   : await postHandler("question", {
-          //       data: {
-          //         question: question,
-          //         question_type: { connect: [selectedQueType.id] },
-          //         audio: queAudio,
-          //       },
-          //     });
-
-          // alert("queResult: " + JSON.stringify(queResult));
-          if (queResult?.data?.data?.id) {
-            const queContResult = useForEdit
-              ? await putHandler("question-content", rowData.id, {
-                  data: {},
-                })
-              : await postHandler("question-content", {
-                  data: {
-                    question: { connect: [queResult.data.data.id] },
-                    question_type: { connect: [selectedQueType.id] },
-                    content: { connect: [getQueContent(rightAns)] },
-                  },
-                });
-
-            // alert("queContResult: " + JSON.stringify(queContResult));
-
-            // if mcq or fib
-            if (
-              selectedQueType.title == "Fill In The Blank" ||
-              selectedQueType.title == "MCQ"
-            ) {
-              const queOptionResult = useForEdit
-                ? await putHandler(
-                    "question-content-option",
-                    questionContentOptionId,
-                    {
-                      data: {},
-                    }
-                  )
-                : await postHandler("question-content-option", {
-                    data: {
-                      question_content: {
-                        connect: [queContResult.data.data.id],
-                      },
-                      contents: {
-                        connect: [
-                          options[wrongAns[0]].content.id,
-                          options[wrongAns[1]].content.id,
-                          options[wrongAns[2]].content.id,
-                        ],
-                      },
-                    },
-                  });
-              // alert("queOptionResult: " + JSON.stringify(queOptionResult));
-
-              if (queOptionResult.status == 200) {
-                const journeyMapResult = useForEdit
-                  ? await putHandler("journey-map-question", rowData.id, {
-                      data: {},
-                    })
-                  : await postHandler("journey-map-question", {
-                      data: {
-                        learning_journey_lesson: {
-                          connect: [selectedLesson.id],
-                        },
-                        question_content: {
-                          connect: [queContResult.data.data.id],
-                        },
-                      },
-                    });
-                console.log(journeyMapResult);
-                if (journeyMapResult.status == 200) {
-                  toast({
-                    title: "Question Added Successfully",
-                  });
-                }
-                // alert("journeyMapResult: " + JSON.stringify(journeyMapResult));
-              }
-            }
-
-            useForEdit
-              ? afterUpdate({
-                  id: queResult.data.data.id,
-                  question: question,
-                  audio: queAudio,
-                  question_type: {
-                    id: selectedQueType.id,
-                    title: selectedQueType.title,
-                  },
-                  lesson: {
-                    id: selectedLesson.id,
-                    title: selectedLesson.title,
-                  },
-                  task_unit: {
-                    id: selectedLevel.id,
-                    title: selectedLevel.title,
-                  },
-                  task: {
-                    id: selectedUnit.id,
-                    title: selectedUnit.title,
-                  },
-                  level: {
-                    id: selectedJourney.id,
-                    title: selectedJourney.title,
-                  },
-                })
-              : afterAdd({
-                  id: queResult.data.data.id,
-                  question: question,
-                  audio: queAudio,
-                  question_type: {
-                    id: selectedQueType.id,
-                    title: selectedQueType.title,
-                  },
-                  lesson: {
-                    id: selectedLesson.id,
-                    title: selectedLesson.title,
-                  },
-                  task_unit: {
-                    id: selectedLevel.id,
-                    title: selectedLevel.title,
-                  },
-                  task: {
-                    id: selectedUnit.id,
-                    title: selectedUnit.title,
-                  },
-                  level: {
-                    id: selectedJourney.id,
-                    title: selectedJourney.title,
-                  },
-                });
-            toast({
-              title: useForEdit
-                ? "Item Updated Succesfully"
-                : "Item Added Successfully",
-            });
-            resetForm();
-          } else if (queResult.status == 400) {
-            let errors = queResult.data.error.details.errors;
-            alert("errors: " + JSON.stringify(errors));
-            setError({
-              err2: errors[0]?.message,
-            });
-          }
-        } else {
-          let content = "";
-          if (
-            selectedQueType.title == "Fill In The Blank" ||
-            selectedQueType.title == "MCQ"
-          ) {
-            content = getQueContent(rightAns);
-          } else if (selectedQueType.title == "True Or False") {
-            content = tFAns.id;
-          }
-          const queContResult = useForEdit
-            ? await putHandler("question-content", rowData?.question_content, {
-                data: {
-                  question: { connect: [question.id] },
-                  question_type: { connect: [selectedQueType.id] },
-                  content: { connect: [content] },
-                },
-              })
-            : await postHandler("question-content", {
-                data: {
-                  question: { connect: [question.id] },
-                  question_type: { connect: [selectedQueType.id] },
-                  content: { connect: [content] },
-                },
-              });
-          console.log(queContResult);
-          if (
-            selectedQueType.title == "Fill In The Blank" ||
-            selectedQueType.title == "MCQ"
-          ) {
-            console.log(
-              "options",
-              options,
-              "rightAns",
-              queContResult,
-              queContResult.data.data.id
-            );
-            const queOptionResult = useForEdit
-              ? await putHandler(
-                  "question-content-option",
-                  questionContentOptionId,
-                  {
-                    data: {
-                      question_content: {
-                        connect: [queContResult.data.data.id],
-                      },
-                      content: {
-                        connect: [
-                          options[wrongAns[0]].content.id,
-                          options[wrongAns[1]].content.id,
-                          options[wrongAns[2]].content.id,
-                        ],
-                      },
-                    },
-                  }
-                )
-              : await postHandler("question-content-option", {
+          const wrongAnsOptions = Object.keys(options).filter(
+            (option) => !rightAndWrong[option]
+          );
+          console.log(wrongAnsOptions);
+          const queOptionResult = useForEdit
+            ? await putHandler(
+                "question-content-option",
+                questionContentOptionId,
+                {
                   data: {
                     question_content: {
                       connect: [queContResult.data.data.id],
                     },
-                    contents: {
-                      connect: [
-                        options[wrongAns[0]].content.id,
-                        options[wrongAns[1]].content.id,
-                        options[wrongAns[2]].content.id,
-                      ],
+                    content: {
+                      connect: wrongAnsOptions.map(
+                        (option) => options[option]?.content.id
+                      ),
                     },
                   },
-                });
-            // alert("queOptionResult: " + JSON.stringify(queOptionResult));
+                }
+              )
+            : await postHandler("question-content-option", {
+                data: {
+                  question_content: {
+                    connect: [queContResult.data.data.id],
+                  },
+                  contents: {
+                    connect: wrongAnsOptions.map(
+                      (option) => options[option]?.content.id
+                    ),
+                  },
+                },
+              });
+          // alert("queOptionResult: " + JSON.stringify(queOptionResult));
 
-            if (queOptionResult.status == 200) {
-              const journeyMapResult = useForEdit
-                ? await putHandler("journey-map-question", rowData.id, {
-                    data: {
-                      learning_journey_lesson: {
-                        connect: [selectedLesson.id],
-                      },
-                      question_content: {
-                        connect: [queContResult.data.data.id],
-                      },
-                    },
-                  })
-                : await postHandler("journey-map-question", {
-                    data: {
-                      learning_journey_lesson: {
-                        connect: [selectedLesson.id],
-                      },
-                      question_content: {
-                        connect: [queContResult.data.data.id],
-                      },
-                    },
-                  });
-              if (journeyMapResult.status == 200) {
-                toast({
-                  title: "Question Added Successfully",
-                });
-              }
-              // alert("journeyMapResult: " + JSON.stringify(journeyMapResult));
-            }
-          } else if (selectedQueType.title == "True Or False") {
+          if (queOptionResult.status == 200) {
             const journeyMapResult = useForEdit
               ? await putHandler("journey-map-question", rowData.id, {
                   data: {
@@ -751,66 +556,97 @@ export default function AddQuePage({ rowData, useForEdit }) {
                 title: "Question Added Successfully",
               });
             }
+            // alert("journeyMapResult: " + JSON.stringify(journeyMapResult));
           }
-
-          useForEdit
-            ? afterUpdate({
-                id: rowData?.id,
-                question: question,
-                audio: queAudio,
-                question_type: {
-                  id: selectedQueType.id,
-                  title: selectedQueType.title,
-                },
-                lesson: {
-                  id: selectedLesson.id,
-                  title: selectedLesson.title,
-                },
-                task_unit: {
-                  id: selectedLevel.id,
-                  title: selectedLevel.title,
-                },
-                task: {
-                  id: selectedUnit.id,
-                  title: selectedUnit.title,
-                },
-                level: {
-                  id: selectedJourney.id,
-                  title: selectedJourney.title,
+        } else if (selectedQueType.title == "True Or False") {
+          const journeyMapResult = useForEdit
+            ? await putHandler("journey-map-question", rowData.id, {
+                data: {
+                  learning_journey_lesson: {
+                    connect: [selectedLesson.id],
+                  },
+                  question_content: {
+                    connect: [queContResult.data.data.id],
+                  },
                 },
               })
-            : afterAdd({
-                id: question.id,
-                question: question,
-                audio: queAudio,
-                question_type: {
-                  id: selectedQueType.id,
-                  title: selectedQueType.title,
-                },
-                lesson: {
-                  id: selectedLesson.id,
-                  title: selectedLesson.title,
-                },
-                task_unit: {
-                  id: selectedLevel.id,
-                  title: selectedLevel.title,
-                },
-                task: {
-                  id: selectedUnit.id,
-                  title: selectedUnit.title,
-                },
-                level: {
-                  id: selectedJourney.id,
-                  title: selectedJourney.title,
+            : await postHandler("journey-map-question", {
+                data: {
+                  learning_journey_lesson: {
+                    connect: [selectedLesson.id],
+                  },
+                  question_content: {
+                    connect: [queContResult.data.data.id],
+                  },
                 },
               });
-          toast({
-            title: useForEdit
-              ? "Item Updated Succesfully"
-              : "Item Added Successfully",
-          });
-          resetForm();
+          if (journeyMapResult.status == 200) {
+            toast({
+              title: "Question Added Successfully",
+            });
+          }
         }
+
+        useForEdit
+          ? afterUpdate({
+              id: rowData?.id,
+              question: question,
+              audio: queAudio,
+              question_type: {
+                id: selectedQueType.id,
+                title: selectedQueType.title,
+              },
+              lesson: {
+                id: selectedLesson.id,
+                title: selectedLesson.title,
+              },
+              task_unit: {
+                id: selectedLevel.id,
+                title: selectedLevel.title,
+              },
+              task: {
+                id: selectedUnit.id,
+                title: selectedUnit.title,
+              },
+              level: {
+                id: selectedJourney.id,
+                title: selectedJourney.title,
+              },
+            })
+          : afterAdd({
+              id: question.id,
+              question: question,
+              audio: queAudio,
+              question_type: {
+                id: selectedQueType.id,
+                title: selectedQueType.title,
+              },
+              lesson: {
+                id: selectedLesson.id,
+                title: selectedLesson.title,
+              },
+              task_unit: {
+                id: selectedLevel.id,
+                title: selectedLevel.title,
+              },
+              task: {
+                id: selectedUnit.id,
+                title: selectedUnit.title,
+              },
+              level: {
+                id: selectedJourney.id,
+                title: selectedJourney.title,
+              },
+            });
+        toast({
+          title: useForEdit
+            ? "Item Updated Succesfully"
+            : "Item Added Successfully",
+        });
+
+        useForEdit
+          ? document.getElementById("closeDialog")?.click()
+          : document.getElementById("closeDialog")?.click();
       } catch (error) {
         console.log(error);
         alert(JSON.stringify(error)); // NOTE - use "error.response.data` (not "error")
@@ -818,6 +654,10 @@ export default function AddQuePage({ rowData, useForEdit }) {
     }
     //  specific errors
     else {
+      const optionsHaveContentIDs = Object.keys(options).every(
+        (option) => options[option]?.content?.id !== null
+      );
+      const rightAnsDefined = rightAns !== undefined;
       if (selectedLesson.id == null) {
         err_0 = "Select A Lesson";
       }
@@ -841,14 +681,9 @@ export default function AddQuePage({ rowData, useForEdit }) {
         selectedQueType.title == "MCQ" ||
         selectedQueType.title == "Fill In The Blank"
       ) {
-        if (
-          options.optionOne.content.id == null ||
-          options.optionTwo.content.id == null ||
-          options.optionThree.content.id == null ||
-          options.optionFour.content.id == null
-        ) {
+        if (!optionsHaveContentIDs) {
           err_3 = "Provide all 4 options";
-        } else if (rightAns == undefined) {
+        } else if (!rightAnsDefined) {
           err_3 = "Please mark an option as right answer";
         }
       }
@@ -879,9 +714,16 @@ export default function AddQuePage({ rowData, useForEdit }) {
   }
 
   function resetForm() {
+    console.log("resetForm is called");
+    setSelectedJourney(initStateSelection);
+    setSelectedUnit(initStateSelection);
+    setSelectedLesson(initStateSelection);
+    setSelectedLevel(initStateSelection);
+
+    setSelectedQueType(initStateSelection);
     setOptions(initOptions);
     setTFAns(initStateSelection);
-    setQuestion("");
+    // setQuestion("");
     setRightAndWrong(initRightWrong);
     setError(initErrors);
     setQueAudio("");
@@ -899,8 +741,25 @@ export default function AddQuePage({ rowData, useForEdit }) {
   const [image, setImage] = useState(null);
   const [queAudio, setQueAudio] = useState("");
   const [smAns, setSmAns] = useState(initStateSelection);
-
+  const handleAddOption = () => {
+    const newOptionKey = `option${Object.keys(options).length + 1}`; // Generate unique key for new option
+    setOptions({
+      ...options,
+      [newOptionKey]: initOptionData,
+    });
+    setRightAndWrong({
+      ...rightAndWrong,
+      [newOptionKey]: false,
+    });
+  };
   //   jsx
+  const matchingMethodList = ["language", "category"];
+  const [selectedMatchingMethod, setSelectedMatchingMethod] =
+    useState("language");
+  const handleMatchingOptionMethod = (method) => {
+    console.log(method);
+    setSelectedMatchingMethod(method);
+  };
   return (
     <div className="w-full p-3   rounded-md ">
       {/* {JSON.stringify(tFAns)} */}
@@ -927,7 +786,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
             <GitCommitHorizontal className="w-6 h-6 text-blue-500" /> Select
             Learning Lesson
           </EnhancedText>
-          <div className="flex flex-col gap-2 w-2/3">
+          <div className="flex flex-col gap-4">
             {/* <CustomSelect
               label={"Learner Level"}
               value={selectedJourney}
@@ -988,7 +847,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
             <GitCommitHorizontal className="w-6 h-6 text-blue-400" /> Set The
             Question
           </EnhancedText>
-          <div className="flex flex-col gap-1 w-2/3">
+          <div className="flex flex-col gap-4">
             <CustomSearchableDropdown
               label={"Select Question Type"}
               value={selectedQueType}
@@ -1004,7 +863,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
               <span className="text-red-700">{error.err1}</span>
             )} */}
           </div>
-          <div className="flex flex-col gap-1 w-2/3">
+          <div className="flex flex-col gap-4">
             <CustomSearchableDropdown
               label={"Select Question"}
               value={question}
@@ -1018,7 +877,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
             />
             {/* <span className="text-red-700">{error.err2}</span> */}
           </div>
-          <div className="flex gap-2 flex-col items-start">
+          {/* <div className="flex gap-2 flex-col items-start">
             <input
               type="file"
               id="idInputFile"
@@ -1033,11 +892,6 @@ export default function AddQuePage({ rowData, useForEdit }) {
               }}
             />
             {image && (
-              /*  <Image
-                alt=" image"
-                src={image}
-                className="w-5.0 h-5.0 rounded-full border border-slate-400 bg-slate-50"
-              /> */
               <img
                 alt=" image"
                 src={image}
@@ -1054,13 +908,12 @@ export default function AddQuePage({ rowData, useForEdit }) {
               className="py-0.12 px-1 rounded-md border border-slate-400 outline-none"
             />
 
-            {/* <span className="text-red-700">{error.err2}</span> */}
-          </div>
+          </div> */}
         </div>
 
         {/* {JSON.stringify(selectedQueType)} */}
         {/* sao Set answer option */}
-        <div className="flex flex-col gap-2 rounded-md w-2/3 py-0.75 px-2">
+        <div className="flex flex-col gap-2 rounded-md py-0.75 px-2">
           {selectedQueType && (
             <>
               <div className="flex gap-3 items-center">
@@ -1117,64 +970,144 @@ export default function AddQuePage({ rowData, useForEdit }) {
                   </div>
                 )}
 
-                {(selectedQueType.title == "MCQ" ||
-                  selectedQueType.title == "Fill In The Blank") &&
-                  Object.keys(options).map((option, index) => {
-                    console.log(options[option]);
-                    return (
-                      <div
-                        key={index}
-                        className="flex flex-col gap-3 font-mono text-sm rounded-sm border-l-2 border-blue-400 py-3 px-2  "
-                      >
-                        <div className="flex justify-between   pb-1">
-                          <p className="flex justify-between bg-blue-100 rounded-full h-[1.2rem]  ">
-                            <span className="px-2">Answer Option</span>
-                            <span className="px-1 h-full rounded-full bg-blue-200 font-semibold">
-                              {index + 1}
-                            </span>
-                          </p>
-                          <div className="flex gap-2 items-center">
-                            <input
-                              type="checkbox"
-                              id={option}
-                              checked={rightAndWrong[option]}
-                              name={"ans_option"}
-                              onChange={(e) =>
-                                handleMark({ [option]: e.target.checked })
-                              }
-                            />
-                            <label htmlFor="option1" className="text-sm">
-                              Mark as right answer
-                            </label>
+                {(selectedQueType.title === "MCQ" ||
+                  selectedQueType.title === "Fill In The Blank") && (
+                  <>
+                    {Object.keys(options).map((option, index) => {
+                      console.log(option, options[option]?.content);
+                      return (
+                        <div
+                          key={index}
+                          className="flex flex-col gap-3 font-mono text-sm rounded-sm border-l-2 border-blue-400 py-3 px-2"
+                        >
+                          <div className="flex justify-between pb-1">
+                            <p className="flex justify-between bg-blue-100 rounded-full h-[1.2rem]">
+                              <span className="px-2">Answer Option</span>
+                              <span className="px-1 h-full rounded-full bg-blue-200 font-semibold">
+                                {index + 1}
+                              </span>
+                            </p>
+                            <div className="flex gap-2 items-center">
+                              <input
+                                type="checkbox"
+                                id={option}
+                                checked={rightAndWrong[option]}
+                                name={"ans_option"}
+                                onChange={(e) =>
+                                  handleMark({ [option]: e.target.checked })
+                                }
+                              />
+                              <label htmlFor={option} className="text-sm">
+                                Mark as right answer
+                              </label>
+                            </div>
                           </div>
-                        </div>
 
-                        <CustomSearchableDropdown
-                          value={options[option]?.content}
-                          label="Content"
-                          options={contents}
-                          onChange={(selected) =>
-                            setOptions({
-                              ...options,
-                              [option]: {
-                                ...options[option],
-                                content: selected,
-                              },
-                            })
-                          }
-                          addNewText="New Content"
-                          addNewAfterClick={handleAdd}
-                          bg="wh"
-                        />
+                          <CustomSearchableDropdown
+                            value={options[option]?.content}
+                            label="Content"
+                            options={contents}
+                            onChange={(selected) =>
+                              setOptions({
+                                ...options,
+                                [option]: {
+                                  ...options[option],
+                                  content: selected,
+                                },
+                              })
+                            }
+                            addNewText="New Content"
+                            addNewAfterClick={handleAdd}
+                            bg="wh"
+                          />
+                        </div>
+                      );
+                    })}
+                    {/* Button to add new option */}
+                    <button
+                      type="button"
+                      onClick={handleAddOption}
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 text-sm"
+                    >
+                      Add New Option
+                    </button>
+                  </>
+                )}
+                {selectedQueType.title === "Pair Matching" && (
+                  <div>
+                    <div className="flex flex-col gap-3 font-mono text-sm rounded-sm border-l-2 border-blue-400 py-3 px-2">
+                      <span className="text-sm">
+                        Select a pair matching option method
+                      </span>
+                      {matchingMethodList.map((matchingMethod) => (
+                        <div key={matchingMethod} className="flex items-center">
+                          <input
+                            type="radio"
+                            id={matchingMethod}
+                            name="matchingMethodOption"
+                            value={matchingMethod}
+                            checked={selectedMatchingMethod === matchingMethod}
+                            onChange={(e) =>
+                              handleMatchingOptionMethod(e.target.value)
+                            }
+                            className="mr-2" // Add margin to the right
+                          />
+                          <label
+                            htmlFor={matchingMethod}
+                            className="cursor-pointer"
+                          >
+                            By {matchingMethod}
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex gap-4">
+                      {/* Left Column */}
+                      <div className="flex-1">
+                        {/* Selectable Content */}
+                        <h3>English</h3>
+                        {selectedMatchingMethod === "language" && (
+                          <div>
+                            <CustomSearchableDropdown
+                              value={smAns}
+                              label="Select Content"
+                              options={contents}
+                              onChange={(selected) => setSmAns(selected)}
+                              addNewText="New Sentence"
+                              addNewAfterClick={handleAdd}
+                              bg="wh"
+                            />
+                          </div>
+                        )}
                       </div>
-                    );
-                  })}
+
+                      {/* Right Column */}
+                      <div className="flex-1">
+                        {/* Display Selected Content Name */}
+                        <h3>Arabic</h3>
+                        <div>
+                          {smAns && (
+                            <div>
+                              <p>Selected Content:</p>
+                              <p>{smAns.label}</p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    {selectedMatchingMethod == "category" && (
+                      <div>
+                        <h1>Selected by Category</h1>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </>
           )}
         </div>
         <div className="relative px-3   ">
-          <div className="sticky bottom-0 bg-white w-2/3">
+          <div className="sticky bottom-0 bg-white">
             <div className="flex flex-col gap-0">
               {error.err0 !== "" && (
                 <span className="text-red-700">{error.err0}</span>

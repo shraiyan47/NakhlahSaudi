@@ -315,9 +315,9 @@ export default function Questionaries({ content }) {
         {/* {currentView == "Contents" && <Content />} */}
         {currentView == "Questions" && <QuestionTitle />}
 
-        {currentAct == "add" && currentSubView == "MCQ" && (
+       {/*  {currentAct == "add" && currentSubView == "MCQ" && (
           <AddQuePage rowData={{ question_type: {id: 1, title: "MCQ"}}} useForEdit={false} />
-        )}
+        )} */}
         {currentAct == "add" && currentSubView == "Pair Matching" && (
           <div>{"Loading ... "}</div>
         )}

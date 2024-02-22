@@ -13,6 +13,7 @@ import { ArrowUpDown, ClipboardEdit, Info, Trash2 } from "lucide-react";
 import Deletion from "../modals/other/Deletion";
 import AddQuePage from "../modals/questionaries/AddQuePage";
 import { useState } from "react";
+import ViewQuestion from "../modals/questionaries/ViewQuestion";
 // import AddStartingPoint from "../modals/journey/AddStartPoint";
 const ColQuestion = [
   // {
@@ -224,7 +225,6 @@ const ColQuestion = [
     enableHiding: false,
     cell: ({ row }) => {
       console.log(row.original);
-
       return (
         <div className="flex gap-1 justify-center items-center textSecondaryColor textSemiHeader">
           <Dialog className="">
@@ -233,43 +233,8 @@ const ColQuestion = [
                 <Info className="w-5 h-5" />
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[500px] min-w-20. flex justify-center items-center">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Question Details</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {/* <p>{JSON.stringify(row)}</p> */}
-                  <br />
-                  <div className="flex justify-right">
-                    <label>Level : </label>
-                    <p> &nbsp; {row.original.level.title}</p>
-                  </div>
-                  <div className="flex justify-right">
-                    <label>Unit : </label>
-                    <p> &nbsp; {row.original.task.title}</p>
-                  </div>
-                  <div className="flex justify-right">
-                    <label>Lesson : </label>
-                    <p> &nbsp; {row.original.lesson.title}</p>
-                  </div>
-                  <div className="flex justify-right">
-                    <label>Question Type : </label>
-                    <p> &nbsp; {row.original.question_type.title}</p>
-                  </div>
-                  <div className="flex justify-right">
-                    <label>Question : </label>
-                    <p> &nbsp; {row.original.question.title}</p>
-                  </div>
-                  <div className="flex justify-right">
-                    <label>Question Correct Answer: </label>
-                    <p> &nbsp; {row.original?.content?.title}</p>
-                  </div>
-                </CardContent>
-                {/* <CardFooter>
-                  <p>Card Footer</p>
-                </CardFooter> */}
-              </Card>
+            <DialogContent className="sm:max-w-[500px] max-h-[500px] overflow-y-auto">
+               <ViewQuestion rowData={row.original}/>
               {/* Question: {row.original.question} */}
             </DialogContent>
           </Dialog>
