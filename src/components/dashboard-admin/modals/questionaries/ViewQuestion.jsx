@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Volume1Icon } from "lucide-react";
 import { getWithUrl } from "@/lib/requestHandler";
+import { renderableContents } from "@/lib/fetchFunctions";
 
 const ViewQuestion = ({ rowData }) => {
   const { level, task, lesson, question_type, question, content } = rowData;
-  console.log(question_type);
-  const [text, setText] = useState(question?.title || "");
+  console.log(content);
+  const [text, setText] = useState("");
+  console.log(text); 
   const [speaking, setSpeaking] = useState(false);
   const [questionContentOptions, setQuestionContentOptions] = useState([]);
+  const [contentDetails, setContentDetails] = useState(null);
+  console.log(contentDetails);
   const synth = window.speechSynthesis;
   console.log(questionContentOptions);
   const speakText = () => {
@@ -47,11 +51,26 @@ const ViewQuestion = ({ rowData }) => {
       fetch();
     }
   }, [rowData?.question_content]);
-
+  useEffect(() => {
+    const fetch = async () => {
+      let url = `api/content-details?populate=*&filters[content][id][$eq]=${content?.id}`;
+      console.log(url);
+      const response = await getWithUrl(url);
+      if (response.status === 200) {
+        let contentDetailsData = renderableContents(response.data.data);
+        console.log(contentDetailsData[0]);
+        setContentDetails(contentDetailsData[0]);
+        setText(contentDetailsData[0] ? contentDetailsData[0]?.audio : "")
+      }
+    };
+    if (content) {
+      fetch();
+    }
+  }, [content]);
   return (
     <div className="max-w-md mx-auto mt-4">
       {/* Part 1: Level, Unit, Lesson */}
-      <div className="bg-white rounded-lg shadow-md p-6 mb-4">
+      {/* <div className="bg-white rounded-lg shadow-md p-6 mb-4">
         <h2 className="text-2xl font-bold mb-2"> Learning Lesson</h2>
         <div className="flex flex-wrap">
           <div className="w-full mb-2">
@@ -67,7 +86,7 @@ const ViewQuestion = ({ rowData }) => {
             <span className="text-lg">{lesson?.title}</span>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Part 2: Question Type, Question */}
       <div className="bg-white rounded-lg shadow-md p-6 mb-4">
@@ -81,16 +100,10 @@ const ViewQuestion = ({ rowData }) => {
             <span className="font-bold text-lg mr-2">Question:</span>
             <span className="text-lg">{question?.title}</span>
           </div>
-          <button
-            onClick={speakText}
-            disabled={text.trim() === "" || speaking}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          >
-            Speak <Volume1Icon className="inline-block ml-1 w-6 h-6" />
-          </button>
         </div>
       </div>
-      {(question_type?.title == "MCQ" || question_type?.title == "Fill In The Blank") && (
+      {(question_type?.title == "MCQ" ||
+        question_type?.title == "Fill In The Blank") && (
         <>
           <div className="bg-white rounded-lg shadow-md p-6 mb-4">
             <h2 className="text-2xl font-bold mb-2">Question Options</h2>
@@ -110,27 +123,40 @@ const ViewQuestion = ({ rowData }) => {
           <div className="bg-white rounded-lg shadow-md p-6">
             <h2 className="text-2xl font-bold mb-2">Answer</h2>
             <div className="flex flex-wrap">
-              <div className="w-full">
+              <div className="w-full mb-2">
                 <span className="font-bold text-lg mr-2">Correct Answer:</span>
                 <span className="text-lg">{content?.title}</span>
               </div>
+                <button
+                onClick={speakText}
+                disabled={!contentDetails?.title || speaking}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-4"
+              >
+                Speak <Volume1Icon className="inline-block ml-1 w-6 h-6" />
+              </button>
             </div>
           </div>
         </>
       )}
-      {
-        question_type?.title == "True Or False" && (
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-2xl font-bold mb-2">Answer</h2>
-            <div className="flex flex-wrap">
-              <div className="w-full">
-                <span className="font-bold text-lg mr-2">Correct Answer:</span>
-                <span className="text-lg">{content?.title}</span>
-              </div>
+      {question_type?.title == "True Or False" && (
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <h2 className="text-2xl font-bold mb-2">Answer</h2>
+          <div className="flex flex-wrap">
+            <div className="w-full">
+              <span className="font-bold text-lg mr-2">Correct Answer:</span>
+              <span className="text-lg">{content?.title}</span>
+              <button
+                onClick={speakText}
+                disabled={!contentDetails?.title || speaking}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-4"
+              >
+                Speak <Volume1Icon className="inline-block ml-1 w-6 h-6" />
+              </button>
+              <img  className="w-5.0 h-5.0 rounded-full border border-slate-400 bg-slate-50" src={contentDetails?.icon}></img>
             </div>
           </div>
-        )
-      }
+        </div>
+      )}
     </div>
   );
 };

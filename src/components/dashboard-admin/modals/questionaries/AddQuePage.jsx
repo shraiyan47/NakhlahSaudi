@@ -408,6 +408,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
     );
     console.log(question);
     console.log(tFAns);
+    console.log(pairMatchingContents );
     console.log(
       question?.title.length > 2 &&
         selectedLesson.id &&
@@ -418,6 +419,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
             wrongAns.length > 0 &&
             rightAns &&
             question?.title.includes("-") == true))
+            || (selectedQueType.title == "Pair Matching" && pairMatchingContents != undefined)
     );
     if (
       question?.title.length > 2 &&
@@ -429,6 +431,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
           wrongAns.length > 0 &&
           rightAns &&
           question?.title.includes("-") == true))
+        || (selectedQueType.title == "Pair Matching" && pairMatchingContents != undefined)
     ) {
       console.log("called");
       //
@@ -467,7 +470,8 @@ export default function AddQuePage({ rowData, useForEdit }) {
         } else if (selectedQueType.title == "True Or False") {
           content = tFAns.id;
         }
-        const queContResult = useForEdit
+        if(selectedQueType.title != "Pair Matching"){
+          const queContResult = useForEdit
           ? await putHandler("question-content", rowData?.question_content, {
               data: {
                 question: { connect: [question.id] },
@@ -483,6 +487,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
               },
             });
         console.log(queContResult);
+        }
         if (
           selectedQueType.title == "Fill In The Blank" ||
           selectedQueType.title == "MCQ"
@@ -584,6 +589,66 @@ export default function AddQuePage({ rowData, useForEdit }) {
             toast({
               title: "Question Added Successfully",
             });
+          }
+        }
+        else if(selectedQueType.title == "Pair Matching"){
+          const queOptionResult = useForEdit
+            ? await putHandler(
+                "question-content-option",
+                questionContentOptionId,
+                {
+                  data: {
+                    question_content: {
+                      connect: 127,
+                    },
+                    contents: {
+                      connect: Object.keys(pairMatchingContents).map((pairMatching, index) => pairMatchingContents["option" + index + 1]
+                      ?.content.id ),
+                    },
+                  },
+                }
+              )
+            : await postHandler("question-content-option", {
+                data: {
+                  question_content: {
+                    connect: 127,
+                  },
+                  contents: {
+                    connect: Object.keys(pairMatchingContents).map((pairMatching, index) => pairMatchingContents["option" + index + 1]
+                    ?.content.id ),
+                  },
+                },
+              });
+          // alert("queOptionResult: " + JSON.stringify(queOptionResult));
+
+          if (queOptionResult.status == 200) {
+            const journeyMapResult = useForEdit
+              ? await putHandler("journey-map-question", rowData.id, {
+                  data: {
+                    learning_journey_lesson: {
+                      connect: [selectedLesson.id],
+                    },
+                    question_content: {
+                      connect: 127,
+                    },
+                  },
+                })
+              : await postHandler("journey-map-question", {
+                  data: {
+                    learning_journey_lesson: {
+                      connect: [selectedLesson.id],
+                    },
+                    question_content: {
+                      connect: 127,
+                    },
+                  },
+                });
+            if (journeyMapResult.status == 200) {
+              toast({
+                title: "Question Added Successfully",
+              });
+            }
+            // alert("journeyMapResult: " + JSON.stringify(journeyMapResult));
           }
         }
 
@@ -759,6 +824,53 @@ export default function AddQuePage({ rowData, useForEdit }) {
   const handleMatchingOptionMethod = (method) => {
     console.log(method);
     setSelectedMatchingMethod(method);
+  };
+  const initialPairMatchingObj = {
+    option1: {
+      content: { id: null, title: "" },
+      content_details_by_languages: { id: null, title: "" },
+    },
+  };
+  const [pairMatchingContents, setPairMatchingContents] = useState(
+    initialPairMatchingObj
+  );
+  console.log(pairMatchingContents);
+  const handlePairMatchingContent = async (index, obj) => {
+    console.log(obj);
+    let contentDetailsByLanguage = await getContentDetailsByLanguage(obj.id);
+    console.log(contentDetailsByLanguage);
+    setPairMatchingContents({
+      ...pairMatchingContents,
+      ["option" + index]: {
+        ...pairMatchingContents["option" + index],
+        content: { id: obj.id, title: obj.title },
+        content_details_by_languages: contentDetailsByLanguage,
+      },
+    });
+  };
+  const getContentDetailsByLanguage = async (contentId) => {
+    const url = `api/content-details-by-languages?populate=*&filters[content][id][$eq]=${contentId}`;
+    const response = await getWithUrl(url);
+    if (response.status === 200) {
+      return {
+        id: response.data.data[0]?.id,
+        title: response.data?.data[0]?.attributes?.title,
+      };
+    } else {
+      return { id: null, title: "" };
+    }
+  };
+  const handleAddNewContentOption = () => {
+    const newOptionKey = `option${
+      Object.keys(pairMatchingContents).length + 1
+    }`;
+    setPairMatchingContents({
+      ...pairMatchingContents,
+      [newOptionKey]: {
+        content: { id: null, title: "" },
+        content_details_by_languages: { id: null, title: "" },
+      },
+    });
   };
   return (
     <div className="w-full p-3   rounded-md ">
@@ -1061,40 +1173,63 @@ export default function AddQuePage({ rowData, useForEdit }) {
                         </div>
                       ))}
                     </div>
-                    <div className="flex gap-4">
-                      {/* Left Column */}
-                      <div className="flex-1">
-                        {/* Selectable Content */}
-                        <h3>English</h3>
-                        {selectedMatchingMethod === "language" && (
-                          <div>
-                            <CustomSearchableDropdown
-                              value={smAns}
-                              label="Select Content"
-                              options={contents}
-                              onChange={(selected) => setSmAns(selected)}
-                              addNewText="New Sentence"
-                              addNewAfterClick={handleAdd}
-                              bg="wh"
-                            />
-                          </div>
-                        )}
-                      </div>
+                    {selectedMatchingMethod === "language" && (
+                      <div className="flex gap-4 flex-col md:flex-row md:gap-y-8">
+                        {/* Left Column */}
+                        <div className="flex-1 gap-2">
+                          {/* Selectable Content */}
+                          <h3 className="text-lg font-semibold">English</h3>
+                          {Object.keys(pairMatchingContents)?.map(
+                            (pairMatchingContent, index) => (
+                              <CustomSearchableDropdown
+                                key={`option-${index}`}
+                                value={
+                                  pairMatchingContents["option" + index + 1]
+                                    ?.content.title
+                                }
+                                label="Select Content"
+                                options={contents}
+                                onChange={(selected) =>
+                                  handlePairMatchingContent(index + 1, selected)
+                                }
+                                addNewText="New Pair Matching"
+                                addNewAfterClick={handleAdd}
+                                bg="white"
+                              />
+                            )
+                          )}
+                        </div>
 
-                      {/* Right Column */}
-                      <div className="flex-1">
-                        {/* Display Selected Content Name */}
-                        <h3>Arabic</h3>
-                        <div>
-                          {smAns && (
-                            <div>
-                              <p>Selected Content:</p>
-                              <p>{smAns.label}</p>
-                            </div>
+                        {/* Right Column */}
+                        <div className="flex-1 gap-2">
+                          {/* Display Selected Content Name */}
+                          <h3 className="text-lg font-semibold">Arabic</h3>
+                          {Object.keys(pairMatchingContents).map(
+                            (pairMatchingContent, index) => (
+                              <div key={`selected-content-${index}`}>
+                                <span>
+                                  {pairMatchingContents["option" + (index + 1)]
+                                    ?.content?.title
+                                    ? pairMatchingContents[
+                                        "option" + (index + 1)
+                                      ]?.content_details_by_languages?.title
+                                    : ""}
+                                </span>
+                              </div>
+                            )
                           )}
                         </div>
                       </div>
-                    </div>
+                    )}
+
+                    <button
+                      type="button"
+                      onClick={handleAddNewContentOption}
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 text-sm"
+                    >
+                      Add New Content
+                    </button>
+
                     {selectedMatchingMethod == "category" && (
                       <div>
                         <h1>Selected by Category</h1>
