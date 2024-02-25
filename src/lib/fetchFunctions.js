@@ -172,8 +172,11 @@ export function renderableQueType(arr) {
 
 export function renderableQuetions(arr) {
   return arr.map((item) => {
+    console.log(item);
     const { question } = item.attributes?.question_content?.data?.attributes;
-    const content = item.attributes?.question_content?.data?.attributes?.content?.data?.attributes?.title;
+    // const content = item.attributes?.question_content?.data?.attributes?.content?.data?.attributes?.title;
+    const question_content = item.attributes?.question_content?.data;
+    const content = item.attributes?.question_content?.data?.attributes?.content?.data;
     const contentAudio = item.attributes?.question_content?.data?.attributes?.content?.data?.attributes?.audio;
     const { question_type } =
       item.attributes?.question_content?.data?.attributes;
@@ -185,10 +188,18 @@ export function renderableQuetions(arr) {
     const learning_journey =
       learning_journey_unit?.data?.attributes?.learning_journey;
     //
+    console.log(question_content); 
     return {
       id: item.id,
-      question: question.data?.attributes?.question,
-      content,
+      question: {
+        id: question.data?.id,
+        title: question.data?.attributes?.question,
+      },
+      content: {
+        id: content?.id,
+        title: content?.attributes?.title,
+      },
+      question_content: question_content?.id,
       contentAudio,
       audio: question.data?.attributes?.audio,
       question_type: {
@@ -269,6 +280,22 @@ export function renderableContTypeCategories(arr) {
     return {
       id: item.id,
       title: item.attributes.title,
+    };
+  });
+}
+export function renderableQuestionContent(arr) {
+  return arr?.map((item) => {
+    return {
+      id: item.id,
+      title: item.attributes?.question?.data?.attributes?.question,
+    };
+  });
+}
+export function renderableQuestion(arr) {
+  return arr?.map((item) => {
+    return {
+      id: item.id,
+      title: item.attributes?.question
     };
   });
 }

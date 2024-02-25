@@ -317,21 +317,21 @@ export default function Questionaries({ content }) {
         {currentView == "Questions" && <QuestionTitle />}
         {currentView == "Content Details" && <ContentDetails />}
 
-        {currentAct == "add" && currentSubView == "MCQ" && (
-          <AddQuePage useForEdit={false} />
-        )}
-        {/* {currentAct == "add" && currentSubView == "Pair Matching" && (
+       {/*  {currentAct == "add" && currentSubView == "MCQ" && (
+          <AddQuePage rowData={{ question_type: {id: 1, title: "MCQ"}}} useForEdit={false} />
+        )} */}
+        {currentAct == "add" && currentSubView == "Pair Matching" && (
           <div>{"Loading ... "}</div>
         )}
         {currentAct == "add" && currentSubView == "Sentence Making" && (
-          <AddQuePage useForEdit={false} />
+          <AddQuePage rowData={{ question_type: {id: 16, title: "Sentence Making"}}} useForEdit={false} />
         )}
         {currentAct == "add" && currentSubView == "True Or False" && (
-          <AddQuePage useForEdit={false} />
+          <AddQuePage rowData={{ question_type: {id: 4, title: "True Or False"}}} useForEdit={false} />
         )}
         {currentAct == "add" && currentSubView == "Fill In The Blank" && (
-          <AddQuePage useForEdit={false} />
-        )} */}
+          <AddQuePage rowData={{ question_type: {id: 2, title: "Fill In The Blank"}}} useForEdit={false} />
+        )}
       </div>
 
 {/* contents*/}
