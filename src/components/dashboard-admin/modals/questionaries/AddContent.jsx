@@ -81,8 +81,8 @@ export default function AddContent({ rowData, useForEdit }) {
     var contentInput = document.getElementById("idContent");
     var audioTextInput = document.getElementById("idAudioText");
     var fileInput = document.getElementById("idInputFile");
-    var file = fileInput.files[0];
-    formData.append("files.image", file);
+    //var file = fileInput.files[0];
+   // formData.append("files.image", file);
 
     if (
       selectedCategory.title != "" &&
@@ -102,7 +102,7 @@ export default function AddContent({ rowData, useForEdit }) {
   
       formData.append(
         "data",
-        `{"title": "${contentInput.value}","audio": "${audioTextInput.value}","content_type": { "connect": [${selectedType.id}] },"content_type_category": { "connect": [${selectedCategory.id}] }}`
+        `{"title": "${contentInput.value}","content_type": { "connect": [${selectedType.id}] },"content_type_category": { "connect": [${selectedCategory.id}] }}`
       );
 
       await fetch(
@@ -263,7 +263,7 @@ export default function AddContent({ rowData, useForEdit }) {
             />
             <span className="text-red-700">{error.err3}</span>
           </div>
-          <div className="flex gap-2 flex-col items-start">
+          {/* <div className="flex gap-2 flex-col items-start">
             <input
               type="file"
               id="idInputFile"
@@ -284,9 +284,9 @@ export default function AddContent({ rowData, useForEdit }) {
                 className="w-5.0 h-5.0 rounded-full border border-slate-400 bg-slate-50"
               />
             )}
-          </div>
-          <div className="flex flex-col gap-1 w-2/3 ">
-            <span className="">Attach Audio Text</span>
+          </div> */}
+          {/* <div className="flex flex-col gap-1 w-2/3 ">
+            <span className="">Attach Audio Texth</span>
             <textarea
               id="idAudioText"
               value={queAudio}
@@ -294,9 +294,8 @@ export default function AddContent({ rowData, useForEdit }) {
               rows={2}
               className="py-0.12 px-1 rounded-md border border-slate-400 outline-none"
             />
-
-            {/* <span className="text-red-700">{error.err2}</span> */}
-          </div>
+          </div> */}
+          
           <CustomButton
             txt={useForEdit ? "Update" : "Add"}
             type="submit"

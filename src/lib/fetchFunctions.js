@@ -153,6 +153,14 @@ export function renderableQuestionTitle(arr) {
   });
 }
 
+
+// -----------------------------------------content files
+
+
+
+
+
+
 export function renderableQueType(arr) {
   return arr.map((item) => {
     return {
@@ -239,7 +247,25 @@ export function renderableContents(arr) {
   return renderable;
 }
 
+export function renderableContentDetails(arr) {
+  const renderable = arr?.map((item) => {
+ 
+    return {
+      id: item.id,
+     title: item.attributes?.title,
+     content: {
+      id: item.attributes?.content?.data?.id,
+      title: item.attributes?.content?.data?.attributes?.title,
+    },
+      contentAudio: item.attributes?.audio,
+      icon: item.attributes.image?.data?.attributes?.url,
+      // totalData: item.meta.pagination.total
+    };
+  });
 
+  console.log("fetchfuntion", renderable)
+  return renderable;
+}
 export function renderableContTypes(arr) {
   return arr?.map((item) => {
     return {

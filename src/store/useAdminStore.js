@@ -993,6 +993,75 @@ export const useContent = create(
     },
   }))
 );
+
+export const useContentDetails = create(
+  immer((set) => ({
+    data: [],
+    setContents: (data) => {
+      set((state) => {
+        state.data = data;
+      });
+    },
+    addEdit: async ({ useForEdit, data, id }) => {
+      const response = useForEdit
+        ? await putHandler("content-details", id, {
+            data,
+          })
+        : await postHandler("content-details", {
+            data,
+          });
+
+      if (response.status == 400) {
+        let errors = response.data.error.details.errors;
+        return {
+          status: response.status,
+          error: errors[0].message,
+        };
+      }
+      if (response.status == 200) {
+        let data = response.data.data;
+        return {
+          status: response.status,
+          message: useForEdit ? "Updated Successfully" : "Added Successfully",
+          data: {
+            id: data.id,
+            title: data.attributes.title,
+            audio: data.attributes.audio,
+            content: {
+              id:  data.attributes?.content?.data?.id,
+              title:data.attributes?.content?.data?.attributes?.title,
+            },
+            icon: data.attributes.image?.data?.attributes?.url,
+          },
+        };
+      }
+    },
+    afterAdd: (data) => {
+      console.log("bebo", data)
+      set((state) => {
+        state.data = [data, ...state.data];
+      });
+    },
+    afterUpdate: (data) => {
+      console.log("bebo", data)
+      set((state) => {
+        state.data = state.data.map((item) => {
+          if (item.id == data.id) {
+            return data;
+          } else {
+            return item;
+          }
+        });
+      });
+    },
+    afterDelete: (id) => {
+      set((state) => {
+        state.data = state.data.filter((item) => item.id != id);
+      });
+    },
+  }))
+);
+
 export const useQueContent = create(
   immer((set) => ({
     data: [],

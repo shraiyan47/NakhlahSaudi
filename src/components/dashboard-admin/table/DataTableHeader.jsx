@@ -31,6 +31,8 @@ import CustomButton from "@/components/ui-custom/CustomButton";
 import QueFilter from "../tabular-view/questionaries/QueFilter";
 import AddQuestionTitle from "../modals/questionaries/AddQuestionTitle";
 import AddQuePage from "../modals/questionaries/AddQuePage";
+import AddContentDetails from "../modals/questionaries/AddContentDetails";
+
 
 const viewMap = {
   // learning journey
@@ -142,8 +144,10 @@ export default function DataTableHeader({ table, view, filter }) {
               {view == "content-type-category" && (
                 <AddConTypeCategory title={view} />
               )}
+
               {view == "questionTitle" && <AddQuestionTitle title={view} />}{" "}
               {view == "content" && <AddContent title={view} />}
+              {view == "content-details" && < AddContentDetails title={view} />}
               {view == "question-content" && <AddQueContent title={view} />}
               {view == "question-content-option" && (
                 <AddQueContOption title={view} />
