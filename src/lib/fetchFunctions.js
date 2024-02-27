@@ -238,7 +238,7 @@ export function renderableContents(arr) {
 
 export function renderableContentDetails(arr) {
   const renderable = arr?.map((item) => {
- 
+ console.log("fetchfuction", arr)
     return {
       id: item.id,
      title: item.attributes?.title,
@@ -247,7 +247,47 @@ export function renderableContentDetails(arr) {
       title: item.attributes?.content?.data?.attributes?.title,
     },
       contentAudio: item.attributes?.audio,
-      icon: item.attributes.image?.data?.attributes?.url,
+      icon:item.attributes.image?.data?.attributes?.url,
+      // totalData: item.meta.pagination.total
+    };
+  });
+
+  console.log("fetchfuntion", renderable)
+  return renderable;
+}
+
+
+export function renderableLanguage(arr) {
+  const renderable = arr?.map((item) => {
+ console.log("fetchfuction", arr)
+    return {
+      id: item.id,
+     title: item.attributes?.name,
+     country: item.attributes?.country,
+    
+      // totalData: item.meta.pagination.total
+    };
+  });
+
+  console.log("fetchfuntion", renderable)
+  return renderable;
+}
+
+export function renderableContentDetailsByLanguage(arr) {
+  const renderable = arr?.map((item) => {
+ console.log("fetchfuction", arr)
+    return {
+      id: item.id,
+     title: item.attributes?.title,
+     content: {
+      id: item.attributes?.content?.data?.id,
+      title: item.attributes?.content?.data?.attributes?.title,
+    },
+    language: {
+      id: item.attributes?.language?.data?.id,
+      title: item.attributes?.language?.data?.attributes?.name,
+    },
+    
       // totalData: item.meta.pagination.total
     };
   });

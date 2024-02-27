@@ -85,7 +85,10 @@ export const tabsQuestionaries = {
   // "Content Types": [],
   "Content Data Types": [],
 
-  "Content Details": []
+  "Content Details": [],
+  "Languages" : [],
+  "Content Details by Languages" : [],
+
 };
 
 export const adminDashboard = {

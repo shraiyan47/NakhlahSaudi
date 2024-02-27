@@ -18,7 +18,8 @@ import {
   useQueContent,
   useQueContOption,
   useQuestionTitle,
-  useContentDetails
+  useContentDetails,
+  useLanguage
 } from "@/store/useAdminStore";
 // import { Button } from "@/components/ui/button";
 import CustomButton from "../../../ui-custom/CustomButton";
@@ -44,6 +45,7 @@ export default function Deletion({ rowData, what }) {
     "content-type-category": useConTypeCategory((state) => state.afterDelete),
     "Question Title": useQuestionTitle((state) => state.afterDelete),
     "content-details": useContentDetails((state) => state.afterDelete),
+    "language": useLanguage((state) => state.afterDelete),
     question: useQuestion((state) => state.afterDelete),
     content: useContent((state) => state.afterDelete),
     "question-content": useQueContent((state) => state.afterDelete),

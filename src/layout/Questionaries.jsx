@@ -45,6 +45,8 @@ import FITBContent from "../components/dashboard-admin/tabular-view/questionarie
 import PMContent from "../components/dashboard-admin/tabular-view/questionaries/PMContent";
 import SMContent from "../components/dashboard-admin/tabular-view/questionaries/SMContent";
 import ContentDetails from "../components/dashboard-admin/tabular-view/questionaries/ContentDetails";
+import Language from "../components/dashboard-admin/tabular-view/questionaries/Language";
+import ContentDetailsByLanguage from "../components/dashboard-admin/tabular-view/questionaries/ContentDetailsByLanguage";
 
 export default function Questionaries({ content }) {
   //
@@ -316,7 +318,8 @@ export default function Questionaries({ content }) {
         {/* {currentView == "Contents" && <Content />} */}
         {currentView == "Questions" && <QuestionTitle />}
         {currentView == "Content Details" && <ContentDetails />}
-
+        {currentView == "Languages" && <Language />}
+        {currentView == "Content Details by Languages" && <ContentDetailsByLanguage />}
         {currentAct == "add" && currentSubView == "MCQ" && (
           <AddQuePage useForEdit={false} />
         )}
