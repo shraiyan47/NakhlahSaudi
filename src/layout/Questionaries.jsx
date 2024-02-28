@@ -313,13 +313,13 @@ export default function Questionaries({ content }) {
           currentSubView == "Sentence Making" && <SM />} 
 
         {currentView == "Question Content Types" && <QueType />}
-        {currentView == "Content Types" && <ContentType />}
+        {/* {currentView == "Content Types" && <ContentType />} */}
         {currentView == "Content Data Types" && <ConTypeCategory />}
         {/* {currentView == "Contents" && <Content />} */}
         {currentView == "Questions" && <QuestionTitle />}
-        {currentView == "Content Details" && <ContentDetails />}
-        {currentView == "Languages" && <Language />}
-        {currentView == "Content Details by Languages" && <ContentDetailsByLanguage />}
+        {/* {currentView == "Content Details" && <ContentDetails />} */}
+        {/* {currentView == "Languages" && <Language />} */}
+        {/* {currentView == "Content Details by Languages" && <ContentDetailsByLanguage />} */}
         {currentAct == "add" && currentSubView == "MCQ" && (
           <AddQuePage useForEdit={false} />
         )}
@@ -338,7 +338,7 @@ export default function Questionaries({ content }) {
       </div>
 
 {/* contents*/}
-<div className="flex-grow overflow-y-scroll  ">
+{/* <div className="flex-grow overflow-y-scroll  ">
         {currentView == "Contents" &&
           currentAct == "view" &&
           currentSubView == "MCQ" && <McqContent/>}
@@ -357,7 +357,7 @@ export default function Questionaries({ content }) {
           
         {currentView == "Contents" &&
           currentAct == "view" &&
-          currentSubView == "Sentence Making" && <SMContent/>}
+          currentSubView == "Sentence Making" && <SMContent/>} */}
         
         {/* {currentAct == "add" && currentSubView == "Pair Matching" && (
           <div>{"Loading ... "}</div>
@@ -371,7 +371,7 @@ export default function Questionaries({ content }) {
         {currentAct == "add" && currentSubView == "Fill In The Blank" && (
           <AddQuePage useForEdit={false} />
         )} */}
-      </div>
+      {/* </div> */}
 
     </div>
   );

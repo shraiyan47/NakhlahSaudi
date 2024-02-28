@@ -1196,6 +1196,77 @@ export const useContentDetailsByLanguage = create(
     },
   }))
 );
+
+export const useContentByClause= create(
+  immer((set) => ({
+    data: [],
+    setContentByClause: (data) => {
+      set((state) => {
+        state.data = data;
+      });
+    },
+    addEdit: async ({ useForEdit, data, id }) => {
+      const response = useForEdit
+        ? await putHandler("content-details-by-language", id, {
+            data,
+          })
+        : await postHandler("content-details-by-language", {
+            data,
+          });
+
+      if (response.status == 400) {
+        let errors = response.data.error.details.errors;
+        return {
+          status: response.status,
+          error: errors[0].message,
+        };
+      }
+      if (response.status == 200) {
+        let data = response.data.data;
+        console.log("usestoreadmin", data)
+        return {
+          status: response.status,
+          message: useForEdit ? "Updated Successfully" : "Added Successfully",
+          data: {
+            id: data.id,
+            title: data.attributes.title,
+            content: {
+              id: item.attributes?.contents?.data[0]?.id,
+              title: item.attributes?.contents?.data[0]?.attributes?.title,
+            },
+            language: {
+              id: item.attributes?.language?.data?.id,
+              title: item.attributes?.language?.data?.attributes?.name,
+            },
+          },
+        };
+      }
+    },
+    afterAdd: (data) => {
+      console.log("bebo", data)
+      set((state) => {
+        state.data = [data, ...state.data];
+      });
+    },
+    afterUpdate: (data) => {
+      console.log("bebo", data)
+      set((state) => {
+        state.data = state.data.map((item) => {
+          if (item.id == data.id) {
+            return data;
+          } else {
+            return item;
+          }
+        });
+      });
+    },
+    afterDelete: (id) => {
+      set((state) => {
+        state.data = state.data.filter((item) => item.id != id);
+      });
+    },
+  }))
+);
 export const useQueContent = create(
   immer((set) => ({
     data: [],

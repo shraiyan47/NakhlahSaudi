@@ -295,6 +295,32 @@ export function renderableContentDetailsByLanguage(arr) {
   console.log("fetchfuntion", renderable)
   return renderable;
 }
+export function renderableContentByClause(arr) {
+  const renderable = arr?.map((item) => {
+ console.log("fetchfuction", arr)
+    return {
+      id: item.id,
+     title: item.attributes?.title,
+     content: {
+      id: item.attributes?.contents?.data[0]?.id,
+      title: item.attributes?.contents?.data[0]?.attributes?.title,
+    },
+    language: {
+      id: item.attributes?.language?.data?.id,
+      title: item.attributes?.language?.data?.attributes?.name,
+    },
+    // content_details_by_language: {
+    //   id: item.attributes?.language?.data?.id,
+    //   title: item.attributes?.language?.data?.attributes?.name,
+    // }
+    
+      // totalData: item.meta.pagination.total
+    };
+  });
+
+  console.log("fetchfuntion", renderable)
+  return renderable;
+}
 export function renderableContTypes(arr) {
   return arr?.map((item) => {
     return {

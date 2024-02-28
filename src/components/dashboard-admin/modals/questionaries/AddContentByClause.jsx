@@ -2,8 +2,7 @@
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
 import {
-  useContent,
-useLanguage, useContentDetailsByLanguage,
+    useContentByClause, useContent, useContentDetailsByLanguage, useLanguage,
   useTabularView,
 } from "../../../../store/useAdminStore";
 import { useState ,useEffect} from "react";
@@ -14,7 +13,7 @@ import { BASE_URL, config, postMap, putMap, getHandler, postHandler, putHandler 
 import Image from "next/image";
 
 
-export default function AddContentDetailByLanguage({ rowData, useForEdit }) {
+export default function AddContentByClause({ rowData, useForEdit }) {
   //
 
   console.log("rowdata", rowData)
@@ -23,10 +22,13 @@ export default function AddContentDetailByLanguage({ rowData, useForEdit }) {
 const setContentData = useContent( (state) => state.setContents);
 const languageData = useLanguage((state) => state.data);
 const setLanguageData = useLanguage( (state) => state.setLanguage);
-  // const addEdit = useContentDetails((state) => state.addEdit);
+const contentDetailsByLanguageData = useContentDetailsByLanguage((state) => state.data);
+const setContentDetailsByLanguageData = useContentDetailsByLanguage((state) => state.setContentDetailsByLanguage);
+ 
   const afterAdd = useContentDetailsByLanguage((state) => state.afterAdd);
   const afterUpdate = useContentDetailsByLanguage((state) => state.afterUpdate);
-  const [contentDetailsByLanguageTitle, setContentDetailsByLanguageTitle] = useState(useForEdit ? rowData.title : "");
+  const [contentByClauseTitle, setContentByClauseTitle] = useState(useForEdit ? rowData.title : "");
+  const [sequence, setSequence] = useState(useForEdit ? rowData.title : "");
  
   const [error, setError] = useState({
     err0: "",
@@ -53,6 +55,15 @@ const setLanguageData = useLanguage( (state) => state.setLanguage);
       }
       : initStateSelection
   );
+
+  const [selectedContentDetailsByLanguage, setContentDetailsByLanguage] = useState(
+    useForEdit
+      ? {
+        id:rowData.language.id,
+        title:rowData.language.title,
+      }
+      : initStateSelection
+  );
   // const [image, setImage] = useState(
   //   useForEdit ? BASE_URL + rowData.icon : null
   // );
@@ -61,6 +72,7 @@ const setLanguageData = useLanguage( (state) => state.setLanguage);
 useEffect(() => {
   const fetchContents = async () => {
     const response = await getHandler("content-all");
+    console.log("response", response)
     if (response.status === 200) {
       const dataRenderable = response.data.data.map((item) => {
         return {
@@ -80,25 +92,48 @@ useEffect(() => {
 
 
 useEffect(() => {
-  const fetchLanguages = async () => {
-    const response = await getHandler("language");
-   
+  const fetchContentDetailsByLanguage = async () => {
+    const response = await getHandler("content-details-by-language");
+   console.log("response", response)
     if (response.status === 200) {
       const dataRenderable = response.data.data.map((item) => {
         return {
           id: item.id,
-          title: item.attributes.name,
+          title: item.attributes.title,
         };
       });
-      setLanguageData(dataRenderable);
+      setContentDetailsByLanguageData(dataRenderable);
     
     }
   };
  
-  if (Array.isArray(languageData) && languageData.length === 0) {
-    fetchLanguages();
+  if (Array.isArray(contentDetailsByLanguageData) && contentDetailsByLanguageData.length === 0) {
+    fetchContentDetailsByLanguage();
   }
-}, [languageData]);
+}, [contentDetailsByLanguageData]);
+
+useEffect(() => {
+    const fetchLanguages = async () => {
+      const response = await getHandler("language");
+     
+      if (response.status === 200) {
+        const dataRenderable = response.data.data.map((item) => {
+          return {
+            id: item.id,
+            title: item.attributes.name,
+          };
+        });
+        setLanguageData(dataRenderable);
+      
+      }
+    };
+   
+    if (Array.isArray(languageData) && languageData.length === 0) {
+      fetchLanguages();
+    }
+  }, [languageData]);
+
+
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -182,18 +217,20 @@ useEffect(() => {
           onSubmit={handleSubmit}
           className="flex flex-col gap-4 py-2 text-black text-lg"
         >
-          <div className="flex flex-col ">
-            <label>Content Detail by Language Title</label>
-            <CustomInput
-              id="idContentDetailsByLanguageTitleInput"
-              type="text"
-              value={contentDetailsByLanguageTitle}
-              onChange={(e) =>setContentDetailsByLanguageTitle(e.target.value)}
-              ph="Enter Content Detail Title"
-              style="py-0.25 px-1"
+            <div className="flex flex-col gap-1">
+            <CustomSelect
+              id="idSelectedLanguage"
+              label={"Language"}
+              value={selectedLanguage}
+              options={languageData}
+              bg="wh"
+              onChange={(value) =>
+                setSelectedLanguage({ id: value.id, title: value.title })
+              }
             />
-            <span className="text-red-700">{error.err0}</span>
+            <span className="text-red-700">{error.err1}</span>
           </div>
+
 
           <div className="flex flex-col gap-1">
             <CustomSelect
@@ -208,18 +245,46 @@ useEffect(() => {
             />
             <span className="text-red-700">{error.err1}</span>
           </div>
+
           <div className="flex flex-col gap-1">
             <CustomSelect
-              id="idSelectedLanguage"
-              label={"Language"}
-              value={selectedLanguage}
-              options={languageData}
+              id="idSelectedContentDetailsByLanguage"
+              label={"Content Details by Language"}
+              value={selectedContentDetailsByLanguage}
+              options={contentDetailsByLanguageData}
               bg="wh"
               onChange={(value) =>
-                setSelectedLanguage({ id: value.id, title: value.title })
+                setContentDetailsByLanguageData({ id: value.id, title: value.title })
               }
             />
             <span className="text-red-700">{error.err1}</span>
+          </div>
+
+
+          <div className="flex flex-col ">
+            <label>Content by Clause Title</label>
+            <CustomInput
+              id="idContentByClauseInput"
+              type="text"
+              value={contentByClauseTitle}
+              onChange={(e) =>setContentByClauseTitle(e.target.value)}
+              ph="Enter Content by Clause"
+              style="py-0.25 px-1"
+            />
+            <span className="text-red-700">{error.err0}</span>
+          </div>
+
+          <div className="flex flex-col ">
+            <label>Sequence</label>
+            <CustomInput
+              id="idSequenceInput"
+              type="number"
+              value={sequence}
+              onChange={(e) =>setSequence(e.target.value)}
+              ph="Enter Content Sequence"
+              style="py-0.25 px-1"
+            />
+            <span className="text-red-700">{error.err0}</span>
           </div>
         
           {/* <div className="flex gap-2 flex-col items-start">

@@ -12,6 +12,8 @@ import {
   Users,
   PersonStanding,
   AreaChart,
+  BadgeInfo,
+  Cylinder
 } from "lucide-react";
 
 export const tabsJourney = [
@@ -74,6 +76,26 @@ export const tabsQuestionaries = {
   "Questions":[],
 
   "Question Content Types": [],
+  // Contents: [
+   
+  //   "MCQ",
+  //   "Fill In The Blank",
+  //   "True Or False",
+  //   "Sentence Making",
+  //   "Pair Matching",
+  // ],
+  // // "Content Types": [],
+  // "Content Data Types": [],
+
+  // "Content Details": [],
+  // "Languages" : [],
+  // "Content Details by Languages" : [],
+
+};
+
+
+export const tabsContents = {
+ 
   Contents: [
    
     "MCQ",
@@ -88,9 +110,9 @@ export const tabsQuestionaries = {
   "Content Details": [],
   "Languages" : [],
   "Content Details by Languages" : [],
+  "Content By Clauses": [],
 
 };
-
 export const adminDashboard = {
   leftNavList: {
     main: {
@@ -146,8 +168,30 @@ export const adminDashboard = {
           id: 3,
           title: "Questionaires",
           icon: <ShieldQuestion className="w-6 h-6 text-slate-600" />,
-          link: "/admin/questionaries",
+          link: "#",
+          subLinks: [
+            {
+              id: 1,
+              title: "Questions",
+              icon: <BadgeInfo className="w-6 h-6 text-slate-600" />,
+              link: "/admin/questionaries",
+              subLinks: null,
+            },
+            {
+              id: 2,
+              title: "Contents",
+              icon: <Cylinder className="w-6 h-6 text-slate-600" />,
+          link: "/admin/contents",
+              subLinks: null,
+            },
+          ]
         },
+        // {
+        //   id: 4,
+        //   title: "Contents",
+        //   icon: <ShieldQuestion className="w-6 h-6 text-slate-600" />,
+        //   link: "/admin/contents",
+        // },
         // {
         //   id: 4,
         //   title: "Customer",

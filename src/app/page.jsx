@@ -8,6 +8,7 @@ const Home = () => {
       <Link href={"./admin/learning-journey"}>Learning Journey</Link>
       <Link href={"./admin/learning-materials"}>Learning Materials</Link>
       <Link href={"./admin/questionaries"}>Questionaries</Link>
+      <Link href={"./admin/contents"}>Contents</Link>
     </div>
   );
 };
