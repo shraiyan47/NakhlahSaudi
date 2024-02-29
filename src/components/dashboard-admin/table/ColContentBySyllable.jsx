@@ -7,11 +7,12 @@ import Image from "next/image";
 import Deletion from "../modals/other/Deletion"; 
 import { BASE_URL } from "@/lib/requestHandler";
 
-import AddContentByClause from "../modals/questionaries/AddContentByClause";
+
+import AddContentBySyllable from "../modals/questionaries/AddContentBySyllable";
 
 
 
-const ColContentByClause = [
+const ColContentBySyllable = [
  
 
   {
@@ -197,8 +198,8 @@ const ColContentByClause = [
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <AddContentByClause
-                title="content-by-clause"
+              <AddContentBySyllable
+                title="content-by-syllable"
                 useForEdit={true}
                 rowData={row.original}
               />
@@ -210,4 +211,4 @@ const ColContentByClause = [
   },
 ];
 
-export default ColContentByClause;
+export default ColContentBySyllable;

@@ -34,6 +34,7 @@ import AddContentDetails from "../modals/questionaries/AddContentDetails";
 import AddLanguage from "../modals/questionaries/AddLanguage";
 import AddContentDetailByLanguage from "../modals/questionaries/AddContentDetailsbyLanguage";
 import AddContentByClause from "../modals/questionaries/AddContentByClause";
+import AddContentBySyllable from "../modals/questionaries/AddContentBySyllable";
 
 const viewMap = {
   // learning journey
@@ -129,6 +130,7 @@ export default function DataTableHeader({ table, view, filter }) {
               
               {view == "content-details-by-language" && < AddContentDetailByLanguage title={view} />}
               {view == "content-by-clause" && < AddContentByClause title={view} />}
+              {view == "content-by-syllable" && < AddContentBySyllable title={view} />}
               {view == "question-content" && <AddQueContent title={view} />}
               {view == "question-content-option" && (
                 <AddQueContOption title={view} />

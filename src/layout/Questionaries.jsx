@@ -338,8 +338,8 @@ export default function Questionaries({ content }) {
       </div>
 
 {/* contents*/}
-{/* <div className="flex-grow overflow-y-scroll  ">
-        {currentView == "Contents" &&
+{/* <div className="flex-grow overflow-y-scroll  "> */}
+        {/* {currentView == "Contents" &&
           currentAct == "view" &&
           currentSubView == "MCQ" && <McqContent/>}
 

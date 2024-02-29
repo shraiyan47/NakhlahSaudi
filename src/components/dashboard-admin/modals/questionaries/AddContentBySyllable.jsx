@@ -2,7 +2,7 @@
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
 import {
-    useContentByClause, useContent, useContentDetailsByLanguage, useLanguage,
+    useContentBySyllable, useContent, useContentDetailsByLanguage, useLanguage,
   useTabularView,
 } from "../../../../store/useAdminStore";
 import { useState ,useEffect} from "react";
@@ -13,7 +13,7 @@ import { BASE_URL, config, postMap, putMap, getHandler, postHandler, putHandler 
 import Image from "next/image";
 
 
-export default function AddContentByClause({ rowData, useForEdit }) {
+export default function AddContentBySyllable({ rowData, useForEdit }) {
   //
 
   console.log("rowdata", rowData)
@@ -25,9 +25,9 @@ const setLanguageData = useLanguage( (state) => state.setLanguage);
 const contentDetailsByLanguageData = useContentDetailsByLanguage((state) => state.data);
 const setContentDetailsByLanguageData = useContentDetailsByLanguage((state) => state.setContentDetailsByLanguage);
  
-  const afterAdd = useContentByClause((state) => state.afterAdd);
-  const afterUpdate = useContentByClause((state) => state.afterUpdate);
-  const [contentByClauseTitle, setContentByClauseTitle] = useState(useForEdit ? rowData.title : "");
+  const afterAdd = useContentBySyllable((state) => state.afterAdd);
+  const afterUpdate = useContentBySyllable((state) => state.afterUpdate);
+  const [contentBySyllableTitle, setContentBySyllableTitle] = useState(useForEdit ? rowData.title : "");
   const [sequence, setSequence] = useState(useForEdit ? rowData.sequence : "");
  
   const [error, setError] = useState({
@@ -139,7 +139,7 @@ useEffect(() => {
     e.preventDefault();
     
       let formData = new FormData();
-      var contentByClauseTitleInput = document.getElementById("idContentByClauseTitle")
+      var contentBySyllableTitleInput = document.getElementById("idContentBySyllableTitle")
       var sequenceInput = document.getElementById("idSequence")
       var contentDetailsByLanguageTitleInput = document.getElementById("idContentDetailsByLanguageTitleInput");
       var contentDetailsAudioInput = document.getElementById("idInputContentDetailsAudio");
@@ -150,9 +150,9 @@ useEffect(() => {
 
       formData.append(
         "data",
-        `{"title":"${contentByClauseTitleInput.value}", 
+        `{"title":"${contentBySyllableTitleInput.value}", 
         "sequence":"${sequenceInput.value}",
-        "contents": { "connect": [${selectedContent.id}] },
+        "content": { "connect": [${selectedContent.id}] },
         "language": { "connect": [${selectedLanguage.id}] },
         "content_details_by_language": { "connect": [${selectedContentDetailsByLanguage.id}] }  
       }`
@@ -162,8 +162,8 @@ useEffect(() => {
 
       await fetch(
         useForEdit
-          ? putMap["content-by-clause"] + `/${rowData.id}?populate=*`
-          : postMap["content-by-clause"]+`?populate=*`,
+          ? putMap["content-by-syllable"] + `/${rowData.id}?populate=*`
+          : postMap["content-by-syllable"]+`?populate=*`,
         {
           method: useForEdit ? "PUT" : "POST",
           body: formData,
@@ -272,12 +272,12 @@ useEffect(() => {
 
 
           <div className="flex flex-col ">
-            <label>Content by Clause Title</label>
+            <label>Content by Syllable Title</label>
             <CustomInput
-              id="idContentByClauseTitle"
+              id="idContentBySyllableTitle"
               type="text"
-              value={contentByClauseTitle}
-              onChange={(e) =>setContentByClauseTitle(e.target.value)}
+              value={contentBySyllableTitle}
+              onChange={(e) =>setContentBySyllableTitle(e.target.value)}
               ph="Enter Content by Clause"
               style="py-0.25 px-1"
             />

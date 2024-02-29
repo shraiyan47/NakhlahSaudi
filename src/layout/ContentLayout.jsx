@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { tabsQuestionaries } from "@/static-data/interface";
+
 import { tabsContents } from "@/static-data/interface";
 import CustomButton from "@/components/ui-custom/CustomButton";
 import {
@@ -13,7 +13,7 @@ import EnhancedText from "@/components/ui-custom/EnhancedText";
 import ContentType from "@/components/dashboard-admin/tabular-view/questionaries/ContentType";
 import ConTypeCategory from "@/components/dashboard-admin/tabular-view/questionaries/ConTypeCategory";
 import Content from "@/components/dashboard-admin/tabular-view/questionaries/Content";
-import AddQuePage from "@/components/dashboard-admin/modals/questionaries/AddQuePage";
+
 
 // contents/////////
 import McqContent from "../components/dashboard-admin/tabular-view/questionaries/McqContent";
@@ -26,6 +26,8 @@ import ContentDetails from "../components/dashboard-admin/tabular-view/questiona
 import Language from "../components/dashboard-admin/tabular-view/questionaries/Language";
 import ContentDetailsByLanguage from "../components/dashboard-admin/tabular-view/questionaries/ContentDetailsByLanguage";
 import ContentsByClause from "../components/dashboard-admin/tabular-view/questionaries/ContentByClause";
+import ContentsBySyllable from "../components/dashboard-admin/tabular-view/questionaries/ContentBySyllable";
+
 
 export default function ContentLayout({ content }) {
     //
@@ -43,7 +45,18 @@ export default function ContentLayout({ content }) {
       title: "",
     };
   
- 
+    // useEffect(() => {
+    //   if (currentView == "Questions Mapping") {
+    //     let url =
+    //       "/api/journey-map-question-contents?populate[question_content][populate]=*";
+    //     url += currentSubView
+    //       ? `&filters[question_content][question_type][title][$eq]=${currentSubView}`
+    //       : "";
+  
+    //     if (currentSubView == "") {
+    //     }
+    //   }
+    // }, [currentSubView]);
   
     useEffect(() => {
       setTabularView({
@@ -96,7 +109,7 @@ export default function ContentLayout({ content }) {
                   setTabularView({
                     currentView: item,
                     currentSubView:
-                      item == "Questions Mapping" || item == "Contents" ? "MCQ" : "",
+                      item == "Questions Mapping" || item == "Contents" ? "All Type" : "",
                     currentAct: "view",
                   });
                 }}
@@ -104,46 +117,8 @@ export default function ContentLayout({ content }) {
             );
           })}
         </div>
-        {/* <div className="flex flex-col gap-0.4 items-end px-2 mt-0.25">
-          {currentView == "Questions Mapping" && (
-            <div className="flex gap-1 items-center">
-              <CustomSelect2
-                label="Journey"
-                value={selectedJourney}
-                options={journeyData}
-                onChange={(value) =>
-                  setSelectedJourney({ id: value.id, title: value.title })
-                }
-              />
-              <ChevronsRight className="w-[1.2rem] h-[1.2rem] text-slate-500" />
-              <CustomSelect2
-                label="Unit"
-                value={selectedUnit}
-                options={filteredUnits}
-                onChange={(value) =>
-                  setSelectedUnit({ id: value.id, title: value.title })
-                }
-              />
-              <ChevronsRight className="w-[1.2rem] h-[1.2rem] text-slate-500" />
-              <CustomSelect2
-                label="Level"
-                value={selectedLevel}
-                options={filteredLevels}
-                onChange={(value) =>
-                  setSelectedLevel({ id: value.id, title: value.title })
-                }
-              />
-              <ChevronsRight className="w-[1.2rem] h-[1.2rem] text-slate-500" />
-              <CustomSelect2
-                label="Lesson"
-                value={selectedLesson}
-                options={filteredLessons}
-                onChange={(value) =>
-                  setSelectedLesson({ id: value.id, title: value.title })
-                }
-              />
-            </div>
-          )}
+         <div className="flex flex-col gap-0.4 items-end px-2 mt-0.25">
+         
           <div className="flex gap-2 ">
             {tabsContents[currentView]?.map((item, ind) => {
               return (
@@ -160,28 +135,35 @@ export default function ContentLayout({ content }) {
               );
             })}
           </div>
-        </div> */}
+        </div> 
   
         <div className="flex-grow overflow-y-scroll  ">
           
   
           {/* {currentView == "Question Content Types" && <QueType />} */}
-          {currentView == "Content Types" && <ContentType />}
-          {currentView == "Content Data Types" && <ConTypeCategory />}
+          {/*  {currentView == "Content Types" && <ContentType />} */}
+          {currentView == "Data Types" && <ConTypeCategory />}
           {/* {currentView == "Contents" && <Content />} */}
           {/* {currentView == "Questions" && <QuestionTitle />} */}
-          {currentView == "Content Details" && <ContentDetails />}
+          {currentView == "Details" && <ContentDetails />}
           {currentView == "Languages" && <Language />}
-          {currentView == "Content Details by Languages" && <ContentDetailsByLanguage />}
-          {currentView == "Content By Clauses" && <ContentsByClause />}
-          {currentAct == "add" && currentSubView == "MCQ" && (
-            <AddQuePage useForEdit={false} />
-          )}
+          {currentView ==  "Cont. Details by Languages" && <ContentDetailsByLanguage />}
+          {currentView == "Clauses" && <ContentsByClause />}
+          {currentView ==  "Syllables" && <ContentsBySyllable />}
+       {currentView ==  "Details of Cont. Det. by Languages" && <ContentDetailsByLanguage />}
+         
+         
+           
        
         </div>
   
   {/* contents filters*/}
   <div className="flex-grow overflow-y-scroll  ">
+
+  {currentView == "Contents" &&
+            currentAct == "view" &&
+            currentSubView == "All Type" && <Content/>}
+            
           {currentView == "Contents" &&
             currentAct == "view" &&
             currentSubView == "MCQ" && <McqContent/>}

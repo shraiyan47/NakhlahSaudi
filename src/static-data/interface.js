@@ -96,8 +96,8 @@ export const tabsQuestionaries = {
 
 export const tabsContents = {
  
-  Contents: [
-   
+  "Contents": [
+      
     "MCQ",
     "Fill In The Blank",
     "True Or False",
@@ -105,12 +105,14 @@ export const tabsContents = {
     "Pair Matching",
   ],
   // "Content Types": [],
-  "Content Data Types": [],
+  "Data Types": [],
 
-  "Content Details": [],
+  "Details": [],
   "Languages" : [],
-  "Content Details by Languages" : [],
-  "Content By Clauses": [],
+  "Cont. Details by Languages" : [],
+  "Details of Cont. Det. by Languages" : [], 
+  "Syllables" : [], 
+  "Clauses": [],
 
 };
 export const adminDashboard = {
