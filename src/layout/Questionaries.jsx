@@ -14,9 +14,9 @@ import {
 import EnhancedText from "@/components/ui-custom/EnhancedText";
 
 import QueType from "@/components/dashboard-admin/tabular-view/questionaries/QueType";
-import ContentType from "@/components/dashboard-admin/tabular-view/questionaries/ContentType";
+
 import ConTypeCategory from "@/components/dashboard-admin/tabular-view/questionaries/ConTypeCategory";
-import Content from "@/components/dashboard-admin/tabular-view/questionaries/Content";
+
 import AddQuePage from "@/components/dashboard-admin/modals/questionaries/AddQuePage";
 import { ChevronsRight, FileQuestion } from "lucide-react";
 import CustomSelect2 from "@/components/ui-custom/CustomSelect2";
@@ -32,21 +32,10 @@ import TOF from "@/components/dashboard-admin/tabular-view/questionaries/TOF";
 import FITB from "@/components/dashboard-admin/tabular-view/questionaries/FITB";
 import PM from "@/components/dashboard-admin/tabular-view/questionaries/PM";
 import SM from "@/components/dashboard-admin/tabular-view/questionaries/SM";
-import AddMCQ from "@/components/dashboard-admin/modals/questionaries/AddMCQ";
-import AddFITB from "@/components/dashboard-admin/modals/questionaries/AddFITB";
-import AddTOF from "@/components/dashboard-admin/modals/questionaries/AddTOF";
-import AddSM from "@/components/dashboard-admin/modals/questionaries/AddSM";
-import AddPM from "@/components/dashboard-admin/modals/questionaries/AddPM";
+
 // contents/////////
-import McqContent from "../components/dashboard-admin/tabular-view/questionaries/McqContent";
+
 import QuestionTitle from "@/components/dashboard-admin/tabular-view/questionaries/QuestionTitle";
-import TOFcontent from "../components/dashboard-admin/tabular-view/questionaries/TOFcontent";
-import FITBContent from "../components/dashboard-admin/tabular-view/questionaries/FITBContent";
-import PMContent from "../components/dashboard-admin/tabular-view/questionaries/PMContent";
-import SMContent from "../components/dashboard-admin/tabular-view/questionaries/SMContent";
-import ContentDetails from "../components/dashboard-admin/tabular-view/questionaries/ContentDetails";
-import Language from "../components/dashboard-admin/tabular-view/questionaries/Language";
-import ContentDetailsByLanguage from "../components/dashboard-admin/tabular-view/questionaries/ContentDetailsByLanguage";
 
 export default function Questionaries({ content }) {
   //
@@ -55,7 +44,7 @@ export default function Questionaries({ content }) {
   const currentAct = useTabularView((state) => state.data.currentAct);
 
   const setTabularView = useTabularView((state) => state.setTabularView);
-  const setSubView = useTabularView((state) => state.setSubView);
+  // const setSubView = useTabularView((state) => state.setSubView);
 
   const journeyData = useLearningJourney((state) => state.data);
   const setJournies = useLearningJourney((state) => state.setJournies);
@@ -310,69 +299,16 @@ export default function Questionaries({ content }) {
           currentSubView == "Pair Matching" && <PM />}
         {currentView == "Questions Mapping" &&
           currentAct == "view" &&
-          currentSubView == "Sentence Making" && <SM />} 
+          currentSubView == "Sentence Making" && <SM />}
 
         {currentView == "Question Content Types" && <QueType />}
-        {/* {currentView == "Content Types" && <ContentType />} */}
         {currentView == "Content Data Types" && <ConTypeCategory />}
-        {/* {currentView == "Contents" && <Content />} */}
         {currentView == "Questions" && <QuestionTitle />}
-        {/* {currentView == "Content Details" && <ContentDetails />} */}
-        {/* {currentView == "Languages" && <Language />} */}
-        {/* {currentView == "Content Details by Languages" && <ContentDetailsByLanguage />} */}
+
         {currentAct == "add" && currentSubView == "MCQ" && (
           <AddQuePage useForEdit={false} />
         )}
-        {/* {currentAct == "add" && currentSubView == "Pair Matching" && (
-          <div>{"Loading ... "}</div>
-        )}
-        {currentAct == "add" && currentSubView == "Sentence Making" && (
-          <AddQuePage useForEdit={false} />
-        )}
-        {currentAct == "add" && currentSubView == "True Or False" && (
-          <AddQuePage useForEdit={false} />
-        )}
-        {currentAct == "add" && currentSubView == "Fill In The Blank" && (
-          <AddQuePage useForEdit={false} />
-        )} */}
       </div>
-
-{/* contents*/}
-{/* <div className="flex-grow overflow-y-scroll  "> */}
-        {/* {currentView == "Contents" &&
-          currentAct == "view" &&
-          currentSubView == "MCQ" && <McqContent/>}
-
-        {currentView == "Contents" &&
-          currentAct == "view" &&
-          currentSubView == "True Or False" && <TOFcontent />}
-
-        {currentView == "Contents" &&
-          currentAct == "view" &&
-          currentSubView == "Pair Matching" && <PMContent />}
-
-{currentView == "Contents" &&
-          currentAct == "view" &&
-          currentSubView == "Fill In The Blank" && <FITBContent/>}
-          
-        {currentView == "Contents" &&
-          currentAct == "view" &&
-          currentSubView == "Sentence Making" && <SMContent/>} */}
-        
-        {/* {currentAct == "add" && currentSubView == "Pair Matching" && (
-          <div>{"Loading ... "}</div>
-        )}
-        {currentAct == "add" && currentSubView == "Sentence Making" && (
-          <AddQuePage useForEdit={false} />
-        )}
-        {currentAct == "add" && currentSubView == "True Or False" && (
-          <AddQuePage useForEdit={false} />
-        )}
-        {currentAct == "add" && currentSubView == "Fill In The Blank" && (
-          <AddQuePage useForEdit={false} />
-        )} */}
-      {/* </div> */}
-
     </div>
   );
 }

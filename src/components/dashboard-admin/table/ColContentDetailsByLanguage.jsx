@@ -1,12 +1,12 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Checkbox } from "@/components/ui/checkbox";
+
 import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
-import Image from "next/image";
+
 import Deletion from "../modals/other/Deletion"; 
-import { BASE_URL } from "@/lib/requestHandler";
-import AddContentDetailByLanguage from "../modals/questionaries/AddcontentDetailsbyLanguage";
+// /modals/questionaries/AddcontentDetailsbyLanguage
+import AddContentDetailByLanguage from "./../modals/questionaries/AddContentDetailsbyLanguage.jsx";
 
 
 
@@ -93,28 +93,6 @@ const ColContentDetailsByLanguage = [
       </div>
     ),
   },
-
-//   {
-//     accessorKey: "icon",
-//     header: () => <div className="textPrimaryColor textNormal">Image </div>,
-//     cell: ({ row }) => {
-//       return (
-//        <div>
-//         { (row.getValue("icon") ) ?
-//           <Image
-//             src={`${BASE_URL}${row.getValue("icon")}`}
-//             alt=""
-//             width={40}
-//             height={40}
-//             className="rounded-full border-2 border-black"
-//           />
-//        :
-//      <div> No Image</div>
-//     }
-//         </div> 
-//       );
-//     },
-//   },
 
   {
     id: "actions",

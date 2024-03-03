@@ -23,7 +23,7 @@ export default function TOF() {
   useEffect(() => {
     const fetchQuestions = async () => {
       let url =
-        "api/journey-map-question-contents?populate[question_content][populate]=*&filters[question_content][question_type][title][$eq]=MCQ&populate[learning_journey_lesson][populate][learning_journey_level][populate][learning_journey_unit][populate][0]=learning_journey";
+        "api/journey-map-question-contents?populate[question_content][populate]=*&filters[question_content][question_type][title][$eq]=True Or False&populate[learning_journey_lesson][populate][learning_journey_level][populate][learning_journey_unit][populate][0]=learning_journey";
       if (selectedJourney.id) {
         url += `&filters[learning_journey_lesson][learning_journey_level][learning_journey_unit][learning_journey][title][$eq]=${selectedJourney.title}`;
       }

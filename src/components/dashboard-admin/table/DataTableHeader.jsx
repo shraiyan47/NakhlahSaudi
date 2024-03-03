@@ -30,12 +30,14 @@ import { useTabularView } from "@/store/useAdminStore";
 import CustomButton from "@/components/ui-custom/CustomButton";
 import QueFilter from "../tabular-view/questionaries/QueFilter";
 import AddQuestionTitle from "../modals/questionaries/AddQuestionTitle";
+import AddQuePage from "../modals/questionaries/AddQuePage";
 import AddContentDetails from "../modals/questionaries/AddContentDetails";
 import AddLanguage from "../modals/questionaries/AddLanguage";
 import AddContentDetailByLanguage from "../modals/questionaries/AddContentDetailsbyLanguage";
 import AddContentByClause from "../modals/questionaries/AddContentByClause";
 import AddContentBySyllable from "../modals/questionaries/AddContentBySyllable";
 import AddDetailsOfContentDetailsByLanguage from "../modals/questionaries/AddDetailsOfContentDetailsByLanguage";
+
 
 const viewMap = {
   // learning journey
@@ -52,7 +54,7 @@ const viewMap = {
   "question-type": "id_question_type",
   "content-type": "id_content_type",
   "content-type-category": "id_content_type_category",
-  question: "id_question",
+  question: "id_question_title",
   content: "id_content",
   "question-content": "id_question_content",
   "question-content-option": "id_question_content_option",
@@ -64,7 +66,14 @@ export default function DataTableHeader({ table, view, filter }) {
   const currentSubView = useTabularView((state) => state.data.currentSubView);
   const setTabularView = useTabularView((state) => state.setTabularView);
   const addWhat = currentView.slice(0, currentView.length - 1);
-
+  console.log(view, currentView, currentSubView);
+  const contentMapId = {
+    "MCQ": 1,
+    "Fill In The Blank": 2,
+    "True Or False": 4,
+    "Sentence Making": 16,
+    "Pair Matching": 17,
+  };
   return (
     <div className="flex items-center justify-between py-3  ">
       {/* {currentView} */}
@@ -76,14 +85,17 @@ export default function DataTableHeader({ table, view, filter }) {
             placeholder={`Filter ${currentView}`}
             value={table?.getColumn(viewMap[view])?.getFilterValue() ?? ""}
             onChange={(event) =>
-              table?.getColumn(viewMap[view])?.setFilterValue(event.target.value)
+              table
+                ?.getColumn(viewMap[view])
+                ?.setFilterValue(event.target.value)
             }
             className="max-h-[28px] max-w-[350px] min-w-[220px] text-center text-slate-700 px-3 py-1 placeholder:text-slate-500 "
           />
         </div>
       )}
       {currentView == "Questions Mapping" ? (
-        <CustomButton
+        <Dialog>
+          {/* <CustomButton
           style={
             "flex gap-1 justify-center rounded-sm max-h-[28px] text-sm font-semibold font-sans bg-wh hover:bg-slate-50 hover:shadow-sm hover:drop-shadow-sm border border-slate-300  text-slate-600 py-0.25 px-3"
           }
@@ -94,7 +106,22 @@ export default function DataTableHeader({ table, view, filter }) {
           }
           startIcon={<Plus className="w-5 h-5 mx-1" />}
           txt={currentSubView}
-        />
+        /> */}
+          <DialogTrigger asChild>
+            <Button className="flex gap-1 justify-center rounded-sm max-h-[28px] text-sm font-semibold font-sans bg-wh hover:bg-slate-50 hover:shadow-sm hover:drop-shadow-sm border border-slate-300  text-slate-600 py-0.25 px-3">
+              <Plus className="w-5 h-5 mx-1" />
+              <span className="">{`${currentSubView}`}</span>
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[600px] max-h-[600px] overflow-y-auto">
+            {view == "question" && currentView == "Questions Mapping" && (
+              <AddQuePage
+                rowData={{ question_type: { id: contentMapId[currentSubView], title: currentSubView } }}
+                useForEdit={false}
+              />
+            )}
+          </DialogContent>
+        </Dialog>
       ) : (
         <div className="flex items-center gap-4">
           {/* modal button add new item */}
@@ -106,7 +133,7 @@ export default function DataTableHeader({ table, view, filter }) {
               </Button>
             </DialogTrigger>
 
-            <DialogContent className="sm:max-w-[500px]">
+            <DialogContent className="sm:max-w-[500px] max-h-[600px] overflow-y-auto">
               {/* <AddNewItem  title={title}  isJourney={false}/> */}
               {view == "learning-journey" && <AddJourney title={view} />}
               {view == "learning-level" && <AddLevel title={view} />}

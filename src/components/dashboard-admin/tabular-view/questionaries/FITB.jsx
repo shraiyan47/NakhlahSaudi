@@ -25,7 +25,7 @@ export default function FITB() {
   useEffect(() => {
     const fetchQuestions = async () => {
       let url =
-        "api/journey-map-question-contents?populate[question_content][populate]=*&filters[question_content][question_type][title][$eq]=Fill_In_The_Blank&populate[learning_journey_lesson][populate][learning_journey_level][populate][learning_journey_unit][populate][0]=learning_journey";
+        "api/journey-map-question-contents?populate[question_content][populate]=*&filters[question_content][question_type][title][$eq]=Fill In The Blank&populate[learning_journey_lesson][populate][learning_journey_level][populate][learning_journey_unit][populate][0]=learning_journey";
       if (selectedJourney.id) {
         url += `&filters[learning_journey_lesson][learning_journey_level][learning_journey_unit][learning_journey][title][$eq]=${selectedJourney.title}`;
       }
@@ -38,6 +38,7 @@ export default function FITB() {
       if (selectedLesson.id) {
         url += `&filters[learning_journey_lesson][title][$eq]=${selectedLesson.title}`;
       }
+      console.log("FITB",url);
       const response = await getWithUrl(url);
 
       if (response) {
