@@ -6,7 +6,7 @@ import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
 
 import Deletion from "../modals/other/Deletion"; 
 // /modals/questionaries/AddcontentDetailsbyLanguage
-import AddContentDetailByLanguage from "./../modals/questionaries/AddContentDetailsbyLanguage.js";
+import AddContentDetailByLanguage from "./../modals/questionaries/AddContentDetailsbyLanguage.jsx";
 
 
 
