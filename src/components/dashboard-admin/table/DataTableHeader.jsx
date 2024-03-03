@@ -36,6 +36,7 @@ import AddLanguage from "../modals/questionaries/AddLanguage";
 import AddContentDetailByLanguage from "../modals/questionaries/AddContentDetailsbyLanguage";
 import AddContentByClause from "../modals/questionaries/AddContentByClause";
 import AddContentBySyllable from "../modals/questionaries/AddContentBySyllable";
+import AddDetailsOfContentDetailsByLanguage from "../modals/questionaries/AddDetailsOfContentDetailsByLanguage";
 
 
 const viewMap = {
@@ -156,6 +157,7 @@ export default function DataTableHeader({ table, view, filter }) {
               {view == "language" && < AddLanguage title={view} />}
               
               {view == "content-details-by-language" && < AddContentDetailByLanguage title={view} />}
+              {view == "details-of-content-details-by-language" && < AddDetailsOfContentDetailsByLanguage title={view} />}
               {view == "content-by-clause" && < AddContentByClause title={view} />}
               {view == "content-by-syllable" && < AddContentBySyllable title={view} />}
               {view == "question-content" && <AddQueContent title={view} />}

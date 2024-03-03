@@ -152,7 +152,7 @@ useEffect(() => {
         "data",
         `{"title":"${contentBySyllableTitleInput.value}", 
         "sequence":"${sequenceInput.value}",
-        "content": { "connect": [${selectedContent.id}] },
+        "contents": { "connect": [${selectedContent.id}] },
         "language": { "connect": [${selectedLanguage.id}] },
         "content_details_by_language": { "connect": [${selectedContentDetailsByLanguage.id}] }  
       }`
