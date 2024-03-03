@@ -10,14 +10,7 @@ import { useEffect } from "react";
 import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
 import { getHandler, putHandler, getWithUrl } from "@/lib/requestHandler";
 import { renderableContents } from "@/lib/fetchFunctions";
-const requestKeyMap = {
-  "all-content": "content-all",
-  "Sentence Making": "content-sm",
-  "Pair Matching": "content-pm",
-  "True Or False": "11123",
- "MCQ": "content-mcq",
-  "Fill In The Blank": "content-fitb",
-};
+
 
 export default function SMContent() {
   const contents = useContent((state) => state.data);

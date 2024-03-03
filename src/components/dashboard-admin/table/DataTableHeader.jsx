@@ -32,6 +32,10 @@ import QueFilter from "../tabular-view/questionaries/QueFilter";
 import AddQuestionTitle from "../modals/questionaries/AddQuestionTitle";
 import AddQuePage from "../modals/questionaries/AddQuePage";
 import AddContentDetails from "../modals/questionaries/AddContentDetails";
+import AddLanguage from "../modals/questionaries/AddLanguage";
+import AddContentDetailByLanguage from "../modals/questionaries/AddContentDetailsbyLanguage";
+import AddContentByClause from "../modals/questionaries/AddContentByClause";
+import AddContentBySyllable from "../modals/questionaries/AddContentBySyllable";
 
 
 const viewMap = {
@@ -53,6 +57,7 @@ const viewMap = {
   content: "id_content",
   "question-content": "id_question_content",
   "question-content-option": "id_question_content_option",
+  
 };
 
 export default function DataTableHeader({ table, view, filter }) {
@@ -148,6 +153,11 @@ export default function DataTableHeader({ table, view, filter }) {
               {view == "questionTitle" && <AddQuestionTitle title={view} />}{" "}
               {view == "content" && <AddContent title={view} />}
               {view == "content-details" && < AddContentDetails title={view} />}
+              {view == "language" && < AddLanguage title={view} />}
+              
+              {view == "content-details-by-language" && < AddContentDetailByLanguage title={view} />}
+              {view == "content-by-clause" && < AddContentByClause title={view} />}
+              {view == "content-by-syllable" && < AddContentBySyllable title={view} />}
               {view == "question-content" && <AddQueContent title={view} />}
               {view == "question-content-option" && (
                 <AddQueContOption title={view} />

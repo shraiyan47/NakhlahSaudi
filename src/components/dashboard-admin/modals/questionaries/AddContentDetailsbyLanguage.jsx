@@ -3,7 +3,7 @@ import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
 import {
   useContent,
-  useContentDetails,
+useLanguage, useContentDetailsByLanguage,
   useTabularView,
 } from "../../../../store/useAdminStore";
 import { useState ,useEffect} from "react";
@@ -14,16 +14,20 @@ import { BASE_URL, config, postMap, putMap, getHandler, postHandler, putHandler 
 import Image from "next/image";
 
 
-export default function AddContentDetail({ rowData, useForEdit }) {
+export default function AddContentDetailByLanguage({ rowData, useForEdit }) {
   //
+
+  console.log("rowdata", rowData)
   const { toast } = useToast();
   const contentData = useContent((state) => state.data);
-const setContentData = useContent( (state) => state.setContents  );
-  const addEdit = useContentDetails((state) => state.addEdit);
-  const afterAdd = useContentDetails((state) => state.afterAdd);
-  const afterUpdate = useContentDetails((state) => state.afterUpdate);
-  const [contentDetailsTitle, setContentDetailsTitle] = useState(useForEdit ? rowData.title : "");
-  const [contentDetailsAudio, setContentDetailsAudio] = useState(useForEdit ? rowData.contentAudio : "");
+const setContentData = useContent( (state) => state.setContents);
+const languageData = useLanguage((state) => state.data);
+const setLanguageData = useLanguage( (state) => state.setLanguage);
+  // const addEdit = useContentDetails((state) => state.addEdit);
+  const afterAdd = useContentDetailsByLanguage((state) => state.afterAdd);
+  const afterUpdate = useContentDetailsByLanguage((state) => state.afterUpdate);
+  const [contentDetailsByLanguageTitle, setContentDetailsByLanguageTitle] = useState(useForEdit ? rowData.title : "");
+ 
   const [error, setError] = useState({
     err0: "",
     err1: "",
@@ -40,10 +44,19 @@ const setContentData = useContent( (state) => state.setContents  );
       }
       : initStateSelection
   );
-  const [image, setImage] = useState(
-    useForEdit ? BASE_URL + rowData.icon : null
+
+  const [selectedLanguage, setSelectedLanguage] = useState(
+    useForEdit
+      ? {
+        id:rowData.language.id,
+        title:rowData.language.title,
+      }
+      : initStateSelection
   );
-console.log("rowData", rowData)
+  // const [image, setImage] = useState(
+  //   useForEdit ? BASE_URL + rowData.icon : null
+  // );
+
 
 useEffect(() => {
   const fetchContents = async () => {
@@ -56,43 +69,62 @@ useEffect(() => {
         };
       });
       setContentData(dataRenderable);
-      console.log("dhuru", dataRenderable)
+    
     }
   };
-   console.log("dhuru", contentData)
+ 
   if (Array.isArray(contentData) && contentData.length === 0) {
     fetchContents();
   }
 }, [contentData]);
 
 
+useEffect(() => {
+  const fetchLanguages = async () => {
+    const response = await getHandler("language");
+   
+    if (response.status === 200) {
+      const dataRenderable = response.data.data.map((item) => {
+        return {
+          id: item.id,
+          title: item.attributes.name,
+        };
+      });
+      setLanguageData(dataRenderable);
+    
+    }
+  };
+ 
+  if (Array.isArray(languageData) && languageData.length === 0) {
+    fetchLanguages();
+  }
+}, [languageData]);
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (contentDetailsTitle.length < 3) {
+    if (contentDetailsByLanguageTitle.length < 3) {
       setError({ ...error, err0: "Too Short" });
-    } else if (contentDetailsAudio.length < 3) {
-      setError({ ...error, err1: "Too Short" });
     } else {
       let formData = new FormData();
-      var contentDetailsTitleInput = document.getElementById("idInputContentDetailsTitle");
+      var contentDetailsByLanguageTitleInput = document.getElementById("idContentDetailsByLanguageTitleInput");
       var contentDetailsAudioInput = document.getElementById("idInputContentDetailsAudio");
-      var fileInput = document.getElementById("idInputFile");
+      // var fileInput = document.getElementById("idInputFile");
 
-      var file = fileInput.files[0];
-      formData.append("files.image", file);
+      // var file = fileInput.files[0];
+      // formData.append("files.image", file);
 
       formData.append(
         "data",
-        `{"title":"${contentDetailsTitleInput.value}", "audio": "${contentDetailsAudioInput.value}", "content": { "connect": [${selectedContent.id}] }}`
+        `{"title":"${contentDetailsByLanguageTitleInput.value}",  "content": { "connect": [${selectedContent.id}] },
+        "language": { "connect": [${selectedLanguage.id}] } }`
       );
 
      
 
       await fetch(
         useForEdit
-          ? putMap["content-details"] + `/${rowData.id}?populate=*`
-          : postMap["content-details"]+ `?populate=*`,
+          ? putMap["content-details-by-language"] + `/${rowData.id}?populate=*`
+          : postMap["content-details-by-language"]+`?populate=*`,
         {
           method: useForEdit ? "PUT" : "POST",
           body: formData,
@@ -107,7 +139,7 @@ useEffect(() => {
         .then((res) => res.json())
     
         .then((data) => {
-          console.log("res", data)
+        
           alert(JSON.stringify(data));
           let renderable = {
             id: data.data.id,
@@ -116,10 +148,12 @@ useEffect(() => {
               id:  data.data.attributes?.content?.data?.id,
               title:data.data.attributes?.content?.data?.attributes?.title,
             },
-            contentAudio: data.data.attributes?.audio,
-            icon: data.data.attributes.image?.data?.attributes?.url,
+             language: {
+                id:  data.data.attributes?.language?.data?.id,
+                title:data.data.attributes?.language?.data?.attributes?.name,
+             }
           };
-           console.log("renderable", renderable, data.data)
+      
           useForEdit ? afterUpdate(renderable) : afterAdd(renderable);
           toast({
             title: useForEdit ? "Successfully Updated" : "Successfully Added",
@@ -149,12 +183,12 @@ useEffect(() => {
           className="flex flex-col gap-4 py-2 text-black text-lg"
         >
           <div className="flex flex-col ">
-            <label>Content Detail Title</label>
+            <label>Content Detail by Language Title</label>
             <CustomInput
-              id="idInputContentDetailsTitle"
+              id="idContentDetailsByLanguageTitleInput"
               type="text"
-              value={contentDetailsTitle}
-              onChange={(e) => setContentDetailsTitle(e.target.value)}
+              value={contentDetailsByLanguageTitle}
+              onChange={(e) =>setContentDetailsByLanguageTitle(e.target.value)}
               ph="Enter Content Detail Title"
               style="py-0.25 px-1"
             />
@@ -163,7 +197,7 @@ useEffect(() => {
 
           <div className="flex flex-col gap-1">
             <CustomSelect
-              id="idSelectedContent"
+              id="idSelectedLanguage"
               label={"Contents"}
               value={selectedContent}
               options={contentData}
@@ -174,22 +208,21 @@ useEffect(() => {
             />
             <span className="text-red-700">{error.err1}</span>
           </div>
-
-          <div className="flex flex-col ">
-            <label>Audio of Content Detail</label>
-            <CustomInput
-              id="idInputContentDetailsAudio"
-              type="text"
-              value={contentDetailsAudio}
-              onChange={(e) => setContentDetailsAudio(e.target.value)}
-              ph="Enter Audio Text"
-              style="py-0.25 px-1"
+          <div className="flex flex-col gap-1">
+            <CustomSelect
+              id="idSelectedLanguage"
+              label={"Language"}
+              value={selectedLanguage}
+              options={languageData}
+              bg="wh"
+              onChange={(value) =>
+                setSelectedLanguage({ id: value.id, title: value.title })
+              }
             />
-           
-            {/* <ReactSpeechKit /> */}
             <span className="text-red-700">{error.err1}</span>
           </div>
-          <div className="flex gap-2 flex-col items-start">
+        
+          {/* <div className="flex gap-2 flex-col items-start">
             <input
               type="file"
               id="idInputFile"
@@ -212,7 +245,7 @@ useEffect(() => {
                 height={50}
               />
             )}
-          </div>
+          </div> */}
           <CustomButton
             txt={useForEdit ? "Update" : "Add"}
             type="submit"

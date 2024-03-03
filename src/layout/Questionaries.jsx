@@ -45,6 +45,8 @@ import FITBContent from "../components/dashboard-admin/tabular-view/questionarie
 import PMContent from "../components/dashboard-admin/tabular-view/questionaries/PMContent";
 import SMContent from "../components/dashboard-admin/tabular-view/questionaries/SMContent";
 import ContentDetails from "../components/dashboard-admin/tabular-view/questionaries/ContentDetails";
+import Language from "../components/dashboard-admin/tabular-view/questionaries/Language";
+import ContentDetailsByLanguage from "../components/dashboard-admin/tabular-view/questionaries/ContentDetailsByLanguage";
 
 export default function Questionaries({ content }) {
   //
@@ -311,16 +313,19 @@ export default function Questionaries({ content }) {
           currentSubView == "Sentence Making" && <SM />} 
 
         {currentView == "Question Content Types" && <QueType />}
-        {currentView == "Content Types" && <ContentType />}
+        {/* {currentView == "Content Types" && <ContentType />} */}
         {currentView == "Content Data Types" && <ConTypeCategory />}
         {/* {currentView == "Contents" && <Content />} */}
         {currentView == "Questions" && <QuestionTitle />}
-        {currentView == "Content Details" && <ContentDetails />}
 
-       {/*  {currentAct == "add" && currentSubView == "MCQ" && (
-          <AddQuePage rowData={{ question_type: {id: 1, title: "MCQ"}}} useForEdit={false} />
-        )} */}
-        {currentAct == "add" && currentSubView == "Pair Matching" && (
+        {/* {currentView == "Content Details" && <ContentDetails />} */}
+        {/* {currentView == "Languages" && <Language />} */}
+        {/* {currentView == "Content Details by Languages" && <ContentDetailsByLanguage />} */}
+        {currentAct == "add" && currentSubView == "MCQ" && (
+          <AddQuePage useForEdit={false} />
+        )}
+        {/* {currentAct == "add" && currentSubView == "Pair Matching" && (
+
           <div>{"Loading ... "}</div>
         )}
         {currentAct == "add" && currentSubView == "Sentence Making" && (
@@ -335,8 +340,8 @@ export default function Questionaries({ content }) {
       </div>
 
 {/* contents*/}
-<div className="flex-grow overflow-y-scroll  ">
-        {currentView == "Contents" &&
+{/* <div className="flex-grow overflow-y-scroll  "> */}
+        {/* {currentView == "Contents" &&
           currentAct == "view" &&
           currentSubView == "MCQ" && <McqContent/>}
 
@@ -354,7 +359,7 @@ export default function Questionaries({ content }) {
           
         {currentView == "Contents" &&
           currentAct == "view" &&
-          currentSubView == "Sentence Making" && <SMContent/>}
+          currentSubView == "Sentence Making" && <SMContent/>} */}
         
         {/* {currentAct == "add" && currentSubView == "Pair Matching" && (
           <div>{"Loading ... "}</div>
@@ -368,7 +373,7 @@ export default function Questionaries({ content }) {
         {currentAct == "add" && currentSubView == "Fill In The Blank" && (
           <AddQuePage useForEdit={false} />
         )} */}
-      </div>
+      {/* </div> */}
 
     </div>
   );
