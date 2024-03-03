@@ -310,7 +310,7 @@ export default function Questionaries({ content }) {
           currentSubView == "Pair Matching" && <PM />}
         {currentView == "Questions Mapping" &&
           currentAct == "view" &&
-          currentSubView == "Sentence Making" && <SM />} 
+          currentSubView == "Sentence Making" && <SM />}
 
         {currentView == "Question Content Types" && <QueType />}
         {/* {currentView == "Content Types" && <ContentType />} */}
@@ -340,7 +340,7 @@ export default function Questionaries({ content }) {
       </div>
 
 {/* contents*/}
-{/* <div className="flex-grow overflow-y-scroll  "> */}
+        {/* <div className="flex-grow overflow-y-scroll  "> */}
         {/* {currentView == "Contents" &&
           currentAct == "view" &&
           currentSubView == "MCQ" && <McqContent/>}
@@ -360,7 +360,7 @@ export default function Questionaries({ content }) {
         {currentView == "Contents" &&
           currentAct == "view" &&
           currentSubView == "Sentence Making" && <SMContent/>} */}
-        
+
         {/* {currentAct == "add" && currentSubView == "Pair Matching" && (
           <div>{"Loading ... "}</div>
         )}
@@ -373,8 +373,9 @@ export default function Questionaries({ content }) {
         {currentAct == "add" && currentSubView == "Fill In The Blank" && (
           <AddQuePage useForEdit={false} />
         )} */}
-      {/* </div> */}
+        {/* </div> */}
 
+      </div>
     </div>
   );
 }
