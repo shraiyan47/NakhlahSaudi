@@ -76,6 +76,7 @@ useEffect(() => {
   if (Array.isArray(contentData) && contentData.length === 0) {
     fetchContents();
   }
+// eslint-disable-next-line react-hooks/exhaustive-deps
 }, [contentData]);
 
 
