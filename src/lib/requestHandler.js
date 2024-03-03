@@ -49,6 +49,11 @@ export const getMap = {
   "QuestionsTitleFull": `${BASE_URL}/api/questions?pagination[page]=1&pagination[pageSize]=999999&populate=*`,
   question: `${BASE_URL}/api/journey-map-question-contents?populate[question_content][populate]=*&populate=image&populate[learning_journey_lesson][populate][learning_journey_level][populate][learning_journey_unit][populate][0]=learning_journey`,
   "question-content": `${BASE_URL}/api/question-contents?populate=*`,
+  "question-content-mcq": `${BASE_URL}/api/question-contents?populate=*&filters[question_type][title][$eq]=MCQ`,
+  "question-content-fib": `${BASE_URL}/api/question-contents?populate=*&filters[question_type][title][$eq]=Fill In The Blank`,
+  "question-content-boolean": `${BASE_URL}/api/question-contents?populate=*&filters[question_type][title][$eq]=True Or False`,
+  "question-content-sm": `${BASE_URL}/api/question-contents?populate=*&filters[question_type][title][$eq]=Sentence Making`,
+  "question-content-pm": `${BASE_URL}/api/question-contents?populate=*&filters[question_type][title][$eq]=Pair Matching`,
   "question-content-option": `${BASE_URL}/api/question-content-options?populate[question_content][populate][0]=id`,
 };
 
@@ -98,7 +103,11 @@ export const putMap = {
   question: `${BASE_URL}/api/questions`,
   "question-content": `${BASE_URL}/api/question-contents`,
   "question-content-option": `${BASE_URL}/api/question-content-options`,
+
+  "journey-map-question": `${BASE_URL}/api/journey-map-question-contents`,
+
   "content-details" : `${BASE_URL}/api/content-details`,
+
 };
 export const deleteMap = {
   "learner-purpose": `${BASE_URL}/api/learning-purposes`,
@@ -113,17 +122,23 @@ export const deleteMap = {
   "content-all": `${BASE_URL}/api/contents`,
   "content-type": `${BASE_URL}/api/content-types`,
   "content-type-category": `${BASE_URL}/api/content-type-categories`,
-  question: `${BASE_URL}/api/questions`,
+
+//   question: `${BASE_URL}/api/questions`,
   "language" :  `${BASE_URL}/api/languages`,
   "content-details-by-language" : `${BASE_URL}/api/content-details-by-languages`,
   "content-by-clause" : `${BASE_URL}/api/content-by-clauses`,
   "content-by-syllable" : `${BASE_URL}/api/content-by-syllables?populate=*`,
+
+  question: `${BASE_URL}/api/journey-map-question-contents`,
+
   "Question Title": `${BASE_URL}/api/questions`,
   "question-content": `${BASE_URL}/api/question-contents`,
   "question-content-option": `${BASE_URL}/api/question-content-options`,
   "content-details" : `${BASE_URL}/api/content-details`,
 };
-
+export const getQuestionUrl = (id) => {
+  return `api/questions?populate=*&filters[question_content][question_type][id][$eq]=${id}`;
+}
 export const getWithUrl = async (url) => {
   try {
     const response = await axios.get(BASE_URL + "/" + url, config);

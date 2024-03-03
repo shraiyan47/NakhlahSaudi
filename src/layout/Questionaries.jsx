@@ -317,6 +317,7 @@ export default function Questionaries({ content }) {
         {currentView == "Content Data Types" && <ConTypeCategory />}
         {/* {currentView == "Contents" && <Content />} */}
         {currentView == "Questions" && <QuestionTitle />}
+
         {/* {currentView == "Content Details" && <ContentDetails />} */}
         {/* {currentView == "Languages" && <Language />} */}
         {/* {currentView == "Content Details by Languages" && <ContentDetailsByLanguage />} */}
@@ -324,17 +325,18 @@ export default function Questionaries({ content }) {
           <AddQuePage useForEdit={false} />
         )}
         {/* {currentAct == "add" && currentSubView == "Pair Matching" && (
+
           <div>{"Loading ... "}</div>
         )}
         {currentAct == "add" && currentSubView == "Sentence Making" && (
-          <AddQuePage useForEdit={false} />
+          <AddQuePage rowData={{ question_type: {id: 16, title: "Sentence Making"}}} useForEdit={false} />
         )}
         {currentAct == "add" && currentSubView == "True Or False" && (
-          <AddQuePage useForEdit={false} />
+          <AddQuePage rowData={{ question_type: {id: 4, title: "True Or False"}}} useForEdit={false} />
         )}
         {currentAct == "add" && currentSubView == "Fill In The Blank" && (
-          <AddQuePage useForEdit={false} />
-        )} */}
+          <AddQuePage rowData={{ question_type: {id: 2, title: "Fill In The Blank"}}} useForEdit={false} />
+        )}
       </div>
 
 {/* contents*/}
