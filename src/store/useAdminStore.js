@@ -932,10 +932,10 @@ export const useContent = create(
     },
     addEdit: async ({ useForEdit, data, id }) => {
       const response = useForEdit
-        ? await putHandler("content", id, {
+        ? await putHandler("content-all", id, {
             data,
           })
-        : await postHandler("content", {
+        : await postHandler("content-all", {
             data,
           });
 
@@ -976,6 +976,360 @@ export const useContent = create(
     },
     afterUpdate: (data) => {
       console.log("daaaaaaaaaaataaaaaaaaaaaaa", data)
+      set((state) => {
+        state.data = state.data.map((item) => {
+          if (item.id == data.id) {
+            return data;
+          } else {
+            return item;
+          }
+        });
+      });
+    },
+    afterDelete: (id) => {
+      set((state) => {
+        state.data = state.data.filter((item) => item.id != id);
+      });
+    },
+  }))
+);
+
+export const useContentDetails = create(
+  immer((set) => ({
+    data: [],
+    setContents: (data) => {
+      set((state) => {
+        state.data = data;
+      });
+    },
+    addEdit: async ({ useForEdit, data, id }) => {
+      const response = useForEdit
+        ? await putHandler("content-details", id, {
+            data,
+          })
+        : await postHandler("content-details", {
+            data,
+          });
+
+      if (response.status == 400) {
+        let errors = response.data.error.details.errors;
+        return {
+          status: response.status,
+          error: errors[0].message,
+        };
+      }
+      if (response.status == 200) {
+        let data = response.data.data;
+        console.log("usestoreadmin", data)
+        return {
+          status: response.status,
+          message: useForEdit ? "Updated Successfully" : "Added Successfully",
+          data: {
+            id: data.id,
+            title: data.attributes.title,
+            audio: data.attributes.audio,
+            content: {
+              id:  data.attributes?.content?.data?.id,
+              title:data.attributes?.content?.data?.attributes?.title,
+            },
+            icon: data.attributes.image?.data?.attributes?.url,
+          },
+        };
+      }
+    },
+    afterAdd: (data) => {
+      console.log("bebo", data)
+      set((state) => {
+        state.data = [data, ...state.data];
+      });
+    },
+    afterUpdate: (data) => {
+      console.log("bebo", data)
+      set((state) => {
+        state.data = state.data.map((item) => {
+          if (item.id == data.id) {
+            return data;
+          } else {
+            return item;
+          }
+        });
+      });
+    },
+    afterDelete: (id) => {
+      set((state) => {
+        state.data = state.data.filter((item) => item.id != id);
+      });
+    },
+  }))
+);
+export const useLanguage = create(
+  immer((set) => ({
+    data: [],
+    setLanguage: (data) => {
+      set((state) => {
+        state.data = data;
+      });
+    },
+    addEdit: async ({ useForEdit, data, id }) => {
+      const response = useForEdit
+        ? await putHandler("language", id, {
+            data,
+          })
+        : await postHandler("language", {
+            data,
+          });
+
+      if (response.status == 400) {
+        let errors = response.data.error.details.errors;
+        return {
+          status: response.status,
+          error: errors[0].message,
+        };
+      }
+      if (response.status == 200) {
+        let data = response.data.data;
+        console.log("usestoreadmin", data)
+        return {
+          status: response.status,
+          message: useForEdit ? "Updated Successfully" : "Added Successfully",
+          data: {
+            id: data.id,
+            title: data.attributes.name,
+            country: data.attributes.country,
+          },
+        };
+      }
+    },
+    afterAdd: (data) => {
+      console.log("bebo", data)
+      set((state) => {
+        state.data = [data, ...state.data];
+      });
+    },
+    afterUpdate: (data) => {
+      console.log("bebo", data)
+      set((state) => {
+        state.data = state.data.map((item) => {
+          if (item.id == data.id) {
+            return data;
+          } else {
+            return item;
+          }
+        });
+      });
+    },
+    afterDelete: (id) => {
+      set((state) => {
+        state.data = state.data.filter((item) => item.id != id);
+      });
+    },
+  }))
+);
+
+export const useContentDetailsByLanguage = create(
+  immer((set) => ({
+    data: [],
+    setContentDetailsByLanguage: (data) => {
+      set((state) => {
+        state.data = data;
+      });
+    },
+    addEdit: async ({ useForEdit, data, id }) => {
+      const response = useForEdit
+        ? await putHandler("content-details-by-language", id, {
+            data,
+          })
+        : await postHandler("content-details-by-language", {
+            data,
+          });
+
+      if (response.status == 400) {
+        let errors = response.data.error.details.errors;
+        return {
+          status: response.status,
+          error: errors[0].message,
+        };
+      }
+      if (response.status == 200) {
+        let data = response.data.data;
+        console.log("usestoreadmin", data)
+        return {
+          status: response.status,
+          message: useForEdit ? "Updated Successfully" : "Added Successfully",
+          data: {
+            id: data.id,
+            title: data.attributes.title,
+            content: {
+              id: item.attributes?.content?.data?.id,
+              title: item.attributes?.content?.data?.attributes?.title,
+            },
+            language: {
+              id: item.attributes?.language?.data?.id,
+              title: item.attributes?.language?.data?.attributes?.name,
+            },
+          },
+        };
+      }
+    },
+    afterAdd: (data) => {
+      console.log("bebo", data)
+      set((state) => {
+        state.data = [data, ...state.data];
+      });
+    },
+    afterUpdate: (data) => {
+      console.log("bebo", data)
+      set((state) => {
+        state.data = state.data.map((item) => {
+          if (item.id == data.id) {
+            return data;
+          } else {
+            return item;
+          }
+        });
+      });
+    },
+    afterDelete: (id) => {
+      set((state) => {
+        state.data = state.data.filter((item) => item.id != id);
+      });
+    },
+  }))
+);
+
+export const useContentByClause= create(
+  immer((set) => ({
+    data: [],
+    setContentByClause: (data) => {
+      set((state) => {
+        state.data = data;
+      });
+    },
+    addEdit: async ({ useForEdit, data, id }) => {
+      const response = useForEdit
+        ? await putHandler("content-by-clause", id, {
+            data,
+          })
+        : await postHandler("content-by-clause", {
+            data,
+          });
+
+      if (response.status == 400) {
+        let errors = response.data.error.details.errors;
+        return {
+          status: response.status,
+          error: errors[0].message,
+        };
+      }
+      if (response.status == 200) {
+        let data = response.data.data;
+        console.log("usestoreadmin", data)
+        return {
+          status: response.status,
+          message: useForEdit ? "Updated Successfully" : "Added Successfully",
+          data: {
+            id: data.id,
+            title: data.attributes.title,
+            sequence:  item.attributes?.sequence,
+            content: {
+             id: item.attributes?.contents?.data[0]?.id,
+             title: item.attributes?.contents?.data[0]?.attributes?.title,
+           },
+           language: {
+             id: item.attributes?.language?.data?.id,
+             title: item.attributes?.language?.data?.attributes?.name,
+           },
+           content_details_by_language: {
+             id: item.attributes?.content_details_by_language?.data?.id,
+             title: item.attributes?.content_details_by_language?.data?.attributes?.title,
+           }
+          },
+        };
+      }
+    },
+    afterAdd: (data) => {
+      console.log("bebo", data)
+      set((state) => {
+        state.data = [data, ...state.data];
+      });
+    },
+    afterUpdate: (data) => {
+      console.log("bebo", data)
+      set((state) => {
+        state.data = state.data.map((item) => {
+          if (item.id == data.id) {
+            return data;
+          } else {
+            return item;
+          }
+        });
+      });
+    },
+    afterDelete: (id) => {
+      set((state) => {
+        state.data = state.data.filter((item) => item.id != id);
+      });
+    },
+  }))
+);
+export const useContentBySyllable= create(
+  immer((set) => ({
+    data: [],
+    setContentBySyllable: (data) => {
+      set((state) => {
+        state.data = data;
+      });
+    },
+    addEdit: async ({ useForEdit, data, id }) => {
+      const response = useForEdit
+        ? await putHandler("content-by-syllable", id, {
+            data,
+          })
+        : await postHandler("content-by-syllable", {
+            data,
+          });
+
+      if (response.status == 400) {
+        let errors = response.data.error.details.errors;
+        return {
+          status: response.status,
+          error: errors[0].message,
+        };
+      }
+      if (response.status == 200) {
+        let data = response.data.data;
+        console.log("usestoreadmin", data)
+        return {
+          status: response.status,
+          message: useForEdit ? "Updated Successfully" : "Added Successfully",
+          data: {
+            id: data.id,
+            title: data.attributes.title,
+            sequence:  item.attributes?.sequence,
+            content: {
+             id: item.attributes?.contents?.data[0]?.id,
+             title: item.attributes?.contents?.data[0]?.attributes?.title,
+           },
+           language: {
+             id: item.attributes?.language?.data?.id,
+             title: item.attributes?.language?.data?.attributes?.name,
+           },
+           content_details_by_language: {
+             id: item.attributes?.content_details_by_language?.data?.id,
+             title: item.attributes?.content_details_by_language?.data?.attributes?.title,
+           }
+          },
+        };
+      }
+    },
+    afterAdd: (data) => {
+      console.log("bebo", data)
+      set((state) => {
+        state.data = [data, ...state.data];
+      });
+    },
+    afterUpdate: (data) => {
+      console.log("bebo", data)
       set((state) => {
         state.data = state.data.map((item) => {
           if (item.id == data.id) {

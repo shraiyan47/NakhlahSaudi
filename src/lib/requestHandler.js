@@ -33,18 +33,22 @@ export const getMap = {
   "question-type": `${BASE_URL}/api/question-types`,
   "content-type": `${BASE_URL}/api/content-types`,
   "content-type-category": `${BASE_URL}/api/content-type-categories`,
- // "content-all": `${BASE_URL}/api/contents?populate=*`,
+  "content-details" : `${BASE_URL}/api/content-details?populate=*`,
  // "content-pm": `${BASE_URL}/api/contents?filters[content_type][title][$eq]=Pair_Matching`,
  // "content-sm": `${BASE_URL}/api/contents?filters[content_type][title][$eq]=Sentence_Making`,
-  "content-fitb": `${BASE_URL}/api/contents?filters[content_type][title][$eq]=Fill_In_The_Blank`,
+ // "content-fitb": `${BASE_URL}/api/contents?filters[content_type][title][$eq]=Fill_In_The_Blank`,
+
   //"content-tof": `${BASE_URL}/api/contents?filters[content_type][title][$eq]=Boolean`,
   //"content-mcq": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=MCQ`,
 
   // "content-boolean": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Boolean`,
-  // "content-fib": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Fill_In_The_Blank`,
-  // "content-mcq": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=MCQ`,
-  // "content-sm": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Sentence_Making`,
-  // "content-pm": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Pair_Matching`,
+  // api for contents with filtering
+   "content-all": `${BASE_URL}/api/contents?populate=*`,
+  "content-fitb": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Fill In The Blank`,
+ "content-tof": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=True Or False`,
+ "content-mcq": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=MCQ`,
+ "content-sm": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Sentence Making`,
+"content-pm": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Pair Matching`,
   // question: `${BASE_URL}/api/questions?populate=*`,
   MCQ: "{{URL}}/api/question-contents?populate[question][populate]=*&filters[question_type][title][$eq]=MCQ",
   "Pair Matching": "",
@@ -54,6 +58,11 @@ export const getMap = {
   "QuestionsTitleFull": `${BASE_URL}/api/questions?pagination[page]=1&pagination[pageSize]=999999&populate=*`,
   question: `${BASE_URL}/api/journey-map-question-contents?populate[question_content][populate]=*&populate=image&populate[learning_journey_lesson][populate][learning_journey_level][populate][learning_journey_unit][populate][0]=learning_journey`,
   "question-content": `${BASE_URL}/api/question-contents?populate=*`,
+  "question-content-mcq": `${BASE_URL}/api/question-contents?populate=*&filters[question_type][title][$eq]=MCQ`,
+  "question-content-fib": `${BASE_URL}/api/question-contents?populate=*&filters[question_type][title][$eq]=Fill In The Blank`,
+  "question-content-boolean": `${BASE_URL}/api/question-contents?populate=*&filters[question_type][title][$eq]=True Or False`,
+  "question-content-sm": `${BASE_URL}/api/question-contents?populate=*&filters[question_type][title][$eq]=Sentence Making`,
+  "question-content-pm": `${BASE_URL}/api/question-contents?populate=*&filters[question_type][title][$eq]=Pair Matching`,
   "question-content-option": `${BASE_URL}/api/question-content-options?populate[question_content][populate][0]=id`,
 };
 
@@ -76,6 +85,7 @@ export const postMap = {
   "question-content": `${BASE_URL}/api/question-contents`,
   "question-content-option": `${BASE_URL}/api/question-content-options`,
   "journey-map-question": `${BASE_URL}/api/journey-map-question-contents`,
+  "content-details" : `${BASE_URL}/api/content-details`,
 };
 export const putMap = {
   "learner-purpose": `${BASE_URL}/api/learning-purposes`,
@@ -94,6 +104,11 @@ export const putMap = {
   question: `${BASE_URL}/api/questions`,
   "question-content": `${BASE_URL}/api/question-contents`,
   "question-content-option": `${BASE_URL}/api/question-content-options`,
+
+  "journey-map-question": `${BASE_URL}/api/journey-map-question-contents`,
+
+  "content-details" : `${BASE_URL}/api/content-details`,
+
 };
 export const deleteMap = {
   "learner-purpose": `${BASE_URL}/api/learning-purposes`,
@@ -108,12 +123,15 @@ export const deleteMap = {
   content: `${BASE_URL}/api/contents`,
   "content-type": `${BASE_URL}/api/content-types`,
   "content-type-category": `${BASE_URL}/api/content-type-categories`,
-  question: `${BASE_URL}/api/questions`,
+  question: `${BASE_URL}/api/journey-map-question-contents`,
   "Question Title": `${BASE_URL}/api/questions`,
   "question-content": `${BASE_URL}/api/question-contents`,
   "question-content-option": `${BASE_URL}/api/question-content-options`,
+  "content-details" : `${BASE_URL}/api/content-details`,
 };
-
+export const getQuestionUrl = (id) => {
+  return `api/questions?populate=*&filters[question_content][question_type][id][$eq]=${id}`;
+}
 export const getWithUrl = async (url) => {
   try {
     const response = await axios.get(BASE_URL + "/" + url, config);

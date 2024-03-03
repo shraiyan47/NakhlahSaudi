@@ -14,10 +14,13 @@ import {
   useLearningLesson,
   useLearningLevel,
   useLearningUnit,
+  useQueContent,
 } from "../../../../store/useAdminStore";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   getHandler,
+  getQuestionUrl,
+  getWithUrl,
   postHandler,
   postMap,
   putHandler,
@@ -31,14 +34,19 @@ import {
   renderableLearningLevels,
   renderableLessons,
   renderableQueType,
+  renderableQuestion,
+  renderableQuestionContent,
+  renderableQuetions,
   renderableTaskUnits,
   renderableTasks,
 } from "@/lib/fetchFunctions";
 import { GitCommitHorizontal, Hash } from "lucide-react";
 import axios from "axios";
 import Image from "next/image";
+import CustomSearchableDropdown from "@/components/ui-custom/CustomSearchableDropdown";
 
 export default function AddQuePage({ rowData, useForEdit }) {
+  console.log(rowData);
   const { toast } = useToast();
   //
 
@@ -50,20 +58,27 @@ export default function AddQuePage({ rowData, useForEdit }) {
   const afterUpdate = useQuestion((state) => state.afterUpdate);
   const afterAdd = useQuestion((state) => state.afterAdd);
 
-  const [question, setQuestion] = useState(useForEdit ? rowData.question : "");
+  // const [question, setQuestion] = useState(useForEdit ? rowData.question : "");
 
   const initErrors = {
     err0: "",
   };
   const [error, setError] = useState(initErrors);
   //
+  const [questionContentOptions, setQuestionContentOptions] = useState([]);
+  console.log(questionContentOptions);
   const queTypeData = useQueType((state) => state.data);
   const setQueTypes = useQueType((state) => state.setQueTypes);
   const [selectedQueType, setSelectedQueType] = useState(
     useForEdit
       ? {
-          id: rowData.question_type.id,
-          title: rowData.question_type.title,
+          id: rowData?.question_type?.id,
+          title: rowData?.question_type?.title,
+        }
+      : rowData?.question_type
+      ? {
+          id: rowData?.question_type?.id,
+          title: rowData?.question_type?.title,
         }
       : initStateSelection //{ id: 1, title: "MCQ" }
   );
@@ -73,18 +88,28 @@ export default function AddQuePage({ rowData, useForEdit }) {
   const setContents = useContent((state) => state.setContents);
   const currentView = useTabularView((state) => state.data.currentView);
 
+  const questionsData = useQueContent((state) => state.data);
+  const setQuestionData = useQueContent((state) => state.setQueContents);
+  const [question, setQuestion] = useState(
+    useForEdit
+      ? {
+          id: rowData?.question?.id,
+          title: rowData?.question?.title,
+        }
+      : initStateSelection // { id: 8, title: "quesion" }
+  );
   //  -------------------------------------------------------------- journey portion
   const journeyData = useLearningJourney((state) => state.data);
   const setJournies = useLearningJourney((state) => state.setJournies);
   const [selectedJourney, setSelectedJourney] = useState(
     useForEdit
       ? {
-          id: rowData.level.id,
-          title: rowData.level.title,
+          id: rowData?.level?.id,
+          title: rowData?.level?.title,
         }
       : initStateSelection // { id: 3, title: "Advanced" }
   );
-
+  console.log(selectedJourney);
   useEffect(() => {
     if (selectedJourney.id != null) {
       useForEdit ? "" : setSelectedUnit(initStateSelection);
@@ -105,12 +130,12 @@ export default function AddQuePage({ rowData, useForEdit }) {
   const [selectedUnit, setSelectedUnit] = useState(
     useForEdit
       ? {
-          id: rowData.task.id,
-          title: rowData.task.title,
+          id: rowData?.task?.id,
+          title: rowData?.task?.title,
         }
       : initStateSelection //{ id: 9, title: "Pokath" }
   );
-
+  const [questionContentOptionId, setQuestionContentOptionId] = useState(0);
   useEffect(() => {
     if (selectedUnit.id != null) {
       useForEdit ? "" : setSelectedLevel(initStateSelection);
@@ -130,8 +155,8 @@ export default function AddQuePage({ rowData, useForEdit }) {
   const [selectedLevel, setSelectedLevel] = useState(
     useForEdit
       ? {
-          id: rowData.task_unit.id,
-          title: rowData.task_unit.title,
+          id: rowData?.task_unit?.id,
+          title: rowData?.task_unit?.title,
         }
       : initStateSelection // { id: 7, title: "Level adv pokath" }
   );
@@ -145,16 +170,34 @@ export default function AddQuePage({ rowData, useForEdit }) {
 
   const fetchMapContent = {
     MCQ: "content-mcq",
-    "Fill in the blank": "content-fib",
-    "True 0r False": "content-boolean",
+    "Fill In The Blank": "content-fib",
+    "True Or False": "content-boolean",
     "Sentence Making": "content-sm",
     "Pair Matching": "content-pm",
   };
   useEffect(() => {
     const fetch = async () => {
-      const response = await getHandler(fetchMapContent[selectedQueType.title]);
+      const url = `api/contents?filters[content_type][title][$eq]=${selectedQueType.title}`;
+      const response = await getWithUrl(url);
       if (response.status === 200) {
         setContents(renderableContents(response.data.data));
+      }
+    };
+    if (selectedQueType.id != null) {
+      setError({ ...error, err3: "" });
+      fetch();
+      selectedQueType.title == "Sentence Making" ? setQuestion("") : "";
+    }
+  }, [selectedQueType]);
+  useEffect(() => {
+    const fetch = async () => {
+      console.log(selectedQueType.id);
+      const url = getQuestionUrl(selectedQueType.id);
+      const response = await getWithUrl(url);
+      if (response.status === 200) {
+        console.log(response.data.data);
+        setQuestionData(renderableQuestion(response.data.data));
+        // setQuestion({ id: null, title: "" });
       }
     };
     if (selectedQueType.id != null) {
@@ -170,8 +213,8 @@ export default function AddQuePage({ rowData, useForEdit }) {
   const [selectedLesson, setSelectedLesson] = useState(
     useForEdit
       ? {
-          id: rowData.lesson.id,
-          title: rowData.lesson.title,
+          id: rowData?.lesson?.id,
+          title: rowData?.lesson?.title,
         }
       : initStateSelection // { id: 8, title: "Lesson 2" }
   );
@@ -243,30 +286,107 @@ export default function AddQuePage({ rowData, useForEdit }) {
     }
   }, [lessonData]);
 
+  useEffect(() => {
+    const fetch = async () => {
+      let url = `api/question-content-options?populate[question_content][populate][0]=question,question_type,content&filters[question_content][id][$eq]=${rowData.question_content}`;
+      const response = await getWithUrl(url);
+      if (response.status === 200) {
+        if (response?.data?.data[0]?.id) {
+          let url1 = `api/question-content-options/${response?.data?.data[0]?.id}?populate=*`;
+          console.log(url1);
+          const response1 = await getWithUrl(url1);
+          if (response1.status === 200) {
+            console.log(response1.data.data);
+            setQuestionContentOptionId(response?.data?.data[0]?.id);
+            setQuestionContentOptions(
+              response1?.data?.data?.attributes?.contents?.data
+            );
+          }
+        }
+      }
+    };
+    if (rowData.question_content) {
+      fetch();
+    }
+  }, [rowData?.question_content]);
   const initOptionData = {
     content: initStateSelection,
   };
-
   const initOptions = {
-    optionOne: initOptionData,
-    optionTwo: initOptionData,
-    optionThree: initOptionData,
-    optionFour: initOptionData,
+    option1: useForEdit ? { content: rowData?.content } : initOptionData,
+    option2:
+      (useForEdit && questionContentOptions.length) > 0
+        ? {
+            content: {
+              id: questionContentOptions[0]?.id,
+              title: questionContentOptions[0]?.attributes?.title,
+            },
+          }
+        : initOptionData,
+    /* optionThree:
+      (useForEdit && questionContentOptions.length) > 0
+        ? {
+            content: {
+              id: questionContentOptions[1]?.id,
+              title: questionContentOptions[1]?.attributes?.title,
+            },
+          }
+        : initOptionData,
+    optionFour:
+      (useForEdit && questionContentOptions.length) > 0
+        ? {
+            content: {
+              id: questionContentOptions[2]?.id,
+              title: questionContentOptions[2]?.attributes?.title,
+            },
+          }
+        : initOptionData, */
   };
-
+  console.log(initOptions);
   const initRightWrong = {
-    optionOne: false,
-    optionTwo: false,
-    optionThree: false,
-    optionFour: false,
+    option1: useForEdit ? true : false,
+    option2: false,
+    /* optionThree: false,
+    optionFour: false, */
   };
 
   const [options, setOptions] = useState(initOptions);
-
+  console.log(options);
   const [rightAndWrong, setRightAndWrong] = useState(initRightWrong);
-
+  console.log(rightAndWrong);
+  useEffect(() => {
+    setOptions({
+      option1: useForEdit ? { content: rowData?.content } : initOptionData,
+      option2:
+        (useForEdit && questionContentOptions.length) > 0
+          ? {
+              content: {
+                id: questionContentOptions[0]?.id,
+                title: questionContentOptions[0]?.attributes?.title,
+              },
+            }
+          : initOptionData,
+    });
+  }, questionContentOptions);
   function handleMark(obj) {
-    setRightAndWrong({ ...initRightWrong, ...obj });
+    // setRightAndWrong({ ...rightAndWrong, ...obj });
+    const updatedRightAndWrong = {};
+
+    // Iterate over the keys of the passed object
+    Object.keys(obj).forEach((key) => {
+      // Set the specified option to true
+      updatedRightAndWrong[key] = obj[key];
+
+      // Set all other options to false
+      Object.keys(rightAndWrong).forEach((option) => {
+        if (option !== key) {
+          updatedRightAndWrong[option] = false;
+        }
+      });
+    });
+
+    // Update the state
+    setRightAndWrong(updatedRightAndWrong);
   }
   //   hs()
   async function handleSubmit(e) {
@@ -282,27 +402,45 @@ export default function AddQuePage({ rowData, useForEdit }) {
     let rightAns = Object.keys(rightAndWrong).find(
       (item) => rightAndWrong[item] == true
     );
+    console.log(rightAns);
     let wrongAns = Object.keys(rightAndWrong).filter(
       (item) => rightAndWrong[item] == false
     );
-
+    console.log(question);
+    console.log(tFAns);
+    console.log(pairMatchingContents );
+    console.log(
+      question?.title.length > 2 &&
+        selectedLesson.id &&
+        ((selectedQueType.title == "MCQ" && wrongAns.length > 0 && rightAns) ||
+          (selectedQueType.title == "True Or False" && tFAns.id != null) ||
+          (selectedQueType.title == "Sentence Making" && smAns.id != null) ||
+          (selectedQueType.title == "Fill In The Blank" &&
+            wrongAns.length > 0 &&
+            rightAns &&
+            question?.title.includes("-") == true))
+            || (selectedQueType.title == "Pair Matching" && pairMatchingContents != undefined)
+    );
     if (
-      question.length > 2 &&
+      question?.title.length > 2 &&
       selectedLesson.id &&
-      ((selectedQueType.title == "MCQ" && wrongAns.length == 3 && rightAns) ||
-        (selectedQueType.title == "True 0r False" && tFAns.id != null) ||
+      ((selectedQueType.title == "MCQ" && wrongAns.length > 0 && rightAns) ||
+        (selectedQueType.title == "True Or False" && tFAns.id != null) ||
         (selectedQueType.title == "Sentence Making" && smAns.id != null) ||
-        (selectedQueType.title == "Fill in the blank" &&
-          wrongAns.length == 3 &&
+        (selectedQueType.title == "Fill In The Blank" &&
+          wrongAns.length > 0 &&
           rightAns &&
-          question.includes("-") == true))
+          question?.title.includes("-") == true))
+        || (selectedQueType.title == "Pair Matching" && pairMatchingContents != undefined)
     ) {
+      console.log("called");
       //
-      let formData = new FormData();
+      /*  let formData = new FormData();
       var fileInput = document.getElementById("idInputFile");
       var file = fileInput.files[0];
+      console.log(file);
       formData.append("files.image", file);
-
+      console.log(formData);
       let obj = {
         question: question,
         question_type: { connect: [selectedQueType.id] },
@@ -312,152 +450,279 @@ export default function AddQuePage({ rowData, useForEdit }) {
         question_type: { connect: [selectedQueType.id] },
         audio: queAudio,
       };
-
+      console.log(obj, obj2);
       // formData.append("data", `{"question":"${question}"}`);
       formData.append(
         "data",
         queAudio.length > 0 ? JSON.stringify(obj2) : JSON.stringify(obj)
       );
-
+      console.log(
+        "formData : " + JSON.stringify(formData.get("files.image")),
+        JSON.stringify(formData.get("data"))
+      ); */
       try {
-        const queResult = await axios.post(
-          "https://api.nakhlah.xyz/api/questions?populate=image",
-          formData,
-          {
-            headers: {
-              Authorization:
-                "Bearer " +
-                "",
-            },
-          }
-        );
-
-        // alert(
-        //   "formData : " +
-        //     JSON.stringify(formData.get("files.image")) +
-        //     JSON.stringify(formData.get("data"))
-        // );
-        // alert("queResult: " + JSON.stringify(data));
-
-        // const queResult = useForEdit
-        //   ? await putHandler("question", rowData.id, {
-        //       data: { question: question },
-        //     })
-        //   : await postHandler("question", {
-        //       data: {
-        //         question: question,
-        //         question_type: { connect: [selectedQueType.id] },
-        //         audio: queAudio,
-        //       },
-        //     });
-
-        // alert("queResult: " + JSON.stringify(queResult));
-        if (queResult?.data?.data?.id) {
+        let content = "";
+        if (
+          selectedQueType.title == "Fill In The Blank" ||
+          selectedQueType.title == "MCQ"
+        ) {
+          content = getQueContent(rightAns);
+        } else if (selectedQueType.title == "True Or False") {
+          content = tFAns.id;
+        }
+        if(selectedQueType.title != "Pair Matching"){
           const queContResult = useForEdit
-            ? await putHandler("question-content", rowData.id, {
-                data: {},
-              })
-            : await postHandler("question-content", {
+          ? await putHandler("question-content", rowData?.question_content, {
+              data: {
+                question: { connect: [question.id] },
+                question_type: { connect: [selectedQueType.id] },
+                content: { connect: [content] },
+              },
+            })
+          : await postHandler("question-content", {
+              data: {
+                question: { connect: [question.id] },
+                question_type: { connect: [selectedQueType.id] },
+                content: { connect: [content] },
+              },
+            });
+        console.log(queContResult);
+        }
+        if (
+          selectedQueType.title == "Fill In The Blank" ||
+          selectedQueType.title == "MCQ"
+        ) {
+          console.log(
+            "options",
+            options,
+            "rightAns",
+            queContResult,
+            queContResult.data.data.id
+          );
+          const wrongAnsOptions = Object.keys(options).filter(
+            (option) => !rightAndWrong[option]
+          );
+          console.log(wrongAnsOptions);
+          const queOptionResult = useForEdit
+            ? await putHandler(
+                "question-content-option",
+                questionContentOptionId,
+                {
+                  data: {
+                    question_content: {
+                      connect: [queContResult.data.data.id],
+                    },
+                    content: {
+                      connect: wrongAnsOptions.map(
+                        (option) => options[option]?.content.id
+                      ),
+                    },
+                  },
+                }
+              )
+            : await postHandler("question-content-option", {
                 data: {
-                  question: { connect: [queResult.data.data.id] },
-                  question_type: { connect: [selectedQueType.id] },
-                  content: { connect: [getQueContent(rightAns)] },
+                  question_content: {
+                    connect: [queContResult.data.data.id],
+                  },
+                  contents: {
+                    connect: wrongAnsOptions.map(
+                      (option) => options[option]?.content.id
+                    ),
+                  },
                 },
               });
+          // alert("queOptionResult: " + JSON.stringify(queOptionResult));
 
-          // alert("queContResult: " + JSON.stringify(queContResult));
-
-          // if mcq or fib
-          if (
-            selectedQueType.title == "Fill in the blank" ||
-            selectedQueType.title == "MCQ"
-          ) {
-            const queOptionResult = useForEdit
-              ? await putHandler("question-content-option", rowData.id, {
-                  data: {},
-                })
-              : await postHandler("question-content-option", {
+          if (queOptionResult.status == 200) {
+            const journeyMapResult = useForEdit
+              ? await putHandler("journey-map-question", rowData.id, {
                   data: {
-                    question_content: { connect: [queContResult.data.data.id] },
-                    content: {
-                      connect: [
-                        options[wrongAns[0]].content.id,
-                        options[wrongAns[1]].content.id,
-                        options[wrongAns[2]].content.id,
-                      ],
+                    learning_journey_lesson: {
+                      connect: [selectedLesson.id],
+                    },
+                    question_content: {
+                      connect: [queContResult.data.data.id],
+                    },
+                  },
+                })
+              : await postHandler("journey-map-question", {
+                  data: {
+                    learning_journey_lesson: {
+                      connect: [selectedLesson.id],
+                    },
+                    question_content: {
+                      connect: [queContResult.data.data.id],
                     },
                   },
                 });
-            // alert("queOptionResult: " + JSON.stringify(queOptionResult));
-
-            if (queOptionResult.status == 200) {
-              const journeyMapResult = useForEdit
-                ? await putHandler("journey-map-question", rowData.id, {
-                    data: {},
-                  })
-                : await postHandler("journey-map-question", {
-                    data: {
-                      learning_journey_lesson: { connect: [selectedLesson.id] },
-                      question_content: {
-                        connect: [queContResult.data.data.id],
-                      },
-                    },
-                  });
-              if (journeyMapResult.status == 200) {
-                toast({
-                  title: "Question Added Successfully",
-                });
-              }
-              // alert("journeyMapResult: " + JSON.stringify(journeyMapResult));
+            if (journeyMapResult.status == 200) {
+              toast({
+                title: "Question Added Successfully",
+              });
             }
+            // alert("journeyMapResult: " + JSON.stringify(journeyMapResult));
           }
-
-          useForEdit
-            ? afterUpdate(data)
-            : afterAdd({
-                id: queResult.data.data.id,
-                question: question,
-                audio: queAudio,
-                question_type: {
-                  id: selectedQueType.id,
-                  title: selectedQueType.title,
+        } else if (selectedQueType.title == "True Or False") {
+          const journeyMapResult = useForEdit
+            ? await putHandler("journey-map-question", rowData.id, {
+                data: {
+                  learning_journey_lesson: {
+                    connect: [selectedLesson.id],
+                  },
+                  question_content: {
+                    connect: [queContResult.data.data.id],
+                  },
                 },
-                lesson: {
-                  id: selectedLesson.id,
-                  title: selectedLesson.title,
-                },
-                task_unit: {
-                  id: selectedLevel.id,
-                  title: selectedLevel.title,
-                },
-                task: {
-                  id: selectedUnit.id,
-                  title: selectedUnit.title,
-                },
-                level: {
-                  id: selectedJourney.id,
-                  title: selectedJourney.title,
+              })
+            : await postHandler("journey-map-question", {
+                data: {
+                  learning_journey_lesson: {
+                    connect: [selectedLesson.id],
+                  },
+                  question_content: {
+                    connect: [queContResult.data.data.id],
+                  },
                 },
               });
-          toast({
-            title: useForEdit
-              ? "Item Updated Succesfully"
-              : "Item Added Successfully",
-          });
-          resetForm();
-        } else if (queResult.status == 400) {
-          let errors = queResult.data.error.details.errors;
-          alert("errors: " + JSON.stringify(errors));
-          setError({
-            err2: errors[0]?.message,
-          });
+          if (journeyMapResult.status == 200) {
+            toast({
+              title: "Question Added Successfully",
+            });
+          }
         }
+        else if(selectedQueType.title == "Pair Matching"){
+          const queOptionResult = useForEdit
+            ? await putHandler(
+                "question-content-option",
+                questionContentOptionId,
+                {
+                  data: {
+                    question_content: {
+                      connect: 127,
+                    },
+                    contents: {
+                      connect: Object.keys(pairMatchingContents).map((pairMatching, index) => pairMatchingContents["option" + index + 1]
+                      ?.content.id ),
+                    },
+                  },
+                }
+              )
+            : await postHandler("question-content-option", {
+                data: {
+                  question_content: {
+                    connect: 127,
+                  },
+                  contents: {
+                    connect: Object.keys(pairMatchingContents).map((pairMatching, index) => pairMatchingContents["option" + index + 1]
+                    ?.content.id ),
+                  },
+                },
+              });
+          // alert("queOptionResult: " + JSON.stringify(queOptionResult));
+
+          if (queOptionResult.status == 200) {
+            const journeyMapResult = useForEdit
+              ? await putHandler("journey-map-question", rowData.id, {
+                  data: {
+                    learning_journey_lesson: {
+                      connect: [selectedLesson.id],
+                    },
+                    question_content: {
+                      connect: 127,
+                    },
+                  },
+                })
+              : await postHandler("journey-map-question", {
+                  data: {
+                    learning_journey_lesson: {
+                      connect: [selectedLesson.id],
+                    },
+                    question_content: {
+                      connect: 127,
+                    },
+                  },
+                });
+            if (journeyMapResult.status == 200) {
+              toast({
+                title: "Question Added Successfully",
+              });
+            }
+            // alert("journeyMapResult: " + JSON.stringify(journeyMapResult));
+          }
+        }
+
+        useForEdit
+          ? afterUpdate({
+              id: rowData?.id,
+              question: question,
+              audio: queAudio,
+              question_type: {
+                id: selectedQueType.id,
+                title: selectedQueType.title,
+              },
+              lesson: {
+                id: selectedLesson.id,
+                title: selectedLesson.title,
+              },
+              task_unit: {
+                id: selectedLevel.id,
+                title: selectedLevel.title,
+              },
+              task: {
+                id: selectedUnit.id,
+                title: selectedUnit.title,
+              },
+              level: {
+                id: selectedJourney.id,
+                title: selectedJourney.title,
+              },
+            })
+          : afterAdd({
+              id: question.id,
+              question: question,
+              audio: queAudio,
+              question_type: {
+                id: selectedQueType.id,
+                title: selectedQueType.title,
+              },
+              lesson: {
+                id: selectedLesson.id,
+                title: selectedLesson.title,
+              },
+              task_unit: {
+                id: selectedLevel.id,
+                title: selectedLevel.title,
+              },
+              task: {
+                id: selectedUnit.id,
+                title: selectedUnit.title,
+              },
+              level: {
+                id: selectedJourney.id,
+                title: selectedJourney.title,
+              },
+            });
+        toast({
+          title: useForEdit
+            ? "Item Updated Succesfully"
+            : "Item Added Successfully",
+        });
+
+        useForEdit
+          ? document.getElementById("closeDialog")?.click()
+          : document.getElementById("closeDialog")?.click();
       } catch (error) {
-        alert(JSON.stringify(error.response.data)); // NOTE - use "error.response.data` (not "error")
+        console.log(error);
+        alert(JSON.stringify(error)); // NOTE - use "error.response.data` (not "error")
       }
     }
     //  specific errors
     else {
+      const optionsHaveContentIDs = Object.keys(options).every(
+        (option) => options[option]?.content?.id !== null
+      );
+      const rightAnsDefined = rightAns !== undefined;
       if (selectedLesson.id == null) {
         err_0 = "Select A Lesson";
       }
@@ -469,7 +734,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
       }
       if (
         question.length > 2 &&
-        selectedQueType.title == "Fill in the blank" &&
+        selectedQueType.title == "Fill In The Blank" &&
         question.includes("-") == false
       ) {
         err_2 = `Put a blank ("-") within question`;
@@ -479,16 +744,11 @@ export default function AddQuePage({ rowData, useForEdit }) {
       }
       if (
         selectedQueType.title == "MCQ" ||
-        selectedQueType.title == "Fill in the blank"
+        selectedQueType.title == "Fill In The Blank"
       ) {
-        if (
-          options.optionOne.content.id == null ||
-          options.optionTwo.content.id == null ||
-          options.optionThree.content.id == null ||
-          options.optionFour.content.id == null
-        ) {
+        if (!optionsHaveContentIDs) {
           err_3 = "Provide all 4 options";
-        } else if (rightAns == undefined) {
+        } else if (!rightAnsDefined) {
           err_3 = "Please mark an option as right answer";
         }
       }
@@ -507,7 +767,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
 
   function getQueContent(rightAns) {
     if (
-      selectedQueType.title == "Fill in the blank" ||
+      selectedQueType.title == "Fill In The Blank" ||
       selectedQueType.title == "MCQ"
     ) {
       return options[rightAns].content.id;
@@ -519,16 +779,26 @@ export default function AddQuePage({ rowData, useForEdit }) {
   }
 
   function resetForm() {
+    console.log("resetForm is called");
+    setSelectedJourney(initStateSelection);
+    setSelectedUnit(initStateSelection);
+    setSelectedLesson(initStateSelection);
+    setSelectedLevel(initStateSelection);
+
+    setSelectedQueType(initStateSelection);
     setOptions(initOptions);
     setTFAns(initStateSelection);
-    setQuestion("");
+    // setQuestion("");
     setRightAndWrong(initRightWrong);
     setError(initErrors);
     setQueAudio("");
     setImage("");
   }
 
-  const [tFAns, setTFAns] = useState(initStateSelection);
+  const [tFAns, setTFAns] = useState(
+    useForEdit ? rowData?.content : initStateSelection
+  );
+  console.log(tFAns);
   const trueFalseOptions = [
     { id: 31, title: "False" },
     { id: 30, title: "True " },
@@ -536,8 +806,72 @@ export default function AddQuePage({ rowData, useForEdit }) {
   const [image, setImage] = useState(null);
   const [queAudio, setQueAudio] = useState("");
   const [smAns, setSmAns] = useState(initStateSelection);
-
+  const handleAddOption = () => {
+    const newOptionKey = `option${Object.keys(options).length + 1}`; // Generate unique key for new option
+    setOptions({
+      ...options,
+      [newOptionKey]: initOptionData,
+    });
+    setRightAndWrong({
+      ...rightAndWrong,
+      [newOptionKey]: false,
+    });
+  };
   //   jsx
+  const matchingMethodList = ["language", "category"];
+  const [selectedMatchingMethod, setSelectedMatchingMethod] =
+    useState("language");
+  const handleMatchingOptionMethod = (method) => {
+    console.log(method);
+    setSelectedMatchingMethod(method);
+  };
+  const initialPairMatchingObj = {
+    option1: {
+      content: { id: null, title: "" },
+      content_details_by_languages: { id: null, title: "" },
+    },
+  };
+  const [pairMatchingContents, setPairMatchingContents] = useState(
+    initialPairMatchingObj
+  );
+  console.log(pairMatchingContents);
+  const handlePairMatchingContent = async (index, obj) => {
+    console.log(obj);
+    let contentDetailsByLanguage = await getContentDetailsByLanguage(obj.id);
+    console.log(contentDetailsByLanguage);
+    setPairMatchingContents({
+      ...pairMatchingContents,
+      ["option" + index]: {
+        ...pairMatchingContents["option" + index],
+        content: { id: obj.id, title: obj.title },
+        content_details_by_languages: contentDetailsByLanguage,
+      },
+    });
+  };
+  const getContentDetailsByLanguage = async (contentId) => {
+    const url = `api/content-details-by-languages?populate=*&filters[content][id][$eq]=${contentId}`;
+    const response = await getWithUrl(url);
+    if (response.status === 200) {
+      return {
+        id: response.data.data[0]?.id,
+        title: response.data?.data[0]?.attributes?.title,
+      };
+    } else {
+      return { id: null, title: "" };
+    }
+  };
+  const handleAddNewContentOption = () => {
+    const newOptionKey = `option${
+      Object.keys(pairMatchingContents).length + 1
+    }`;
+    setPairMatchingContents({
+      ...pairMatchingContents,
+      [newOptionKey]: {
+        content: { id: null, title: "" },
+        content_details_by_languages: { id: null, title: "" },
+      },
+    });
+  };
   return (
     <div className="w-full p-3   rounded-md ">
       {/* {JSON.stringify(tFAns)} */}
@@ -564,8 +898,17 @@ export default function AddQuePage({ rowData, useForEdit }) {
             <GitCommitHorizontal className="w-6 h-6 text-blue-500" /> Select
             Learning Lesson
           </EnhancedText>
-          <div className="flex flex-col gap-2 w-2/3">
-            <CustomSelect
+          <div className="flex flex-col gap-4">
+            {/* <CustomSelect
+              label={"Learner Level"}
+              value={selectedJourney}
+              options={journeyData}
+              bg="wh"
+              onChange={(value) =>
+                setSelectedJourney({ id: value.id, title: value.title })
+              }
+            /> */}
+            <CustomSearchableDropdown
               label={"Learner Level"}
               value={selectedJourney}
               options={journeyData}
@@ -574,7 +917,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
                 setSelectedJourney({ id: value.id, title: value.title })
               }
             />
-            <CustomSelect
+            <CustomSearchableDropdown
               label={"Task"}
               value={selectedUnit}
               options={filteredUnits}
@@ -584,7 +927,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
               }
             />
 
-            <CustomSelect
+            <CustomSearchableDropdown
               label={"Task level"}
               value={selectedLevel}
               options={filteredLevels}
@@ -594,7 +937,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
               }
             />
 
-            <CustomSelect
+            <CustomSearchableDropdown
               label={"Task Lesson"}
               value={selectedLesson}
               options={filteredLessons}
@@ -616,8 +959,8 @@ export default function AddQuePage({ rowData, useForEdit }) {
             <GitCommitHorizontal className="w-6 h-6 text-blue-400" /> Set The
             Question
           </EnhancedText>
-          <div className="flex flex-col gap-1 w-2/3">
-            <CustomSelect
+          <div className="flex flex-col gap-4">
+            <CustomSearchableDropdown
               label={"Select Question Type"}
               value={selectedQueType}
               options={queTypeData}
@@ -625,23 +968,28 @@ export default function AddQuePage({ rowData, useForEdit }) {
               onChange={(value) =>
                 setSelectedQueType({ id: value.id, title: value.title })
               }
+              addNewText="New Question"
+              addNewAfterClick={handleAdd}
             />
             {/* {error.err1 !== "" && (
               <span className="text-red-700">{error.err1}</span>
             )} */}
           </div>
-          <div className="flex flex-col gap-1 w-2/3">
-            <span className="">Question</span>
-            <CustomInput
-              type="text"
+          <div className="flex flex-col gap-4">
+            <CustomSearchableDropdown
+              label={"Select Question"}
               value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              ph="Enter the question"
-              style="py-0.25 px-1"
+              options={questionsData}
+              bg="wh"
+              onChange={(value) =>
+                setQuestion({ id: value.id, title: value.title })
+              }
+              addNewText="New Question"
+              addNewAfterClick={handleAdd}
             />
             {/* <span className="text-red-700">{error.err2}</span> */}
           </div>
-          <div className="flex gap-2 flex-col items-start">
+          {/* <div className="flex gap-2 flex-col items-start">
             <input
               type="file"
               id="idInputFile"
@@ -656,7 +1004,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
               }}
             />
             {image && (
-              <Image
+              <img
                 alt=" image"
                 src={image}
                 className="w-5.0 h-5.0 rounded-full border border-slate-400 bg-slate-50"
@@ -672,13 +1020,12 @@ export default function AddQuePage({ rowData, useForEdit }) {
               className="py-0.12 px-1 rounded-md border border-slate-400 outline-none"
             />
 
-            {/* <span className="text-red-700">{error.err2}</span> */}
-          </div>
+          </div> */}
         </div>
 
         {/* {JSON.stringify(selectedQueType)} */}
         {/* sao Set answer option */}
-        <div className="flex flex-col gap-2 rounded-md w-2/3 py-0.75 px-2">
+        <div className="flex flex-col gap-2 rounded-md py-0.75 px-2">
           {selectedQueType && (
             <>
               <div className="flex gap-3 items-center">
@@ -698,7 +1045,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
 
                 {/* {JSON.stringify(options)} */}
 
-                {selectedQueType.title == "True 0r False" && (
+                {selectedQueType.title == "True Or False" && (
                   <div className="flex flex-col gap-3 font-mono text-sm rounded-md border-l-2 border-blue-400 py-3 px-2  ">
                     <div className="flex justify-between pb-1">
                       <span className="px-2 bg-blue-100 rounded-full h-[1.2rem]">
@@ -706,7 +1053,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
                       </span>
                     </div>
 
-                    <CustomSelect
+                    <CustomSearchableDropdown
                       label={"(true/false)"}
                       value={tFAns}
                       options={contents}
@@ -721,7 +1068,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
                       <span className="">
                         Select Sentence That's In Correct Order
                       </span>
-                      <CustomSelect
+                      <CustomSearchableDropdown
                         value={smAns}
                         label="Select Content"
                         options={contents}
@@ -735,63 +1082,167 @@ export default function AddQuePage({ rowData, useForEdit }) {
                   </div>
                 )}
 
-                {(selectedQueType.title == "MCQ" ||
-                  selectedQueType.title == "Fill in the blank") &&
-                  Object.keys(options).map((option, index) => {
-                    return (
-                      <div
-                        key={index}
-                        className="flex flex-col gap-3 font-mono text-sm rounded-sm border-l-2 border-blue-400 py-3 px-2  "
-                      >
-                        <div className="flex justify-between   pb-1">
-                          <p className="flex justify-between bg-blue-100 rounded-full h-[1.2rem]  ">
-                            <span className="px-2">Answer Option</span>
-                            <span className="px-1 h-full rounded-full bg-blue-200 font-semibold">
-                              {index + 1}
-                            </span>
-                          </p>
-                          <div className="flex gap-2 items-center">
-                            <input
-                              type="checkbox"
-                              id={option}
-                              checked={rightAndWrong[option]}
-                              name={"ans_option"}
-                              onChange={(e) =>
-                                handleMark({ [option]: e.target.checked })
-                              }
-                            />
-                            <label htmlFor="option1" className="text-sm">
-                              Mark as right answer
-                            </label>
+                {(selectedQueType.title === "MCQ" ||
+                  selectedQueType.title === "Fill In The Blank") && (
+                  <>
+                    {Object.keys(options).map((option, index) => {
+                      console.log(option, options[option]?.content);
+                      return (
+                        <div
+                          key={index}
+                          className="flex flex-col gap-3 font-mono text-sm rounded-sm border-l-2 border-blue-400 py-3 px-2"
+                        >
+                          <div className="flex justify-between pb-1">
+                            <p className="flex justify-between bg-blue-100 rounded-full h-[1.2rem]">
+                              <span className="px-2">Answer Option</span>
+                              <span className="px-1 h-full rounded-full bg-blue-200 font-semibold">
+                                {index + 1}
+                              </span>
+                            </p>
+                            <div className="flex gap-2 items-center">
+                              <input
+                                type="checkbox"
+                                id={option}
+                                checked={rightAndWrong[option]}
+                                name={"ans_option"}
+                                onChange={(e) =>
+                                  handleMark({ [option]: e.target.checked })
+                                }
+                              />
+                              <label htmlFor={option} className="text-sm">
+                                Mark as right answer
+                              </label>
+                            </div>
                           </div>
+
+                          <CustomSearchableDropdown
+                            value={options[option]?.content}
+                            label="Content"
+                            options={contents}
+                            onChange={(selected) =>
+                              setOptions({
+                                ...options,
+                                [option]: {
+                                  ...options[option],
+                                  content: selected,
+                                },
+                              })
+                            }
+                            addNewText="New Content"
+                            addNewAfterClick={handleAdd}
+                            bg="wh"
+                          />
+                        </div>
+                      );
+                    })}
+                    {/* Button to add new option */}
+                    <button
+                      type="button"
+                      onClick={handleAddOption}
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 text-sm"
+                    >
+                      Add New Option
+                    </button>
+                  </>
+                )}
+                {selectedQueType.title === "Pair Matching" && (
+                  <div>
+                    <div className="flex flex-col gap-3 font-mono text-sm rounded-sm border-l-2 border-blue-400 py-3 px-2">
+                      <span className="text-sm">
+                        Select a pair matching option method
+                      </span>
+                      {matchingMethodList.map((matchingMethod) => (
+                        <div key={matchingMethod} className="flex items-center">
+                          <input
+                            type="radio"
+                            id={matchingMethod}
+                            name="matchingMethodOption"
+                            value={matchingMethod}
+                            checked={selectedMatchingMethod === matchingMethod}
+                            onChange={(e) =>
+                              handleMatchingOptionMethod(e.target.value)
+                            }
+                            className="mr-2" // Add margin to the right
+                          />
+                          <label
+                            htmlFor={matchingMethod}
+                            className="cursor-pointer"
+                          >
+                            By {matchingMethod}
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                    {selectedMatchingMethod === "language" && (
+                      <div className="flex gap-4 flex-col md:flex-row md:gap-y-8">
+                        {/* Left Column */}
+                        <div className="flex-1 gap-2">
+                          {/* Selectable Content */}
+                          <h3 className="text-lg font-semibold">English</h3>
+                          {Object.keys(pairMatchingContents)?.map(
+                            (pairMatchingContent, index) => (
+                              <CustomSearchableDropdown
+                                key={`option-${index}`}
+                                value={
+                                  pairMatchingContents["option" + index + 1]
+                                    ?.content.title
+                                }
+                                label="Select Content"
+                                options={contents}
+                                onChange={(selected) =>
+                                  handlePairMatchingContent(index + 1, selected)
+                                }
+                                addNewText="New Pair Matching"
+                                addNewAfterClick={handleAdd}
+                                bg="white"
+                              />
+                            )
+                          )}
                         </div>
 
-                        <CustomSelect
-                          value={options[option].content}
-                          label="Content"
-                          options={contents}
-                          onChange={(selected) =>
-                            setOptions({
-                              ...options,
-                              [option]: {
-                                ...options[option],
-                                content: selected,
-                              },
-                            })
-                          }
-                          addNewText="New Content"
-                          addNewAfterClick={handleAdd}
-                          bg="wh"
-                        />
+                        {/* Right Column */}
+                        <div className="flex-1 gap-2">
+                          {/* Display Selected Content Name */}
+                          <h3 className="text-lg font-semibold">Arabic</h3>
+                          {Object.keys(pairMatchingContents).map(
+                            (pairMatchingContent, index) => (
+                              <div key={`selected-content-${index}`}>
+                                <span>
+                                  {pairMatchingContents["option" + (index + 1)]
+                                    ?.content?.title
+                                    ? pairMatchingContents[
+                                        "option" + (index + 1)
+                                      ]?.content_details_by_languages?.title
+                                    : ""}
+                                </span>
+                              </div>
+                            )
+                          )}
+                        </div>
                       </div>
-                    );
-                  })}
+                    )}
+
+                    <button
+                      type="button"
+                      onClick={handleAddNewContentOption}
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 text-sm"
+                    >
+                      Add New Content
+                    </button>
+
+                    {selectedMatchingMethod == "category" && (
+                      <div>
+                        <h1>Selected by Category</h1>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </>
           )}
         </div>
         <div className="relative px-3   ">
-          <div className="sticky bottom-0 bg-white w-2/3">
+          <div className="sticky bottom-0 bg-white">
             <div className="flex flex-col gap-0">
               {error.err0 !== "" && (
                 <span className="text-red-700">{error.err0}</span>

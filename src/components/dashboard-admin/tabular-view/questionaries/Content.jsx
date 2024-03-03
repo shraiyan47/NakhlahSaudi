@@ -11,13 +11,7 @@ import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
 import { getHandler, putHandler } from "@/lib/requestHandler";
 import { renderableContents } from "@/lib/fetchFunctions";
 
-const requestKeyMap = {
-  "Sentence Making": "content-sm",
-  "Pair Matching": "content-pm",
-  "True Or False": "content-tof",
-  MCQ: "content-mcq",
-  "Fill In The Blank": "content-fitb",
-};
+
 
 export default function Content() {
   const contents = useContent((state) => state.data);
@@ -34,37 +28,38 @@ export default function Content() {
   
   
   
-  useEffect(() => {
-
-    const fetch = async () => {
-     
-      const response = await getHandler(requestKeyMap[currentSubView]);
-
-      if (response.status === 200) {
-        setContents(renderableContents(response.data.data));
-        toggleLoading(false);
-      }
-    };
-    
-    if (loading == false && Array.isArray(contents) && contents.length === 0) {
-      toggleLoading(true);
-      fetch();
-    }
-  }, [contents, currentSubView]);
-
   // useEffect(() => {
+
   //   const fetch = async () => {
-  //     const response = await getHandler("content-mcq");
+     
+  //     const response = await getHandler(requestKeyMap[currentSubView]);
+
   //     if (response.status === 200) {
   //       setContents(renderableContents(response.data.data));
   //       toggleLoading(false);
   //     }
   //   };
+    
   //   if (loading == false && Array.isArray(contents) && contents.length === 0) {
   //     toggleLoading(true);
   //     fetch();
   //   }
-  // }, []);
+  //   fetch();
+  // }, [contents, currentSubView]);
+
+  useEffect(() => {
+    const fetch = async () => {
+      const response = await getHandler("content-all");
+      if (response.status === 200) {
+        setContents(renderableContents(response.data.data));
+        toggleLoading(false);
+      }
+    };
+    if (loading == false && Array.isArray(contents) && contents.length === 0) {
+      toggleLoading(true);
+      fetch();
+    }
+  }, []);
 
   return (
     <div className="w-full bg-white rounded-xl">

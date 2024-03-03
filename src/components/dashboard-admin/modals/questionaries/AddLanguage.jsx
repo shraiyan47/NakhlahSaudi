@@ -1,87 +1,98 @@
-//"use client";
+"use client";
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
 import {
-  useQuestionTitle,
+    useLanguage,
   useTabularView,
 } from "../../../../store/useAdminStore";
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import CustomButton from "@/components/ui-custom/CustomButton";
 import CustomInput from "@/components/ui-custom/CustomInput";
-import { BASE_URL, config, postMap, putMap } from "@/lib/requestHandler";
+import CustomSelect from "../../../ui-custom/CustomSelect";
+import { BASE_URL, config, postMap, putMap, getHandler, postHandler, putHandler } from "@/lib/requestHandler";
 import Image from "next/image";
-import TextToAudio from "@/app/textToAudio";
-import ArabicSpeechResponsiveVoice from "@/app/ArabicResponsiveVoice.js";
-import ReactSpeechKit from "@/app/reactSpeechKit";
-import * as googleTTS from 'google-tts-api';
 
-export default function AddQuestionTitle({ rowData, useForEdit }) {
+
+export default function AddLanguage({ rowData, useForEdit }) {
   //
   const { toast } = useToast();
-
-  const addEdit = useQuestionTitle((state) => state.addEdit);
-  const afterAdd = useQuestionTitle((state) => state.afterAdd);
-  const afterUpdate = useQuestionTitle((state) => state.afterUpdate);
-  const [questionTitle, setQuestionTitle] = useState(useForEdit ? rowData.questionsTitle : "");
-  const [questionAudio, setQuestionAudio] = useState(useForEdit ? rowData.questionsAudio : "");
+  const languageData = useLanguage((state) => state.data);
+const setLanguageData = useLanguage( (state) => state.setLanguage );
+//   const addEdit = useContentDetails((state) => state.addEdit);
+  const afterAdd = useLanguage((state) => state.afterAdd);
+  const afterUpdate = useLanguage((state) => state.afterUpdate);
+  const [languageTitle, setLanguageTitle] = useState(useForEdit ? rowData.title : "");
+  const [country, setCountry] = useState(useForEdit ? rowData.country : "");
   const [error, setError] = useState({
     err0: "",
     err1: "",
   });
+  const initStateSelection = {
+    id: null,
+    title: "",
+  };
+//   const [selectedContent, setSelectedContent] = useState(
+//     useForEdit
+//       ? {
+//         id:rowData.id,
+//         title:rowData.title,
+//         country:rowData.country
+//       }
+//       : initStateSelection
+//   );
+//   const [image, setImage] = useState(
+//     useForEdit ? BASE_URL + rowData.icon : null
+//   );
+console.log("rowData", rowData)
 
-  const [image, setImage] = useState(
-    useForEdit ? BASE_URL + rowData.icon : null
-  );
+useEffect(() => {
+  const fetchLanguage = async () => {
+    const response = await getHandler("language");
+    if (response.status === 200) {
+      const dataRenderable = response.data.data.map((item) => {
+        return {
+          id: item.id,
+          title: item.attributes.name,
+          title: item.attributes.country,
+        };
+      });
+      setLanguageData(dataRenderable);
+      console.log("dhuru", dataRenderable)
+    }
+  };
+  
+  if (Array.isArray(languageData) && languageData.length === 0) {
+    fetchLanguage();
+  }
+}, [languageData]);
 
-    googleTTS
-    .getAllAudioBase64("لِنَذْهَبْ إِلَى السِّيْنَمَا", {
-      lang: 'ar',
-      slow: false,
-      host: 'https://translate.google.com',
-      timeout: 10000,
-      splitPunct: ',.?',
-    })
-    .then((base64String) => {
-      console.log("base 64 String ======>",base64String)
-      const decodedData = atob(base64String) // Decode base64 string
-      const buffer = new Uint8Array(decodedData.length)
-      for (let i = 0; i < decodedData.length; i++) {
-        buffer[i] = decodedData.charCodeAt(i)
-      }
-      const blob = new Blob([buffer], { type: "audio/mpeg" }) // Create a Blob object representing the audio data
-      const audioURL = URL.createObjectURL(blob) // Generate a URL for the Blob object
-      console.log("audio URL ------> ", audioURL)
-      const audio = new Audio(audioURL) // Create a new Audio object using the generated URL
-      audio.play() // Play the audio
-    })
-    .catch(console.error);
+
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (questionTitle.length < 3) {
+    if (languageData.length < 3) {
       setError({ ...error, err0: "Too Short" });
-    } else if (questionAudio.length < 3) {
-      setError({ ...error, err1: "Too Short" });
-    } else {
+    } 
+     else {
       let formData = new FormData();
-      var questionTitleInput = document.getElementById("inputQuestionTitle");
-      var questionAudioInput = document.getElementById("idInputQuestionAudio");
-      var fileInput = document.getElementById("idInputFile");
+      var languageTitleInput = document.getElementById("idInputLanguageTitle");
+      var countryInput = document.getElementById("idInputCountryInput");
+    //  var fileInput = document.getElementById("idInputFile");
 
-      var file = fileInput.files[0];
-      formData.append("files.image", file);
+    //   var file = fileInput.files[0];
+    //   formData.append("files.image", file);
 
       formData.append(
         "data",
-        `{"question":"${questionTitleInput.value}", "audio": "${questionAudioInput.value}"}`
+        `{"name":"${languageTitleInput.value}", "country": "${countryInput.value}"}`
       );
 
-      console.log("Question Add : ",formData)
+     
 
       await fetch(
         useForEdit
-          ? putMap["QuestionsTitleFull"] + `/${rowData.id}?populate=*`
-          : postMap["QuestionsTitleFull"],
+          ? putMap["language"] + `/${rowData.id}?populate=*`
+          : postMap["language"]+ `?populate=*`,
         {
           method: useForEdit ? "PUT" : "POST",
           body: formData,
@@ -94,16 +105,17 @@ export default function AddQuestionTitle({ rowData, useForEdit }) {
         }
       )
         .then((res) => res.json())
+    
         .then((data) => {
+          console.log("res", data)
           alert(JSON.stringify(data));
           let renderable = {
             id: data.data.id,
-            questionsTitle: title,
-            questionAudio: questionAudio,
-            icon: data.data.attributes.icon?.data?.attributes?.formats?.small
-              ?.url,
+            title: data.data.attributes?.name,
+            country: data.data.attributes?.country
+           
           };
-
+           console.log("renderable", renderable, data.data)
           useForEdit ? afterUpdate(renderable) : afterAdd(renderable);
           toast({
             title: useForEdit ? "Successfully Updated" : "Successfully Added",
@@ -133,34 +145,35 @@ export default function AddQuestionTitle({ rowData, useForEdit }) {
           className="flex flex-col gap-4 py-2 text-black text-lg"
         >
           <div className="flex flex-col ">
-            <label>Question Title</label>
+            <label>Language</label>
             <CustomInput
-              id="inputQuestionTitle"
+              id="idInputLanguageTitle"
               type="text"
-              value={questionTitle}
-              onChange={(e) => setQuestionTitle(e.target.value)}
-              ph="Enter Question Title"
+              value={languageTitle}
+              onChange={(e) => setLanguageTitle(e.target.value)}
+              ph="Enter Language. Ex. Arabic"
               style="py-0.25 px-1"
             />
             <span className="text-red-700">{error.err0}</span>
           </div>
+
+       
+
           <div className="flex flex-col ">
-            <label>Audio of Question</label>
+            <label>Country</label>
             <CustomInput
-              id="idInputQuestionAudio"
+              id="idInputCountryInput"
               type="text"
-              value={questionAudio}
-              onChange={(e) => setQuestionAudio(e.target.value)}
-              ph="Enter Audio Text"
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+              ph="Enter Country"
               style="py-0.25 px-1"
             />
-            <label>Alif Baa Taa Saa Jim Ha Kha Daal Zaal</label>
-            {/* <TextToAudio audioData={questionAudio} /> */}
-            <ArabicSpeechResponsiveVoice  audioData={questionAudio} />
+           
             {/* <ReactSpeechKit /> */}
             <span className="text-red-700">{error.err1}</span>
           </div>
-          <div className="flex gap-2 flex-col items-start">
+          {/* <div className="flex gap-2 flex-col items-start">
             <input
               type="file"
               id="idInputFile"
@@ -183,7 +196,7 @@ export default function AddQuestionTitle({ rowData, useForEdit }) {
                 height={50}
               />
             )}
-          </div>
+          </div> */}
           <CustomButton
             txt={useForEdit ? "Update" : "Add"}
             type="submit"

@@ -1,18 +1,20 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { ArrowUpDown, ClipboardEdit, Info, Trash2 } from "lucide-react";
 import Deletion from "../modals/other/Deletion";
+import AddQuePage from "../modals/questionaries/AddQuePage";
+import { useState } from "react";
+import ViewQuestion from "../modals/questionaries/ViewQuestion";
 // import AddStartingPoint from "../modals/journey/AddStartPoint";
-
 const ColQuestion = [
   // {
   //   id: "select",
@@ -37,14 +39,17 @@ const ColQuestion = [
   //   enableHiding: false,
   // },
   {
+    id: "id",
     accessorKey: "id",
-    header: ({ column }) => <Button
-      onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      className="textPrimaryColor textNormal"
-    >
-      ID
-      <ArrowUpDown className="ml-2 h-4 w-4" />
-    </Button>,
+    header: ({ column }) => (
+      <Button
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className="textPrimaryColor textNormal"
+      >
+        ID
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
     cell: ({ row }) => {
       const rowId = parseInt(row.id) + 1;
       return <div className="textSecondaryColor textNormal">{rowId}</div>;
@@ -52,7 +57,7 @@ const ColQuestion = [
   },
   {
     id: "id_question_title",
-    accessorKey: "question",
+    accessorKey: "question.title",
     header: ({ column }) => {
       return (
         <Button
@@ -65,6 +70,7 @@ const ColQuestion = [
       );
     },
     cell: ({ row }) => {
+      console.log(row);
       return (
         <div className="lowercase textNormal textSecondaryColor">
           {row.getValue("id_question_title")}
@@ -218,6 +224,7 @@ const ColQuestion = [
     ),
     enableHiding: false,
     cell: ({ row }) => {
+      console.log(row.original);
       return (
         <div className="flex gap-1 justify-center items-center textSecondaryColor textSemiHeader">
           <Dialog className="">
@@ -226,44 +233,8 @@ const ColQuestion = [
                 <Info className="w-5 h-5" />
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[500px] min-w-20. flex justify-center items-center">
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Question Details</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {/* <p>{JSON.stringify(row)}</p> */}
-                  <br />
-                  <div className="flex justify-right">
-                    <label>Level : </label>
-                    <p> &nbsp; {row.original.level.title}</p>
-                  </div>
-                  <div className="flex justify-right">
-                    <label>Unit : </label>
-                    <p> &nbsp; {row.original.task.title}</p>
-                  </div>
-                  <div className="flex justify-right">
-                    <label>Lesson : </label>
-                    <p> &nbsp; {row.original.lesson.title}</p>
-                  </div>
-                  <div className="flex justify-right">
-                    <label>Question Type : </label>
-                    <p> &nbsp; {row.original.question_type.title}</p>
-                  </div>
-                  <div className="flex justify-right">
-                    <label>Question : </label>
-                    <p> &nbsp; {row.original.question}</p>
-                  </div>
-                  <div className="flex justify-right">
-                    <label>Question Correct Answer: </label>
-                    <p> &nbsp; {row.original.content}</p>
-                  </div>
-                </CardContent>
-                {/* <CardFooter>
-                  <p>Card Footer</p>
-                </CardFooter> */}
-              </Card>
+            <DialogContent className="sm:max-w-[500px] max-h-[500px] overflow-y-auto">
+               <ViewQuestion rowData={row.original}/>
               {/* Question: {row.original.question} */}
             </DialogContent>
           </Dialog>
@@ -283,12 +254,11 @@ const ColQuestion = [
                 <ClipboardEdit className="w-5 h-5" />
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[500px]">
-              {/* <AddQuestion
-                title="question"
-                useForEdit={true}
-                rowData={row.original}
-              /> */}
+            <DialogContent className="sm:max-w-[800px] max-h-[500px] overflow-y-auto">
+              <DialogTitle className="font-mono text-xl text-slate-700 py-0.25">
+                Update Question Mapping
+              </DialogTitle>
+              <AddQuePage useForEdit={true} rowData={row.original} />
             </DialogContent>
           </Dialog>
         </div>

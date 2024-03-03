@@ -1,71 +1,82 @@
-//"use client";
+"use client";
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
 import {
-  useQuestionTitle,
+  useContent,
+  useContentDetails,
   useTabularView,
 } from "../../../../store/useAdminStore";
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import CustomButton from "@/components/ui-custom/CustomButton";
 import CustomInput from "@/components/ui-custom/CustomInput";
-import { BASE_URL, config, postMap, putMap } from "@/lib/requestHandler";
+import CustomSelect from "../../../ui-custom/CustomSelect";
+import { BASE_URL, config, postMap, putMap, getHandler, postHandler, putHandler } from "@/lib/requestHandler";
 import Image from "next/image";
-import TextToAudio from "@/app/textToAudio";
-import ArabicSpeechResponsiveVoice from "@/app/ArabicResponsiveVoice.js";
-import ReactSpeechKit from "@/app/reactSpeechKit";
-import * as googleTTS from 'google-tts-api';
 
-export default function AddQuestionTitle({ rowData, useForEdit }) {
+
+export default function AddContentDetail({ rowData, useForEdit }) {
   //
   const { toast } = useToast();
-
-  const addEdit = useQuestionTitle((state) => state.addEdit);
-  const afterAdd = useQuestionTitle((state) => state.afterAdd);
-  const afterUpdate = useQuestionTitle((state) => state.afterUpdate);
-  const [questionTitle, setQuestionTitle] = useState(useForEdit ? rowData.questionsTitle : "");
-  const [questionAudio, setQuestionAudio] = useState(useForEdit ? rowData.questionsAudio : "");
+  const contentData = useContent((state) => state.data);
+const setContentData = useContent( (state) => state.setContents  );
+  const addEdit = useContentDetails((state) => state.addEdit);
+  const afterAdd = useContentDetails((state) => state.afterAdd);
+  const afterUpdate = useContentDetails((state) => state.afterUpdate);
+  const [contentDetailsTitle, setContentDetailsTitle] = useState(useForEdit ? rowData.title : "");
+  const [contentDetailsAudio, setContentDetailsAudio] = useState(useForEdit ? rowData.contentAudio : "");
   const [error, setError] = useState({
     err0: "",
     err1: "",
   });
-
+  const initStateSelection = {
+    id: null,
+    title: "",
+  };
+  const [selectedContent, setSelectedContent] = useState(
+    useForEdit
+      ? {
+        id:rowData.content.id,
+        title:rowData.content.title,
+      }
+      : initStateSelection
+  );
   const [image, setImage] = useState(
     useForEdit ? BASE_URL + rowData.icon : null
   );
+console.log("rowData", rowData)
 
-    googleTTS
-    .getAllAudioBase64("لِنَذْهَبْ إِلَى السِّيْنَمَا", {
-      lang: 'ar',
-      slow: false,
-      host: 'https://translate.google.com',
-      timeout: 10000,
-      splitPunct: ',.?',
-    })
-    .then((base64String) => {
-      console.log("base 64 String ======>",base64String)
-      const decodedData = atob(base64String) // Decode base64 string
-      const buffer = new Uint8Array(decodedData.length)
-      for (let i = 0; i < decodedData.length; i++) {
-        buffer[i] = decodedData.charCodeAt(i)
-      }
-      const blob = new Blob([buffer], { type: "audio/mpeg" }) // Create a Blob object representing the audio data
-      const audioURL = URL.createObjectURL(blob) // Generate a URL for the Blob object
-      console.log("audio URL ------> ", audioURL)
-      const audio = new Audio(audioURL) // Create a new Audio object using the generated URL
-      audio.play() // Play the audio
-    })
-    .catch(console.error);
+useEffect(() => {
+  const fetchContents = async () => {
+    const response = await getHandler("content-all");
+    if (response.status === 200) {
+      const dataRenderable = response.data.data.map((item) => {
+        return {
+          id: item.id,
+          title: item.attributes.title,
+        };
+      });
+      setContentData(dataRenderable);
+      console.log("dhuru", dataRenderable)
+    }
+  };
+   console.log("dhuru", contentData)
+  if (Array.isArray(contentData) && contentData.length === 0) {
+    fetchContents();
+  }
+}, [contentData]);
+
+
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (questionTitle.length < 3) {
+    if (contentDetailsTitle.length < 3) {
       setError({ ...error, err0: "Too Short" });
-    } else if (questionAudio.length < 3) {
+    } else if (contentDetailsAudio.length < 3) {
       setError({ ...error, err1: "Too Short" });
     } else {
       let formData = new FormData();
-      var questionTitleInput = document.getElementById("inputQuestionTitle");
-      var questionAudioInput = document.getElementById("idInputQuestionAudio");
+      var contentDetailsTitleInput = document.getElementById("idInputContentDetailsTitle");
+      var contentDetailsAudioInput = document.getElementById("idInputContentDetailsAudio");
       var fileInput = document.getElementById("idInputFile");
 
       var file = fileInput.files[0];
@@ -73,15 +84,15 @@ export default function AddQuestionTitle({ rowData, useForEdit }) {
 
       formData.append(
         "data",
-        `{"question":"${questionTitleInput.value}", "audio": "${questionAudioInput.value}"}`
+        `{"title":"${contentDetailsTitleInput.value}", "audio": "${contentDetailsAudioInput.value}", "content": { "connect": [${selectedContent.id}] }}`
       );
 
-      console.log("Question Add : ",formData)
+     
 
       await fetch(
         useForEdit
-          ? putMap["QuestionsTitleFull"] + `/${rowData.id}?populate=*`
-          : postMap["QuestionsTitleFull"],
+          ? putMap["content-details"] + `/${rowData.id}?populate=*`
+          : postMap["content-details"]+ `?populate=*`,
         {
           method: useForEdit ? "PUT" : "POST",
           body: formData,
@@ -94,16 +105,21 @@ export default function AddQuestionTitle({ rowData, useForEdit }) {
         }
       )
         .then((res) => res.json())
+    
         .then((data) => {
+          console.log("res", data)
           alert(JSON.stringify(data));
           let renderable = {
             id: data.data.id,
-            questionsTitle: title,
-            questionAudio: questionAudio,
-            icon: data.data.attributes.icon?.data?.attributes?.formats?.small
-              ?.url,
+            title: data.data.attributes?.title,
+            content: {
+              id:  data.data.attributes?.content?.data?.id,
+              title:data.data.attributes?.content?.data?.attributes?.title,
+            },
+            contentAudio: data.data.attributes?.audio,
+            icon: data.data.attributes.image?.data?.attributes?.url,
           };
-
+           console.log("renderable", renderable, data.data)
           useForEdit ? afterUpdate(renderable) : afterAdd(renderable);
           toast({
             title: useForEdit ? "Successfully Updated" : "Successfully Added",
@@ -133,30 +149,43 @@ export default function AddQuestionTitle({ rowData, useForEdit }) {
           className="flex flex-col gap-4 py-2 text-black text-lg"
         >
           <div className="flex flex-col ">
-            <label>Question Title</label>
+            <label>Content Detail Title</label>
             <CustomInput
-              id="inputQuestionTitle"
+              id="idInputContentDetailsTitle"
               type="text"
-              value={questionTitle}
-              onChange={(e) => setQuestionTitle(e.target.value)}
-              ph="Enter Question Title"
+              value={contentDetailsTitle}
+              onChange={(e) => setContentDetailsTitle(e.target.value)}
+              ph="Enter Content Detail Title"
               style="py-0.25 px-1"
             />
             <span className="text-red-700">{error.err0}</span>
           </div>
+
+          <div className="flex flex-col gap-1">
+            <CustomSelect
+              id="idSelectedContent"
+              label={"Contents"}
+              value={selectedContent}
+              options={contentData}
+              bg="wh"
+              onChange={(value) =>
+                setSelectedContent({ id: value.id, title: value.title })
+              }
+            />
+            <span className="text-red-700">{error.err1}</span>
+          </div>
+
           <div className="flex flex-col ">
-            <label>Audio of Question</label>
+            <label>Audio of Content Detail</label>
             <CustomInput
-              id="idInputQuestionAudio"
+              id="idInputContentDetailsAudio"
               type="text"
-              value={questionAudio}
-              onChange={(e) => setQuestionAudio(e.target.value)}
+              value={contentDetailsAudio}
+              onChange={(e) => setContentDetailsAudio(e.target.value)}
               ph="Enter Audio Text"
               style="py-0.25 px-1"
             />
-            <label>Alif Baa Taa Saa Jim Ha Kha Daal Zaal</label>
-            {/* <TextToAudio audioData={questionAudio} /> */}
-            <ArabicSpeechResponsiveVoice  audioData={questionAudio} />
+           
             {/* <ReactSpeechKit /> */}
             <span className="text-red-700">{error.err1}</span>
           </div>
