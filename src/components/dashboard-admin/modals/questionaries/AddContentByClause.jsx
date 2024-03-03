@@ -178,7 +178,7 @@ useEffect(() => {
         .then((res) => res.json())
     
         .then((data) => {
-        
+        console.log("data1", data)
           alert(JSON.stringify(data));
           let renderable = {
             id: data.data.id,

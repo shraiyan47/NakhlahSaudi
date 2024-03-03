@@ -27,6 +27,7 @@ import Language from "../components/dashboard-admin/tabular-view/questionaries/L
 import ContentDetailsByLanguage from "../components/dashboard-admin/tabular-view/questionaries/ContentDetailsByLanguage";
 import ContentsByClause from "../components/dashboard-admin/tabular-view/questionaries/ContentByClause";
 import ContentsBySyllable from "../components/dashboard-admin/tabular-view/questionaries/ContentBySyllable";
+import DetailsOfContentDetailsByLanguage from "../components/dashboard-admin/tabular-view/questionaries/DetailsOfContentDetailsByLanguage";
 
 
 export default function ContentLayout({ content }) {
@@ -150,7 +151,7 @@ export default function ContentLayout({ content }) {
           {currentView ==  "Cont. Details by Languages" && <ContentDetailsByLanguage />}
           {currentView == "Clauses" && <ContentsByClause />}
           {currentView ==  "Syllables" && <ContentsBySyllable />}
-       {currentView ==  "Details of Cont. Det. by Languages" && <ContentDetailsByLanguage />}
+       {currentView ==  "Details of Cont. Det. by Languages" && <DetailsOfContentDetailsByLanguage />}
          
          
            
