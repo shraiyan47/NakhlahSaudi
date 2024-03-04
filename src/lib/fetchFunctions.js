@@ -267,7 +267,22 @@ export function renderableContentDetails(arr) {
   return renderable;
 }
 
-
+export function renderableQuestionContent(arr) {
+  return arr?.map((item) => {
+    return {
+      id: item.id,
+      title: item.attributes?.question?.data?.attributes?.question,
+    };
+  });
+}
+export function renderableQuestion(arr) {
+  return arr?.map((item) => {
+    return {
+      id: item.id,
+      title: item.attributes?.question
+    };
+  });
+}
 export function renderableLanguage(arr) {
   const renderable = arr?.map((item) => {
  console.log("fetchfuction", arr)
@@ -394,22 +409,6 @@ export function renderableContTypeCategories(arr) {
     return {
       id: item.id,
       title: item.attributes.title,
-    };
-  });
-}
-export function renderableQuestionContent(arr) {
-  return arr?.map((item) => {
-    return {
-      id: item.id,
-      title: item.attributes?.question?.data?.attributes?.question,
-    };
-  });
-}
-export function renderableQuestion(arr) {
-  return arr?.map((item) => {
-    return {
-      id: item.id,
-      title: item.attributes?.question
     };
   });
 }

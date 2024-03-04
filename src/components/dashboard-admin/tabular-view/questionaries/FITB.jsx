@@ -38,7 +38,6 @@ export default function FITB() {
       if (selectedLesson.id) {
         url += `&filters[learning_journey_lesson][title][$eq]=${selectedLesson.title}`;
       }
-      console.log("FITB",url);
       const response = await getWithUrl(url);
 
       if (response) {

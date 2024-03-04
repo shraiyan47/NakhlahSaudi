@@ -38,7 +38,6 @@ import AddContentByClause from "../modals/questionaries/AddContentByClause";
 import AddContentBySyllable from "../modals/questionaries/AddContentBySyllable";
 import AddDetailsOfContentDetailsByLanguage from "../modals/questionaries/AddDetailsOfContentDetailsByLanguage";
 
-
 const viewMap = {
   // learning journey
   "learning-journey": "id_learning_journey",
@@ -85,9 +84,7 @@ export default function DataTableHeader({ table, view, filter }) {
             placeholder={`Filter ${currentView}`}
             value={table?.getColumn(viewMap[view])?.getFilterValue() ?? ""}
             onChange={(event) =>
-              table
-                ?.getColumn(viewMap[view])
-                ?.setFilterValue(event.target.value)
+              table?.getColumn(viewMap[view])?.setFilterValue(event.target.value)
             }
             className="max-h-[28px] max-w-[350px] min-w-[220px] text-center text-slate-700 px-3 py-1 placeholder:text-slate-500 "
           />

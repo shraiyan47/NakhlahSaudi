@@ -76,7 +76,6 @@ useEffect(() => {
   if (Array.isArray(contentData) && contentData.length === 0) {
     fetchContents();
   }
-// eslint-disable-next-line react-hooks/exhaustive-deps
 }, [contentData]);
 
 
@@ -99,7 +98,6 @@ useEffect(() => {
   if (Array.isArray(languageData) && languageData.length === 0) {
     fetchLanguages();
   }
-// eslint-disable-next-line react-hooks/exhaustive-deps
 }, [languageData]);
 
   async function handleSubmit(e) {
