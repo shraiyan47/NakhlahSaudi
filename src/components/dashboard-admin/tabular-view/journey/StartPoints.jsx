@@ -18,24 +18,38 @@ export default function StartPoints() {
   const loading = useLoadingState((state) => state.loading);
   const toggleLoading = useLoadingState((state) => state.toggleLoading);
 
+  // useEffect(() => {
+  //   const fetch = async () => {
+  //     const response = await getHandler("learner-start-point");
+  //     if (response.status === 200) {
+  //       setStartPoints(renderableStartPoint(response.data.data));
+  //       toggleLoading(false);
+  //     }
+  //   };
+  //   if (
+  //     loading == false &&
+  //     Array.isArray(startPoints) &&
+  //     startPoints.length === 0
+  //   ) {
+  //     toggleLoading(true);
+  //     fetch();
+  //   }
+  // }, []);
+
   useEffect(() => {
-    const fetch = async () => {
-      const response = await getHandler("learner-start-point");
+  
+    const fetch = async () => {    
+      const response = await getHandler("learner-start-point")   
       if (response.status === 200) {
-        setStartPoints(renderableStartPoint(response.data.data));
+        setStartPoints(renderableStartPoint(response.data?.data));
         toggleLoading(false);
       }
-    };
-    if (
-      loading == false &&
-      Array.isArray(startPoints) &&
-      startPoints.length === 0
-    ) {
-      toggleLoading(true);
-      fetch();
-    }
+    };  
+    fetch();
+    //   }
   }, []);
 
+  
   return (
     <div className="w-full bg-white  rounded-xl">
       {loading ? (

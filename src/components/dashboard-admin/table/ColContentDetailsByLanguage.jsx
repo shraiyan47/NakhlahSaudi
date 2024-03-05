@@ -6,7 +6,7 @@ import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Deletion from "../modals/other/Deletion"; 
 import { BASE_URL } from "@/lib/requestHandler";
-import AddContentDetailByLanguage from "../modals/questionaries/AddcontentDetailsbyLanguage";
+import AddContentDetailByLanguage from "../modals/questionaries/AddContentDetailsbyLanguage";
 
 
 
