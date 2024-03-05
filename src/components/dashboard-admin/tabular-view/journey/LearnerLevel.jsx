@@ -18,23 +18,38 @@ const LearnerLevel = () => {
   const loading = useLoadingState((state) => state.loading);
   const toggleLoading = useLoadingState((state) => state.toggleLoading);
 
+  // useEffect(() => {
+  //   const fetch = async () => {
+  //     const response = await getHandler("learner-level");
+  //     if (response.status === 200) {
+  //       setLearnerLevels(renderableLearnerLevel(response.data.data));
+  //       toggleLoading(false);
+  //     }
+  //   };
+  //   if (
+  //     loading == false &&
+  //     Array.isArray(learnerLevels) &&
+  //     learnerLevels.length === 0
+  //   ) {
+  //     toggleLoading(true);
+  //     fetch();
+  //   }
+  // }, []);
+
   useEffect(() => {
-    const fetch = async () => {
-      const response = await getHandler("learner-level");
+  
+    const fetch = async () => {    
+      const response = await getHandler("learner-level")   
       if (response.status === 200) {
-        setLearnerLevels(renderableLearnerLevel(response.data.data));
+        setLearnerLevels(renderableLearnerLevel(response.data?.data));
         toggleLoading(false);
       }
-    };
-    if (
-      loading == false &&
-      Array.isArray(learnerLevels) &&
-      learnerLevels.length === 0
-    ) {
-      toggleLoading(true);
-      fetch();
-    }
+    };  
+    fetch();
+    //   }
   }, []);
+
+
 
   console.log("learner-level", setLearnerLevels , "11learnerLevels", learnerLevels)
   return (

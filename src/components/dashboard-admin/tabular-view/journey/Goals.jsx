@@ -19,20 +19,32 @@ export default function Goals() {
   const loading = useLoadingState((state) => state.loading);
   const toggleLoading = useLoadingState((state) => state.toggleLoading);
 
+  // useEffect(() => {
+  //   const fetch = async () => {
+  //     const response = await getHandler("learner-goal");
+  //     if (response.status === 200) {
+  //       setGoals(renderableGoals(response.data.data));
+  //       toggleLoading(false);
+  //     }
+  //   };
+  //   if (Array.isArray(learnerGoals) && learnerGoals.length === 0) {
+  //     toggleLoading(true);
+  //     fetch();
+  //   }
+  // }, []);
+
   useEffect(() => {
-    const fetch = async () => {
-      const response = await getHandler("learner-goal");
+  
+    const fetch = async () => {    
+      const response = await getHandler("learner-goal")   
       if (response.status === 200) {
-        setGoals(renderableGoals(response.data.data));
+        setGoals(renderableGoals(response.data?.data));
         toggleLoading(false);
       }
-    };
-    if (Array.isArray(learnerGoals) && learnerGoals.length === 0) {
-      toggleLoading(true);
-      fetch();
-    }
+    };  
+    fetch();
+    //   }
   }, []);
-
 
   console.log("learnerGoals",learnerGoals )
   return (

@@ -19,19 +19,39 @@ export default function Purposes() {
   const loading = useLoadingState((state) => state.loading);
   const toggleLoading = useLoadingState((state) => state.toggleLoading);
 
+  // useEffect(() => {
+  //   const fetch = async () => {
+  //     const response = await getHandler("learner-purpose");
+  //     if (response.status === 200) {
+  //       setPurposes(renderablePurpose(response.data.data));
+  //       toggleLoading(false);
+  //     }
+  //   };
+  //   if (loading == false && Array.isArray(purposes) && purposes.length === 0) {
+  //     toggleLoading(true);
+  //     fetch();
+  //   }
+  // }, []);
   useEffect(() => {
+  
     const fetch = async () => {
-      const response = await getHandler("learner-purpose");
+      
+      const response = await getHandler("learner-purpose")
+     
       if (response.status === 200) {
-        setPurposes(renderablePurpose(response.data.data));
+       
+        setPurposes(renderablePurpose(response.data?.data));
         toggleLoading(false);
       }
     };
-    if (loading == false && Array.isArray(purposes) && purposes.length === 0) {
-      toggleLoading(true);
-      fetch();
-    }
+  
+    fetch();
+    //   }
   }, []);
+
+
+
+
 
   console.log("purpose", purposes)
 
