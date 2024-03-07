@@ -54,7 +54,7 @@ export function renderableLearnerLevel(arr) {
   return arr.map((item) => {
     return {
       id: item.id,
-      level: item.attributes.level,
+      level: item.attributes.title,
       icon: item.attributes.icon?.data?.attributes?.formats?.small?.url,
     };
   });

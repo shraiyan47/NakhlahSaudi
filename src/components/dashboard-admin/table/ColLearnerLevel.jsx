@@ -97,7 +97,7 @@ const ColLearnerLevel = [
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
               <Deletion
-                rowData={{ id: row.original.id, title: row.original.level }}
+                rowData={{ id: row.original.id, title: row.original.title }}
                 what="learner-level"
               />
             </DialogContent>
