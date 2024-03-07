@@ -28,7 +28,7 @@ export default function DataTable({ data, columns, view, filter }) {
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
   const [pagination, setPagination] = useState({ //https://example.com/api/data?pageIndex=1&pageSize=10
-    pageIndex: 1,
+    pageIndex: 0,
     pageSize: 10,
   });
 

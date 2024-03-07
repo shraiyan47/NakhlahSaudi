@@ -6,11 +6,12 @@ import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Deletion from "../modals/other/Deletion"; 
 import { BASE_URL } from "@/lib/requestHandler";
-import AddContentDetailByLanguage from "../modals/questionaries/AddContentDetailsbyLanguage";
+import AddDetailsOfContentDetailsByLanguage from "../modals/questionaries/AddDetailsOfContentDetailsByLanguage";
 
 
 
-const ColContentDetailsByLanguage = [
+
+const ColDetailsOfContentDetailsByLanguage = [
  
 
   {
@@ -25,97 +26,118 @@ const ColContentDetailsByLanguage = [
       );
     },
   },
-  {
-    id: "id_contentDetailsByLanguage_title",
-    accessorKey: "title",
-    header: ({ column }) => {
-      return (
-        <Button
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="textPrimaryColor textNormal"
-        >
-          Title 
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
+//   {
+//     id: "id_contentDetailsByLanguage_title",
+//     accessorKey: "title",
+//     header: ({ column }) => {
+//       return (
+//         <Button
+//           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+//           className="textPrimaryColor textNormal"
+//         >
+//           Title 
+//           <ArrowUpDown className="ml-2 h-4 w-4" />
+//         </Button>
+//       );
+//     },
+//     cell: ({ row }) => (
         
-      <div className="lowercase textNormal textSecondaryColor">
-        {row.getValue("id_contentDetailsByLanguage_title")
-         ? row.getValue("id_contentDetailsByLanguage_title")
-         : "Not attached"}
+//       <div className="lowercase textNormal textSecondaryColor">
+//         {row.getValue("id_contentDetailsByLanguage_title")
+//          ? row.getValue("id_contentDetailsByLanguage_title")
+//          : "Not attached"}
        
-      </div>
-    ),
-  },
+//       </div>
+//     ),
+//   },
   {
-    id: "id_content",
-    accessorKey: "content.title",
+    id: "id_content_details_by_language",
+    accessorKey: "content_details_by_language.title",
     header: ({ column }) => {
       return (
         <Button
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="textPrimaryColor textNormal"
         >
-         Contents
+         Content Details By Language
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => (
       <div className="lowercase textNormal textSecondaryColor">
-        {row.getValue("id_content")
-         ? row.getValue("id_content")
+        {row.getValue("id_content_details_by_language")
+         ? row.getValue("id_content_details_by_language")
          : "Not attached"}
       </div>
     ),
   },
+//   {
+//     id: "id_language",
+//     accessorKey: "language.title",
+//     header: ({ column }) => {
+//       return (
+//         <Button
+//           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+//           className="textPrimaryColor textNormal"
+//         >
+//   Language
+//           <ArrowUpDown className="ml-2 h-4 w-4" />
+//         </Button>
+//       );
+//     },
+//     cell: ({ row }) => (
+//       <div className="lowercase textNormal textSecondaryColor pl-2">
+//         {row.getValue("id_language")
+//             ? row.getValue("id_language")
+//             : "Not attached"}
+//       </div>
+//     ),
+//   },
+
   {
-    id: "id_language",
-    accessorKey: "language.title",
+    accessorKey: "icon",
+    header: () => <div className="textPrimaryColor textNormal">Image </div>,
+    cell: ({ row }) => {
+      return (
+       <div>
+        { (row.getValue("icon") ) ?
+          <Image
+            src={`${BASE_URL}${row.getValue("icon")}`}
+            alt=""
+            width={40}
+            height={40}
+            className="rounded-full border-2 border-black"
+          />
+       :
+     <div> No Image</div>
+    }
+        </div> 
+      );
+    },
+  },
+  {
+    id: "id_Audio",
+    accessorKey: "audio",
     header: ({ column }) => {
       return (
         <Button
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="textPrimaryColor textNormal"
         >
-  Language
+          Audio
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => (
       <div className="lowercase textNormal textSecondaryColor pl-2">
-        {row.getValue("id_language")
-            ? row.getValue("id_language")
+        {row.getValue("id_Audio")
+            ? row.getValue("id_Audio")
             : "Not attached"}
       </div>
     ),
   },
-
-//   {
-//     accessorKey: "icon",
-//     header: () => <div className="textPrimaryColor textNormal">Image </div>,
-//     cell: ({ row }) => {
-//       return (
-//        <div>
-//         { (row.getValue("icon") ) ?
-//           <Image
-//             src={`${BASE_URL}${row.getValue("icon")}`}
-//             alt=""
-//             width={40}
-//             height={40}
-//             className="rounded-full border-2 border-black"
-//           />
-//        :
-//      <div> No Image</div>
-//     }
-//         </div> 
-//       );
-//     },
-//   },
-
   {
     id: "actions",
     header: () => (
@@ -132,7 +154,7 @@ const ColContentDetailsByLanguage = [
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <Deletion rowData={row.original} what="content-details-by-language" />
+              <Deletion rowData={row.original} what="details-of-content-details-by-language" />
             </DialogContent>
           </Dialog>
           <Dialog className="">
@@ -142,8 +164,8 @@ const ColContentDetailsByLanguage = [
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <AddContentDetailByLanguage
-                title="content-details-by-language"
+              <AddDetailsOfContentDetailsByLanguage
+                title="details-of-content-details-by-language"
                 useForEdit={true}
                 rowData={row.original}
               />
@@ -155,4 +177,4 @@ const ColContentDetailsByLanguage = [
   },
 ];
 
-export default ColContentDetailsByLanguage;
+export default ColDetailsOfContentDetailsByLanguage;

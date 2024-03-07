@@ -36,7 +36,7 @@ import AddLanguage from "../modals/questionaries/AddLanguage";
 import AddContentDetailByLanguage from "../modals/questionaries/AddContentDetailsbyLanguage";
 import AddContentByClause from "../modals/questionaries/AddContentByClause";
 import AddContentBySyllable from "../modals/questionaries/AddContentBySyllable";
-
+import AddDetailsOfContentDetailsByLanguage from "../modals/questionaries/AddDetailsOfContentDetailsByLanguage";
 
 const viewMap = {
   // learning journey
@@ -84,9 +84,7 @@ export default function DataTableHeader({ table, view, filter }) {
             placeholder={`Filter ${currentView}`}
             value={table?.getColumn(viewMap[view])?.getFilterValue() ?? ""}
             onChange={(event) =>
-              table
-                ?.getColumn(viewMap[view])
-                ?.setFilterValue(event.target.value)
+              table?.getColumn(viewMap[view])?.setFilterValue(event.target.value)
             }
             className="max-h-[28px] max-w-[350px] min-w-[220px] text-center text-slate-700 px-3 py-1 placeholder:text-slate-500 "
           />
@@ -156,6 +154,7 @@ export default function DataTableHeader({ table, view, filter }) {
               {view == "language" && < AddLanguage title={view} />}
               
               {view == "content-details-by-language" && < AddContentDetailByLanguage title={view} />}
+              {view == "details-of-content-details-by-language" && < AddDetailsOfContentDetailsByLanguage title={view} />}
               {view == "content-by-clause" && < AddContentByClause title={view} />}
               {view == "content-by-syllable" && < AddContentBySyllable title={view} />}
               {view == "question-content" && <AddQueContent title={view} />}

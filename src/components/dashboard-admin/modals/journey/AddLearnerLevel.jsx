@@ -49,7 +49,7 @@ export default function AddLearnerLevel({ rowData, title, useForEdit }) {
     var file = fileInput.files[0];
 
     formData.append("files.icon", file);
-    formData.append("data", `{"level":"${levelInput.value}"}`);
+    formData.append("data", `{"title":"${levelInput.value}"}`);
 
     if (learnerLevel.length < 3) {
       setError("Too Short");
@@ -69,7 +69,7 @@ export default function AddLearnerLevel({ rowData, title, useForEdit }) {
         .then((data) => {
           let renderable = {
             id: data.data.id,
-            level: data.data.attributes.level,
+            level: data.data.attributes.title,
             icon: data.data.attributes.icon?.data?.attributes?.formats?.small
               ?.url,
           };

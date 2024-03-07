@@ -1197,6 +1197,76 @@ export const useContentDetailsByLanguage = create(
   }))
 );
 
+export const useDetailsOfContentDetailsByLanguage = create(
+  immer((set) => ({
+    data: [],
+    setDetailsOfContentDetailsByLanguage: (data) => {
+      set((state) => {
+        state.data = data;
+      });
+    },
+    addEdit: async ({ useForEdit, data, id }) => {
+      const response = useForEdit
+        ? await putHandler("details-of-content-details-by-language", id, {
+            data,
+          })
+        : await postHandler("details-of-content-details-by-language", {
+            data,
+          });
+
+      if (response.status == 400) {
+        let errors = response.data.error.details.errors;
+        return {
+          status: response.status,
+          error: errors[0].message,
+        };
+      }
+      if (response.status == 200) {
+        let data = response.data.data;
+        console.log("usestoreadmin", data)
+        return {
+          status: response.status,
+          message: useForEdit ? "Updated Successfully" : "Added Successfully",
+          data: {
+            id: data.id,
+            title: data.attributes.title,
+            audio: item.attributes?.audio,
+            content_details_by_language: {
+              id:  data.data.attributes?.content_details_by_language?.data?.id,
+              title: data.data.attributes?.content_details_by_language?.data?.attributes?.title,
+            },
+            icon: item.attributes.image?.data?.attributes?.url,
+          },
+        };
+      }
+    },
+    afterAdd: (data) => {
+      console.log("bebo", data)
+      set((state) => {
+        state.data = [data, ...state.data];
+      });
+    },
+    afterUpdate: (data) => {
+      console.log("bebo", data)
+      set((state) => {
+        state.data = state.data.map((item) => {
+          if (item.id == data.id) {
+            return data;
+          } else {
+            return item;
+          }
+        });
+      });
+    },
+    afterDelete: (id) => {
+      set((state) => {
+        state.data = state.data.filter((item) => item.id != id);
+      });
+    },
+  }))
+);
+
+
 export const useContentByClause= create(
   immer((set) => ({
     data: [],

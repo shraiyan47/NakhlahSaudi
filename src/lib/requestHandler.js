@@ -25,7 +25,7 @@ export const getMap = {
   "learner-purpose": `${BASE_URL}/api/learning-purposes?populate=icon`,
   "learner-goal": `${BASE_URL}/api/learning-goals?populate=*`,
   "learner-start-point": `${BASE_URL}/api/learner-starting-points?populate=icon`,
-  "learner-level": `${BASE_URL}/api/learner-levels?populate=icon`,
+  "learner-level": `${BASE_URL}/api/learning-journeys?populate=icon`,
   "learning-journey": `${BASE_URL}/api/learning-journeys`,
   "learning-unit": `${BASE_URL}/api/learning-journey-units?populate=learning_journey`,
   "learning-level": `${BASE_URL}/api/learning-journey-levels?populate[learning_journey_unit][populate][0]=learning_journey`,
@@ -34,28 +34,20 @@ export const getMap = {
   "content-type": `${BASE_URL}/api/content-types`,
   "content-type-category": `${BASE_URL}/api/content-type-categories`,
   "content-details" : `${BASE_URL}/api/content-details?populate=*`,
- // "content-pm": `${BASE_URL}/api/contents?filters[content_type][title][$eq]=Pair_Matching`,
- // "content-sm": `${BASE_URL}/api/contents?filters[content_type][title][$eq]=Sentence_Making`,
- // "content-fitb": `${BASE_URL}/api/contents?filters[content_type][title][$eq]=Fill_In_The_Blank`,
+  "language" :  `${BASE_URL}/api/languages?populate=*`,
+  "content-details-by-language" : `${BASE_URL}/api/content-details-by-languages?populate=*`,
+  "details-of-content-details-by-language" :`${BASE_URL}/api/details-content-languages?populate=*`,
+  "content-by-clause" : `${BASE_URL}/api/content-by-clauses?populate=*`,
+  "content-by-syllable" : `${BASE_URL}/api/content-by-syllables?populate=*`,
 
-  //"content-tof": `${BASE_URL}/api/contents?filters[content_type][title][$eq]=Boolean`,
-  //"content-mcq": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=MCQ`,
-
-  // "content-boolean": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Boolean`,
-  // api for contents with filtering
    "content-all": `${BASE_URL}/api/contents?populate=*`,
-  "content-fitb": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Fill In The Blank`,
+   "content-fitb": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Fill In The Blank`,
  "content-tof": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=True Or False`,
- "content-mcq": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=MCQ`,
+  // "content-mcq": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=MCQ`,
  "content-sm": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Sentence Making`,
-"content-pm": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Pair Matching`,
-  // question: `${BASE_URL}/api/questions?populate=*`,
-  MCQ: "{{URL}}/api/question-contents?populate[question][populate]=*&filters[question_type][title][$eq]=MCQ",
-  "Pair Matching": "",
-  "Sentence Making": "",
-  "True Or False": "",
-  "Fill In The Blank": "",
-  "QuestionsTitleFull": `${BASE_URL}/api/questions?pagination[page]=1&pagination[pageSize]=999999&populate=*`,
+ "content-pm": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Pair Matching`,
+
+ "QuestionsTitleFull": `${BASE_URL}/api/questions?pagination[page]=1&pagination[pageSize]=999999&populate=*`,
   question: `${BASE_URL}/api/journey-map-question-contents?populate[question_content][populate]=*&populate=image&populate[learning_journey_lesson][populate][learning_journey_level][populate][learning_journey_unit][populate][0]=learning_journey`,
   "question-content": `${BASE_URL}/api/question-contents?populate=*`,
   "question-content-mcq": `${BASE_URL}/api/question-contents?populate=*&filters[question_type][title][$eq]=MCQ`,
@@ -71,15 +63,20 @@ export const postMap = {
   "learner-purpose": `${BASE_URL}/api/learning-purposes?populate=icon`,
   "learner-goal": `${BASE_URL}/api/learning-goals`,
   "learner-start-point": `${BASE_URL}/api/learner-starting-points?populate=icon`,
-  "learner-level": `${BASE_URL}/api/learner-levels`,
+  "learner-level": `${BASE_URL}/api/learning-journeys`,
   "learning-journey": `${BASE_URL}/api/learning-journeys`,
   "learning-unit": `${BASE_URL}/api/learning-journey-units`,
   "learning-level": `${BASE_URL}/api/learning-journey-levels`,
   "learning-lesson": `${BASE_URL}/api/learning-journey-lessons`,
   "question-type": `${BASE_URL}/api/question-types`,
   question: `${BASE_URL}/api/questions`,
+  "language" :  `${BASE_URL}/api/languages`,
+  "content-details-by-language" : `${BASE_URL}/api/content-details-by-languages`,
+  "details-of-content-details-by-language" :`${BASE_URL}/api/details-content-languages`,
+  "content-by-clause" : `${BASE_URL}/api/content-by-clauses`,
+  "content-by-syllable" : `${BASE_URL}/api/content-by-syllables`,
   "content-type": `${BASE_URL}/api/content-types`,
-  content: `${BASE_URL}/api/contents`,
+  "content-all": `${BASE_URL}/api/contents`,
   "content-type-category": `${BASE_URL}/api/content-type-categories`,
   "QuestionsTitleFull": `${BASE_URL}/api/questions?populate=*`,
   "question-content": `${BASE_URL}/api/question-contents`,
@@ -91,47 +88,52 @@ export const putMap = {
   "learner-purpose": `${BASE_URL}/api/learning-purposes`,
   "learner-goal": `${BASE_URL}/api/learning-goals`,
   "learner-start-point": `${BASE_URL}/api/learner-starting-points`,
-  "learner-level": `${BASE_URL}/api/learner-levels`,
+  "learner-level": `${BASE_URL}/api/learning-journeys`,
   "learning-journey": `${BASE_URL}/api/learning-journeys`,
   "learning-unit": `${BASE_URL}/api/learning-journey-units`,
   "learning-level": `${BASE_URL}/api/learning-journey-levels`,
   "learning-lesson": `${BASE_URL}/api/learning-journey-lessons`,
   "question-type": `${BASE_URL}/api/question-types`,
-  content: `${BASE_URL}/api/contents`,
+ " content-all": `${BASE_URL}/api/contents`,
+  "language" :  `${BASE_URL}/api/languages`,
+  "content-details-by-language" : `${BASE_URL}/api/content-details-by-languages`,
+  "details-of-content-details-by-language" :`${BASE_URL}/api/details-content-languages`,
+  "content-by-clause" : `${BASE_URL}/api/content-by-clauses`,
+  "content-by-syllable" : `${BASE_URL}/api/content-by-syllables`,
   "content-type": `${BASE_URL}/api/content-types`,
   "content-type-category": `${BASE_URL}/api/content-type-categories`,
   "QuestionsTitleFull": `${BASE_URL}/api/questions`,
   question: `${BASE_URL}/api/questions`,
   "question-content": `${BASE_URL}/api/question-contents`,
   "question-content-option": `${BASE_URL}/api/question-content-options`,
-
   "journey-map-question": `${BASE_URL}/api/journey-map-question-contents`,
-
   "content-details" : `${BASE_URL}/api/content-details`,
-
 };
 export const deleteMap = {
   "learner-purpose": `${BASE_URL}/api/learning-purposes`,
   "learner-goal": `${BASE_URL}/api/learning-goals`,
   "learner-start-point": `${BASE_URL}/api/learner-starting-points`,
-  "learner-level": `${BASE_URL}/api/learner-levels`,
+  "learner-level": `${BASE_URL}/api/learning-journeys`,
   "learning-journey": `${BASE_URL}/api/learning-journeys`,
   "learning-unit": `${BASE_URL}/api/learning-journey-units`,
   "learning-level": `${BASE_URL}/api/learning-journey-levels`,
   "learning-lesson": `${BASE_URL}/api/learning-journey-lessons`,
   "question-type": `${BASE_URL}/api/question-types`,
-  content: `${BASE_URL}/api/contents`,
+  "content-all": `${BASE_URL}/api/contents`,
   "content-type": `${BASE_URL}/api/content-types`,
   "content-type-category": `${BASE_URL}/api/content-type-categories`,
   question: `${BASE_URL}/api/journey-map-question-contents`,
+  "language" :  `${BASE_URL}/api/languages`,
+  "content-details-by-language" : `${BASE_URL}/api/content-details-by-languages`,
+  "details-of-content-details-by-language" :`${BASE_URL}/api/details-content-languages`,
+  "content-by-clause" : `${BASE_URL}/api/content-by-clauses`,
+  "content-by-syllable" : `${BASE_URL}/api/content-by-syllables`,
   "Question Title": `${BASE_URL}/api/questions`,
   "question-content": `${BASE_URL}/api/question-contents`,
   "question-content-option": `${BASE_URL}/api/question-content-options`,
   "content-details" : `${BASE_URL}/api/content-details`,
 };
-export const getQuestionUrl = (id) => {
-  return `api/questions?populate=*&filters[question_content][question_type][id][$eq]=${id}`;
-}
+
 export const getWithUrl = async (url) => {
   try {
     const response = await axios.get(BASE_URL + "/" + url, config);
@@ -140,7 +142,9 @@ export const getWithUrl = async (url) => {
     return err;
   }
 };
-
+export const getQuestionUrl = (id) => {
+  return `api/questions?populate=*&filters[question_content][question_type][id][$eq]=${id}`;
+}
 export const getHandler = async (key) => {
   try {
     const response = await axios.get(getMap[key], config);

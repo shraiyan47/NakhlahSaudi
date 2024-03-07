@@ -2,8 +2,7 @@
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
 import {
-  useContent,
-useLanguage, useContentDetailsByLanguage,
+  useDetailsOfContentDetailsByLanguage, useContentDetailsByLanguage,
   useTabularView,
 } from "../../../../store/useAdminStore";
 import { useState ,useEffect} from "react";
@@ -14,19 +13,19 @@ import { BASE_URL, config, postMap, putMap, getHandler, postHandler, putHandler 
 import Image from "next/image";
 
 
-export default function AddContentDetailByLanguage({ rowData, useForEdit }) {
+export default function AddDetailsOfContentDetailsByLanguage({ rowData, useForEdit }) {
   //
 
   console.log("rowdata", rowData)
   const { toast } = useToast();
-  const contentData = useContent((state) => state.data);
-const setContentData = useContent( (state) => state.setContents);
-const languageData = useLanguage((state) => state.data);
-const setLanguageData = useLanguage( (state) => state.setLanguage);
+
+const contentDetailsByLanguageData = useContentDetailsByLanguage((state) => state.data);
+const setContentDetailsByLanguageData = useContentDetailsByLanguage( (state) => state.setContentDetailsByLanguage);
   // const addEdit = useContentDetails((state) => state.addEdit);
-  const afterAdd = useContentDetailsByLanguage((state) => state.afterAdd);
-  const afterUpdate = useContentDetailsByLanguage((state) => state.afterUpdate);
-  const [contentDetailsByLanguageTitle, setContentDetailsByLanguageTitle] = useState(useForEdit ? rowData.title : "");
+  const afterAdd = useDetailsOfContentDetailsByLanguage((state) => state.afterAdd);
+  const afterUpdate = useDetailsOfContentDetailsByLanguage((state) => state.afterUpdate);
+  const [title, setTitle] = useState(useForEdit ? rowData.title : "");
+  const [audio, setAudio] = useState(useForEdit ? rowData.audio : "");
  
   const [error, setError] = useState({
     err0: "",
@@ -36,31 +35,35 @@ const setLanguageData = useLanguage( (state) => state.setLanguage);
     id: null,
     title: "",
   };
-  const [selectedContent, setSelectedContent] = useState(
+  const [selectedContentDetailsByLanguage, setSelectedContentDetailsByLanguage] = useState(
     useForEdit
       ? {
-        id:rowData.content.id,
-        title:rowData.content.title,
+        id:rowData.content_details_by_language.id,
+        title:rowData.content_details_by_language.title,
       }
       : initStateSelection
   );
 
-  const [selectedLanguage, setSelectedLanguage] = useState(
-    useForEdit
-      ? {
-        id:rowData.language.id,
-        title:rowData.language.title,
-      }
-      : initStateSelection
-  );
-  // const [image, setImage] = useState(
-  //   useForEdit ? BASE_URL + rowData.icon : null
+  // const [selectedLanguage, setSelectedLanguage] = useState(
+  //   useForEdit
+  //     ? {
+  //       id:rowData.language.id,
+  //       title:rowData.language.title,
+  //     }
+  //     : initStateSelection
   // );
+  const [image, setImage] = useState(
+    useForEdit ? BASE_URL + rowData.icon : null
+  );
+
+
+
 
 
 useEffect(() => {
-  const fetchContents = async () => {
-    const response = await getHandler("content-all");
+  const fetchContentDetailsByLanguage = async () => {
+    const response = await getHandler("content-details-by-language");
+   
     if (response.status === 200) {
       const dataRenderable = response.data.data.map((item) => {
         return {
@@ -68,63 +71,40 @@ useEffect(() => {
           title: item.attributes.title,
         };
       });
-      setContentData(dataRenderable);
+      setContentDetailsByLanguageData(dataRenderable);
     
     }
   };
  
-  if (Array.isArray(contentData) && contentData.length === 0) {
-    fetchContents();
+  if (Array.isArray(contentDetailsByLanguageData) && contentDetailsByLanguageData.length === 0) {
+    fetchContentDetailsByLanguage();
   }
-}, [contentData]);
-
-
-useEffect(() => {
-  const fetchLanguages = async () => {
-    const response = await getHandler("language");
-   
-    if (response.status === 200) {
-      const dataRenderable = response.data.data.map((item) => {
-        return {
-          id: item.id,
-          title: item.attributes.name,
-        };
-      });
-      setLanguageData(dataRenderable);
-    
-    }
-  };
- 
-  if (Array.isArray(languageData) && languageData.length === 0) {
-    fetchLanguages();
-  }
-}, [languageData]);
+}, [contentDetailsByLanguageData]);
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (contentDetailsByLanguageTitle.length < 3) {
-      setError({ ...error, err0: "Too Short" });
-    } else {
+    
       let formData = new FormData();
-      var contentDetailsByLanguageTitleInput = document.getElementById("idContentDetailsByLanguageTitleInput");
-      var contentDetailsAudioInput = document.getElementById("idInputContentDetailsAudio");
-      // var fileInput = document.getElementById("idInputFile");
+      var detailsOfContentDetailsByLanguageTitleInput = document.getElementById("idDetailsOfContentDetailsByLanguageTitleInput");
+      var audioInput = document.getElementById("idInputAudio");
+      var fileInput = document.getElementById("idInputFile");
 
-      // var file = fileInput.files[0];
-      // formData.append("files.image", file);
+      var file = fileInput.files[0];
+      formData.append("files.image", file);
 
       formData.append(
         "data",
-        `{"title":"${contentDetailsByLanguageTitleInput.value}",  "content": { "connect": [${selectedContent.id}] },
-        "language": { "connect": [${selectedLanguage.id}] } }`
+        `{"title":"${detailsOfContentDetailsByLanguageTitleInput.value}",
+          "audio":  "${audioInput.value}" ,
+        "content_details_by_language": { "connect": [${selectedContentDetailsByLanguage.id}] } }`
       );
 
-     
-
+    
+       console.log("formdata", formData)
       await fetch(
         useForEdit
-          ? putMap["content-details-by-language"] + `/${rowData.id}?populate=*`
-          : postMap["content-details-by-language"]+`?populate=*`,
+          ? putMap["details-of-content-details-by-language"] + `/${rowData.id}?populate=*`
+          : postMap[ "details-of-content-details-by-language"]+`?populate=*`,
         {
           method: useForEdit ? "PUT" : "POST",
           body: formData,
@@ -141,19 +121,20 @@ useEffect(() => {
         .then((data) => {
         
           alert(JSON.stringify(data));
+          console.log("data1", data)
           let renderable = {
             id: data.data.id,
             title: data.data.attributes?.title,
-            content: {
-              id:  data.data.attributes?.content?.data?.id,
-              title:data.data.attributes?.content?.data?.attributes?.title,
-            },
-             language: {
-                id:  data.data.attributes?.language?.data?.id,
-                title:data.data.attributes?.language?.data?.attributes?.name,
-             }
+            content_details_by_language: {
+              id:  data.data.attributes?.content_details_by_language?.data?.id,
+              title:data.data.attributes?.content_details_by_language?.data?.attributes?.title,
+             },
+            audio: data.data.attributes?.audio,
+            icon: data.data.attributes.image?.data?.attributes?.url,
           };
-      
+          console.log("data.data.attributes?.content_details_by_language?",  data.data.attributes?.content_details_by_language)
+       
+      console.log("rendarable", renderable)
           useForEdit ? afterUpdate(renderable) : afterAdd(renderable);
           toast({
             title: useForEdit ? "Successfully Updated" : "Successfully Added",
@@ -166,7 +147,7 @@ useEffect(() => {
         });
 
 
-    }
+    
   }
 
   const currentView = useTabularView((state) => state.data.currentView);
@@ -183,13 +164,13 @@ useEffect(() => {
           className="flex flex-col gap-4 py-2 text-black text-lg"
         >
           <div className="flex flex-col ">
-            <label>Content Detail by Language Title</label>
+            <label>Details Of Content Detail by Language Title</label>
             <CustomInput
-              id="idContentDetailsByLanguageTitleInput"
+              id="idDetailsOfContentDetailsByLanguageTitleInput"
               type="text"
-              value={contentDetailsByLanguageTitle}
-              onChange={(e) =>setContentDetailsByLanguageTitle(e.target.value)}
-              ph="Enter Content Detail Title"
+              value={title}
+              onChange={(e) =>setTitle(e.target.value)}
+              ph="Enter Title"
               style="py-0.25 px-1"
             />
             <span className="text-red-700">{error.err0}</span>
@@ -197,32 +178,33 @@ useEffect(() => {
 
           <div className="flex flex-col gap-1">
             <CustomSelect
-              id="idSelectedLanguage"
-              label={"Contents"}
-              value={selectedContent}
-              options={contentData}
+              id="idSelectedContentDetailsByLanguage"
+              label={"Content Details Languages"}
+              value={selectedContentDetailsByLanguage}
+              options={contentDetailsByLanguageData}
               bg="wh"
               onChange={(value) =>
-                setSelectedContent({ id: value.id, title: value.title })
+                setSelectedContentDetailsByLanguage({ id: value.id, title: value.title })
               }
             />
             <span className="text-red-700">{error.err1}</span>
           </div>
-          <div className="flex flex-col gap-1">
-            <CustomSelect
-              id="idSelectedLanguage"
-              label={"Language"}
-              value={selectedLanguage}
-              options={languageData}
-              bg="wh"
-              onChange={(value) =>
-                setSelectedLanguage({ id: value.id, title: value.title })
-              }
+          <div className="flex flex-col ">
+            <label>Audio </label>
+            <CustomInput
+              id="idInputAudio"
+              type="text"
+              value={audio}
+              onChange={(e) => setAudio(e.target.value)}
+              ph="Enter Audio Text"
+              style="py-0.25 px-1"
             />
+           
+            {/* <ReactSpeechKit /> */}
             <span className="text-red-700">{error.err1}</span>
           </div>
         
-          {/* <div className="flex gap-2 flex-col items-start">
+           <div className="flex gap-2 flex-col items-start">
             <input
               type="file"
               id="idInputFile"
@@ -245,7 +227,7 @@ useEffect(() => {
                 height={50}
               />
             )}
-          </div> */}
+          </div> 
           <CustomButton
             txt={useForEdit ? "Update" : "Add"}
             type="submit"

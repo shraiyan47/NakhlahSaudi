@@ -54,7 +54,7 @@ export function renderableLearnerLevel(arr) {
   return arr.map((item) => {
     return {
       id: item.id,
-      level: item.attributes.level,
+      level: item.attributes.title,
       icon: item.attributes.icon?.data?.attributes?.formats?.small?.url,
     };
   });
@@ -267,7 +267,22 @@ export function renderableContentDetails(arr) {
   return renderable;
 }
 
-
+export function renderableQuestionContent(arr) {
+  return arr?.map((item) => {
+    return {
+      id: item.id,
+      title: item.attributes?.question?.data?.attributes?.question,
+    };
+  });
+}
+export function renderableQuestion(arr) {
+  return arr?.map((item) => {
+    return {
+      id: item.id,
+      title: item.attributes?.question
+    };
+  });
+}
 export function renderableLanguage(arr) {
   const renderable = arr?.map((item) => {
  console.log("fetchfuction", arr)
@@ -298,6 +313,26 @@ export function renderableContentDetailsByLanguage(arr) {
       id: item.attributes?.language?.data?.id,
       title: item.attributes?.language?.data?.attributes?.name,
     },
+    
+      // totalData: item.meta.pagination.total
+    };
+  });
+
+  console.log("fetchfuntion", renderable)
+  return renderable;
+}
+export function renderableDetailsOfContentDetailsByLanguage(arr) {
+  const renderable = arr?.map((item) => {
+ console.log("fetchfuction", arr)
+    return {
+      id: item.id,
+     title: item.attributes?.title,
+     audio: item.attributes?.audio,
+     content_details_by_language: {
+      id: item.attributes?.content_details_by_language?.data?.id,
+      title: item.attributes?.content_details_by_language?.data?.attributes?.title,
+    },
+    icon:item.attributes.image?.data?.attributes?.url,
     
       // totalData: item.meta.pagination.total
     };
@@ -374,22 +409,6 @@ export function renderableContTypeCategories(arr) {
     return {
       id: item.id,
       title: item.attributes.title,
-    };
-  });
-}
-export function renderableQuestionContent(arr) {
-  return arr?.map((item) => {
-    return {
-      id: item.id,
-      title: item.attributes?.question?.data?.attributes?.question,
-    };
-  });
-}
-export function renderableQuestion(arr) {
-  return arr?.map((item) => {
-    return {
-      id: item.id,
-      title: item.attributes?.question
     };
   });
 }
