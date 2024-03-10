@@ -55,7 +55,7 @@ export function renderableLearnerLevel(arr) {
     return {
       id: item.id,
       level: item.attributes.title,
-      icon: item.attributes.icon?.data?.attributes?.formats?.small?.url,
+      icon: item.attributes.icon?.data?.attributes?.url,
     };
   });
 }
