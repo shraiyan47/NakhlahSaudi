@@ -80,8 +80,8 @@ export function renderableTasks(arr) {
       id: item.id,
       title: item.attributes.title,
       learning_journey: {
-        id: learning_journey.data.id,
-        title: learning_journey.data.attributes.title,
+        id: learning_journey.data?.id,
+        title: learning_journey.data?.attributes.title,
       },
     };
   });
