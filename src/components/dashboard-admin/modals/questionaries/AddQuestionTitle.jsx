@@ -2,14 +2,16 @@
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
 import {
+  useContent,
   useQuestionTitle,
   useTabularView,
 } from "../../../../store/useAdminStore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomButton from "@/components/ui-custom/CustomButton";
 import CustomInput from "@/components/ui-custom/CustomInput";
-import { BASE_URL, config, postMap, putMap } from "@/lib/requestHandler";
+import { BASE_URL, config, getHandler, postMap, putMap } from "@/lib/requestHandler";
 import Image from "next/image";
+import CustomSelect from "@/components/ui-custom/CustomSelect";
 
 
 
@@ -20,79 +22,105 @@ export default function AddQuestionTitle({ rowData, useForEdit }) {
   const addEdit = useQuestionTitle((state) => state.addEdit);
   const afterAdd = useQuestionTitle((state) => state.afterAdd);
   const afterUpdate = useQuestionTitle((state) => state.afterUpdate);
+  const contentData = useContent((state) => state.data);
+  const setContentData = useContent((state) => state.setContents);
   const [questionTitle, setQuestionTitle] = useState(useForEdit ? rowData.questionsTitle : "");
-  const [questionAudio, setQuestionAudio] = useState(useForEdit ? rowData.questionsAudio : "");
   const [error, setError] = useState({
     err0: "",
     err1: "",
   });
 
-  const [image, setImage] = useState(
-    useForEdit ? BASE_URL + rowData.icon : null
+  const initStateSelection = {
+    id: null,
+    title: "",
+  };
+
+  const [selectedContent, setSelectedContent] = useState(
+    useForEdit
+      ? {
+        id: rowData.content.id,
+        title: rowData.content.title,
+      }
+      : initStateSelection
   );
 
+  useEffect(() => {
+    const fetchContents = async () => {
+      const response = await getHandler("content-all");
+      if (response.status === 200) {
+        const dataRenderable = response.data.data.map((item) => {
+          return {
+            id: item.id,
+            title: item.attributes.title,
+          };
+        });
+        setContentData(dataRenderable);
+        console.log("dhuru", dataRenderable)
+      }
+    };
+
+    console.log("dhuru", contentData)
+    if (Array.isArray(contentData) && contentData.length === 0) {
+      fetchContents();
+    }
+  }, [contentData]);
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (questionTitle.length < 3) {
-      setError({ ...error, err0: "Too Short" });
-    } else if (questionAudio.length < 3) {
-      setError({ ...error, err1: "Too Short" });
-    } else {
-      let formData = new FormData();
-      var questionTitleInput = document.getElementById("inputQuestionTitle");
-      var questionAudioInput = document.getElementById("idInputQuestionAudio");
-      var fileInput = document.getElementById("idInputFile");
 
-      var file = fileInput.files[0];
-      formData.append("files.image", file);
+    let formData = new FormData();
+    var questionTitleInput = document.getElementById("inputQuestionTitle");
+    var questionContent = document.getElementById("idSelectedContent");
+    // var fileInput = document.getElementById("idInputFile");
 
-      formData.append(
-        "data",
-        `{"question":"${questionTitleInput.value}", "audio": "${questionAudioInput.value}"}`
-      );
+    // var file = fileInput.files[0];
+    // formData.append("files.image", file);
 
-      console.log("Question Add : ",formData)
+    console.log("BUnga -->",selectedContent)
 
-      await fetch(
-        useForEdit
-          ? putMap["QuestionsTitleFull"] + `/${rowData.id}?populate=*`
-          : postMap["QuestionsTitleFull"],
-        {
-          method: useForEdit ? "PUT" : "POST",
-          body: formData,
-          headers: {
-            Authorization:
-              "Bearer " +
-              "5cb5acf4b96532cdad0e30d900772f5c8b5532d2dbf06e04483a3705c725ffbbdba593340718423a5975e86aa47ca1749de402ec9f3127648dbcec37b190107ba975e669811b2a2f4c8b41c27472d6fdb70e7b0be4f8490c57a406e29aedf47dd05dadb7171788ba9fa2af106d93b4f92423b8e194131891e712857b52e8ceef",
-          },
-          redirect: "follow",
-        }
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          alert(JSON.stringify(data));
-          let renderable = {
-            id: data.data.id,
-            questionsTitle: title,
-            questionAudio: questionAudio,
-            icon: data.data.attributes.icon?.data?.attributes?.formats?.small
-              ?.url,
-          };
+    formData.append( // Remove Q Content
+      "data",
+      `{"question":"${questionTitleInput.value}", "question_content": { "connect": [${selectedContent.id}] } }`
+    );
 
-          useForEdit ? afterUpdate(renderable) : afterAdd(renderable);
-          toast({
-            title: useForEdit ? "Successfully Updated" : "Successfully Added",
-          });
-          document.getElementById("closeDialog")?.click();
-        })
-        .catch((error) => {
-          alert("err: " + JSON.stringify(error));
-          setError(JSON.stringify(error));
+    console.log("Question Add : ", formData)
+
+    await fetch(
+      useForEdit
+        ? putMap["QuestionsTitleFull"] + `/${rowData.id}?populate=*`
+        : postMap["QuestionsTitleFull"],
+      {
+        method: useForEdit ? "PUT" : "POST",
+        body: formData,
+        headers: {
+          Authorization:
+            "Bearer " +
+            "5cb5acf4b96532cdad0e30d900772f5c8b5532d2dbf06e04483a3705c725ffbbdba593340718423a5975e86aa47ca1749de402ec9f3127648dbcec37b190107ba975e669811b2a2f4c8b41c27472d6fdb70e7b0be4f8490c57a406e29aedf47dd05dadb7171788ba9fa2af106d93b4f92423b8e194131891e712857b52e8ceef",
+        },
+        redirect: "follow",
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        alert(JSON.stringify(data));
+        let renderable = {
+          id: data.data.id,
+          questionsTitle: title,
+        };
+
+        useForEdit ? afterUpdate(renderable) : afterAdd(renderable);
+        toast({
+          title: useForEdit ? "Successfully Updated" : "Successfully Added",
         });
+        document.getElementById("closeDialog")?.click();
+      })
+      .catch((error) => {
+        alert("err: " + JSON.stringify(error));
+        setError(JSON.stringify(error));
+      });
 
 
-    }
+
   }
 
   const currentView = useTabularView((state) => state.data.currentView);
@@ -120,46 +148,21 @@ export default function AddQuestionTitle({ rowData, useForEdit }) {
             />
             <span className="text-red-700">{error.err0}</span>
           </div>
-          <div className="flex flex-col ">
-            <label>Audio of Question</label>
-            <CustomInput
-              id="idInputQuestionAudio"
-              type="text"
-              value={questionAudio}
-              onChange={(e) => setQuestionAudio(e.target.value)}
-              ph="Enter Audio Text"
-              style="py-0.25 px-1"
+
+          <div className="flex flex-col gap-1">
+            <CustomSelect
+              id="idSelectedContent"
+              label={"Contents"}
+              value={selectedContent}
+              options={contentData}
+              bg="wh"
+              onChange={(value) =>
+                setSelectedContent({ id: value.id, title: value.title })
+              }
             />
-            <label>Alif Baa Taa Saa Jim Ha Kha Daal Zaal</label>
-            {/* <TextToAudio audioData={questionAudio} /> */}
-            {/* <ArabicSpeechResponsiveVoice  audioData={questionAudio} /> */}
-            {/* <ReactSpeechKit /> */}
             <span className="text-red-700">{error.err1}</span>
           </div>
-          <div className="flex gap-2 flex-col items-start">
-            <input
-              type="file"
-              id="idInputFile"
-              name="file"
-              onChange={(e) => {
-                let files = e.target.files;
-                let reader = new FileReader();
-                reader.onload = (r) => {
-                  setImage(r.target.result);
-                };
-                reader.readAsDataURL(files[0]);
-              }}
-            />
-            {image && (
-              <Image
-                alt=" image"
-                src={image}
-                className="w-5.0 h-5.0 rounded-full border border-slate-400 bg-slate-50"
-                width={50}
-                height={50}
-              />
-            )}
-          </div>
+
           <CustomButton
             txt={useForEdit ? "Update" : "Add"}
             type="submit"
