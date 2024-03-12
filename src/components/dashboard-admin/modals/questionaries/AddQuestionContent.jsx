@@ -9,14 +9,12 @@ import {
 import { useEffect, useState } from "react";
 import CustomButton from "@/components/ui-custom/CustomButton";
 import CustomInput from "@/components/ui-custom/CustomInput";
-import { BASE_URL, config, getHandler, postMap, putMap } from "@/lib/requestHandler";
-import Image from "next/image";
-import CustomSelect from "@/components/ui-custom/CustomSelect";
+import { BASE_URL, config, getHandler, postMap, putMap } from "@/lib/requestHandler"; 
 
 
 
-export default function AddQuestionTitle({ rowData, useForEdit }) {
-  //
+export default function AddQuestionContent({ rowData, useForEdit }) {
+  // 
   const { toast } = useToast();
  
   const afterAdd = useQuestionTitle((state) => state.afterAdd);
@@ -82,7 +80,7 @@ export default function AddQuestionTitle({ rowData, useForEdit }) {
     <>
       <DialogHeader>
         <DialogTitle className="textHeader textPrimaryColor">
-          {useForEdit ? "Update" : "New"} {addWhat}
+          {useForEdit ? "Update" : "New"} {addWhat} BOOM
         </DialogTitle>
 
         <form
@@ -91,14 +89,7 @@ export default function AddQuestionTitle({ rowData, useForEdit }) {
         >
           <div className="flex flex-col ">
             <label>Question Title</label>
-            <CustomInput
-              id="inputQuestionTitle"
-              type="text"
-              value={questionTitle}
-              onChange={(e) => setQuestionTitle(e.target.value)}
-              ph="Enter Question Title"
-              style="py-0.25 px-1"
-            />
+            
             <span className="text-red-700">{error.err0}</span>
           </div>
 
