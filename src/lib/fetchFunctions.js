@@ -1,26 +1,25 @@
-  // export async function fetchQueTypes() {
-  //   const response = await getHandler("question-type");
-  //   console.log(response.data);
-  //   if (response.status === 200) {
-  //     const data = response.data.data.map((item) => {
-  //       return {
-  //         id: item.id,
-  //         title: item.attributes.title,
-  //       };
-  //     });
-  //     setQueTypes(data);
-  //   }
-  // }
-  //
+// export async function fetchQueTypes() {
+//   const response = await getHandler("question-type");
+//   console.log(response.data);
+//   if (response.status === 200) {
+//     const data = response.data.data.map((item) => {
+//       return {
+//         id: item.id,
+//         title: item.attributes.title,
+//       };
+//     });
+//     setQueTypes(data);
+//   }
+// }
+//
 
 // ---------------------------------------- LEARNING JOURNEY
 
 export function renderableGoals(arr) {
   const renderable = arr.map((item) => {
-
-    console.log("renderable", arr)
+    console.log("renderable", arr);
     return {
-      id: item.id, 
+      id: item.id,
       time: item.attributes?.time,
       icon: item.attributes.icon?.data?.attributes?.url,
     };
@@ -141,25 +140,67 @@ export function renderableLessons(arr) {
 // ---------------------------------------- QUESTIONARIES
 
 export function renderableQuestionTitle(arr) {
-  const data = arr.data
+  const data = arr.data;
   return data.map((item) => {
     return {
       id: item.id,
       questionsTitle: item.attributes.question,
-      questionsAudio: item.attributes.audio,
-      icon: item.attributes.image?.data?.attributes?.formats?.small?.url,
+    };
+  });
+}
+
+const x = {
+  id: 142,
+  attributes: {
+    createdAt: "2024-03-12T06:19:26.774Z",
+    updatedAt: "2024-03-12T06:19:26.774Z",
+    question: {
+      data: {
+        id: 165,
+        attributes: {
+          question: "Select Similar Word",
+          createdAt: "2024-03-12T06:09:05.428Z",
+          updatedAt: "2024-03-12T06:09:05.428Z",
+        },
+      },
+    },
+    content: {
+      data: {
+        id: 164,
+        attributes: {
+          title: "Pen",
+          createdAt: "2024-03-11T07:38:30.478Z",
+          updatedAt: "2024-03-11T07:38:30.478Z",
+        },
+      },
+    },
+    question_type: {
+      data: {
+        id: 17,
+        attributes: {
+          title: "Pair Matching",
+          createdAt: "2024-01-10T12:35:19.896Z",
+          updatedAt: "2024-02-06T03:45:39.067Z",
+        },
+      },
+    },
+  },
+};
+
+export function renderableQuestionContent(arr) {
+  const data = arr.data;
+  return data.map((item) => {
+    return {
+      id: item.id,
+      questionsTitle: item?.attributes?.question?.data?.attributes?.question,
+      questionsContent: item?.attributes?.content?.data?.attributes?.title,
+      questionsType: item?.attributes?.question_type?.data?.attributes?.title,
       // totalData: item.meta.pagination.total
     };
   });
 }
 
-
 // -----------------------------------------content files
-
-
-
-
-
 
 export function renderableQueType(arr) {
   return arr.map((item) => {
@@ -176,8 +217,11 @@ export function renderableQuetions(arr) {
     const { question } = item.attributes?.question_content?.data?.attributes;
     // const content = item.attributes?.question_content?.data?.attributes?.content?.data?.attributes?.title;
     const question_content = item.attributes?.question_content?.data;
-    const content = item.attributes?.question_content?.data?.attributes?.content?.data;
-    const contentAudio = item.attributes?.question_content?.data?.attributes?.content?.data?.attributes?.audio;
+    const content =
+      item.attributes?.question_content?.data?.attributes?.content?.data;
+    const contentAudio =
+      item.attributes?.question_content?.data?.attributes?.content?.data
+        ?.attributes?.audio;
     const { question_type } =
       item.attributes?.question_content?.data?.attributes;
     const learning_journey_lesson = item?.attributes?.learning_journey_lesson;
@@ -188,7 +232,7 @@ export function renderableQuetions(arr) {
     const learning_journey =
       learning_journey_unit?.data?.attributes?.learning_journey;
     //
-    console.log(question_content); 
+    console.log(question_content);
     return {
       id: item.id,
       question: {
@@ -228,7 +272,6 @@ export function renderableQuetions(arr) {
 
 export function renderableContents(arr) {
   const renderable = arr?.map((item) => {
- 
     return {
       id: item.id,
       audio: item.attributes?.audio,
@@ -249,150 +292,154 @@ export function renderableContents(arr) {
 
 export function renderableContentDetails(arr) {
   const renderable = arr?.map((item) => {
- console.log("fetchfuction", arr)
+    console.log("fetchfuction", arr);
     return {
       id: item.id,
-     title: item.attributes?.title,
-     content: {
-      id: item.attributes?.content?.data?.id,
-      title: item.attributes?.content?.data?.attributes?.title,
-    },
+      title: item.attributes?.title,
+      content: {
+        id: item.attributes?.content?.data?.id,
+        title: item.attributes?.content?.data?.attributes?.title,
+      },
       contentAudio: item.attributes?.audio,
-      icon:item.attributes.image?.data?.attributes?.url,
+      icon: item.attributes.image?.data?.attributes?.url,
       // totalData: item.meta.pagination.total
     };
   });
 
-  console.log("fetchfuntion", renderable)
+  console.log("fetchfuntion", renderable);
   return renderable;
 }
 
-export function renderableQuestionContent(arr) {
-  return arr?.map((item) => {
-    return {
-      id: item.id,
-      title: item.attributes?.question?.data?.attributes?.question,
-    };
-  });
-}
+// export function renderableQuestionContent(arr) {
+//   return arr?.map((item) => {
+//     return {
+//       id: item.id,
+//       title: item.attributes?.question?.data?.attributes?.question,
+//     };
+//   });
+// }
+
 export function renderableQuestion(arr) {
   return arr?.map((item) => {
     return {
       id: item.id,
-      title: item.attributes?.question
+      title: item.attributes?.question,
     };
   });
 }
 export function renderableLanguage(arr) {
   const renderable = arr?.map((item) => {
- console.log("fetchfuction", arr)
+    console.log("fetchfuction", arr);
     return {
       id: item.id,
-     title: item.attributes?.name,
-     country: item.attributes?.country,
-    
+      title: item.attributes?.name,
+      country: item.attributes?.country,
+
       // totalData: item.meta.pagination.total
     };
   });
 
-  console.log("fetchfuntion", renderable)
+  console.log("fetchfuntion", renderable);
   return renderable;
 }
 
 export function renderableContentDetailsByLanguage(arr) {
   const renderable = arr?.map((item) => {
- console.log("fetchfuction", arr)
+    console.log("fetchfuction", arr);
     return {
       id: item.id,
-     title: item.attributes?.title,
-     content: {
-      id: item.attributes?.content?.data?.id,
-      title: item.attributes?.content?.data?.attributes?.title,
-    },
-    language: {
-      id: item.attributes?.language?.data?.id,
-      title: item.attributes?.language?.data?.attributes?.name,
-    },
-    
+      title: item.attributes?.title,
+      content: {
+        id: item.attributes?.content?.data?.id,
+        title: item.attributes?.content?.data?.attributes?.title,
+      },
+      language: {
+        id: item.attributes?.language?.data?.id,
+        title: item.attributes?.language?.data?.attributes?.name,
+      },
+
       // totalData: item.meta.pagination.total
     };
   });
 
-  console.log("fetchfuntion", renderable)
+  console.log("fetchfuntion", renderable);
   return renderable;
 }
 export function renderableDetailsOfContentDetailsByLanguage(arr) {
   const renderable = arr?.map((item) => {
- console.log("fetchfuction", arr)
+    console.log("fetchfuction", arr);
     return {
       id: item.id,
-     title: item.attributes?.title,
-     audio: item.attributes?.audio,
-     content_details_by_language: {
-      id: item.attributes?.content_details_by_language?.data?.id,
-      title: item.attributes?.content_details_by_language?.data?.attributes?.title,
-    },
-    icon:item.attributes.image?.data?.attributes?.url,
-    
+      title: item.attributes?.title,
+      audio: item.attributes?.audio,
+      content_details_by_language: {
+        id: item.attributes?.content_details_by_language?.data?.id,
+        title:
+          item.attributes?.content_details_by_language?.data?.attributes?.title,
+      },
+      icon: item.attributes.image?.data?.attributes?.url,
+
       // totalData: item.meta.pagination.total
     };
   });
 
-  console.log("fetchfuntion", renderable)
+  console.log("fetchfuntion", renderable);
   return renderable;
 }
 export function renderableContentByClause(arr) {
   const renderable = arr?.map((item) => {
- console.log("fetchfuction", arr)
+    console.log("fetchfuction", arr);
     return {
       id: item.id,
-     title: item.attributes?.title,
-     sequence:  item.attributes?.sequence,
-     content: {
-      id: item.attributes?.contents?.data[0]?.id,
-      title: item.attributes?.contents?.data[0]?.attributes?.title,
-    },
-    language: {
-      id: item.attributes?.language?.data?.id,
-      title: item.attributes?.language?.data?.attributes?.name,
-    },
-    content_details_by_language: {
-      id: item.attributes?.content_details_by_language?.data?.id,
-      title: item.attributes?.content_details_by_language?.data?.attributes?.title,
-    }
-    
+      title: item.attributes?.title,
+      sequence: item.attributes?.sequence,
+      content: {
+        id: item.attributes?.contents?.data[0]?.id,
+        title: item.attributes?.contents?.data[0]?.attributes?.title,
+      },
+      language: {
+        id: item.attributes?.language?.data?.id,
+        title: item.attributes?.language?.data?.attributes?.name,
+      },
+      content_details_by_language: {
+        id: item.attributes?.content_details_by_language?.data?.id,
+        title:
+          item.attributes?.content_details_by_language?.data?.attributes?.title,
+      },
+
       // totalData: item.meta.pagination.total
     };
   });
 
-  console.log("fetchfuntion", renderable)
+  console.log("fetchfuntion", renderable);
   return renderable;
 }
 export function renderableContentBySyllable(arr) {
   const renderable = arr?.map((item) => {
- console.log("fetchfuction", arr)
+    console.log("fetchfuction", arr);
     return {
       id: item.id,
-     title: item.attributes?.title,
-     sequence:  item.attributes?.sequence,
-     content: {
-      id: item.attributes?.contents?.data[0]?.id,
-      title: item.attributes?.contents?.data[0]?.attributes?.title,
-    },
-    language: {
-      id: item.attributes?.language?.data?.id,
-      title: item.attributes?.language?.data?.attributes?.name,
-    },
-    content_details_by_language: {
-      id: item.attributes?.content_details_by_language?.data?.id,
-      title: item.attributes?.content_details_by_language?.data?.attributes?.title,
-    }
-    
+      title: item.attributes?.title,
+      sequence: item.attributes?.sequence,
+      content: {
+        id: item.attributes?.contents?.data[0]?.id,
+        title: item.attributes?.contents?.data[0]?.attributes?.title,
+      },
+      language: {
+        id: item.attributes?.language?.data?.id,
+        title: item.attributes?.language?.data?.attributes?.name,
+      },
+      content_details_by_language: {
+        id: item.attributes?.content_details_by_language?.data?.id,
+        title:
+          item.attributes?.content_details_by_language?.data?.attributes?.title,
+      },
+
       // totalData: item.meta.pagination.total
     };
   });
 
-  console.log("fetchfuntion", renderable)
+  console.log("fetchfuntion", renderable);
   return renderable;
 }
 export function renderableContTypes(arr) {

@@ -62,49 +62,7 @@ const ColQuestionTitle = [
         {row.getValue("questionsTitle")}
       </div>
     ),
-  },
-  {
-    accessorKey: "questionsAudio",
-    header: ({ column }) => {
-      return (
-        <Button
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="textPrimaryColor textNormal"
-        >
-          Audio
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor pl-2">
-        {row.getValue("questionsAudio")}
-      </div>
-    ),
-  },
-  {
-    accessorKey: "icon",
-    header: () => <div className="textPrimaryColor textNormal">Image</div>,
-    cell: ({ row }) => {
-      return (
-        <div>
-          {(!!row.getValue("icon")) ?
-          <Image
-            src={`${BASE_URL}${row.getValue("icon")}`}
-            alt=""
-            width={40}
-            height={40}
-            className="rounded-full border-2 border-black"
-          />
-        :
-        <>
-          NO IMAGE
-        </>
-        }
-        </div>
-      );
-    },
-  },
+  }, 
   {
     id: "actions",
     header: () => (

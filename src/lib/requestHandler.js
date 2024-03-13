@@ -79,7 +79,7 @@ export const postMap = {
   "content": `${BASE_URL}/api/contents`,
   "content-all": `${BASE_URL}/api/contents`,
   "content-type-category": `${BASE_URL}/api/content-type-categories`,
-  "QuestionsTitleFull": `${BASE_URL}/api/questions?populate=*`,
+  "QuestionsTitleFull": `${BASE_URL}/api/questions`,
   "question-content": `${BASE_URL}/api/question-contents`,
   "question-content-option": `${BASE_URL}/api/question-content-options`,
   "journey-map-question": `${BASE_URL}/api/journey-map-question-contents`,

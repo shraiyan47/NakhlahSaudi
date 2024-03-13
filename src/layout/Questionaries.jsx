@@ -47,6 +47,7 @@ import SMContent from "../components/dashboard-admin/tabular-view/questionaries/
 import ContentDetails from "../components/dashboard-admin/tabular-view/questionaries/ContentDetails";
 import Language from "../components/dashboard-admin/tabular-view/questionaries/Language";
 import ContentDetailsByLanguage from "../components/dashboard-admin/tabular-view/questionaries/ContentDetailsByLanguage";
+import QuestionContent from "@/components/dashboard-admin/tabular-view/questionaries/QuestionContent";
 
 export default function Questionaries({ content }) {
   //
@@ -238,7 +239,7 @@ export default function Questionaries({ content }) {
         })}
       </div>
       <div className="flex flex-col gap-0.4 items-end px-2 mt-0.25">
-        {currentView == "Questions Mapping" && (
+        {/* {currentView == "Questions Mapping" && (
           <div className="flex gap-1 items-center">
             <CustomSelect2
               label="Journey"
@@ -276,7 +277,7 @@ export default function Questionaries({ content }) {
               }
             />
           </div>
-        )}
+        )} */}
         <div className="flex gap-2 ">
           {tabsQuestionaries[currentView]?.map((item, ind) => {
             return (
@@ -317,6 +318,9 @@ export default function Questionaries({ content }) {
         {currentView == "Content Data Types" && <ConTypeCategory />}
         {/* {currentView == "Contents" && <Content />} */}
         {currentView == "Questions" && <QuestionTitle />}
+
+        {currentView == "Questions Content" && <QuestionContent />}
+
         {/* {currentView == "Content Details" && <ContentDetails />} */}
         {/* {currentView == "Languages" && <Language />} */}
         {/* {currentView == "Content Details by Languages" && <ContentDetailsByLanguage />} */}

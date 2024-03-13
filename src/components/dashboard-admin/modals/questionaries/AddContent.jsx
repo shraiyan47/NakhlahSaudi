@@ -107,8 +107,8 @@ export default function AddContent({ rowData, useForEdit }) {
 
       await fetch(
         useForEdit
-          ? putMap["content"] + `/${rowData.id}?populate=*`
-          : postMap["content"]+`?populate=*`,
+          ? putMap["content-all"] + `/${rowData.id}?populate=*`
+          : postMap["content-all"]+`?populate=*`,
         {
           method: useForEdit ? "PUT" : "POST",
           body: formData,

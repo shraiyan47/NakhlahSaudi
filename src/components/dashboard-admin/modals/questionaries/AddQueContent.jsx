@@ -15,6 +15,7 @@ import {
   useQuestion,
   useContent,
   useQueContent,
+  useTabularView,
 } from "../../../../store/useAdminStore";
 import CustomSelect from "../../../ui-custom/CustomSelect";
 import CustomButton from "../../../ui-custom/CustomButton";
@@ -145,6 +146,8 @@ export default function AddQueContent({ rowData, useForEdit }) {
   useEffect(() => {
     const fetch = async () => {
       const response = await getHandler("question-type");
+      const response2 = await getHandler("content-all");
+      const response3 = await getHandler("QuestionsTitleFull");
 
       if (response.status === 200) {
         const data = response.data.data.map((item) => {
@@ -154,6 +157,40 @@ export default function AddQueContent({ rowData, useForEdit }) {
           };
         });
         setQueTypes(data);
+      }
+
+
+      if (response2.status === 200) {
+        const data = response2.data.data.map((item) => {
+          
+          return {
+            id: item.id,
+            title: item.attributes?.title,
+            content_type: {
+              id: item.attributes?.content_type?.data.id,
+              title: item.attributes?.content_type?.data?.attributes?.title,
+            },
+            content_type_category: {
+              id: item.attributes?.content_type_category?.data?.id,
+              title:
+                item.attributes?.content_type_category?.data?.attributes?.title,
+            },
+          };
+        });
+        setContents(data);
+      }
+
+      
+      if (response3.status === 200) {
+      console.log("response3 que data =.", response3.data)
+        const data = response3.data.data.map((item) => {
+          // alert(" <> : "+JSON.stringify(item))
+          return {
+            id: item.id,
+            title: item.attributes.question,
+          };
+        });
+        setQuestions(data);
       }
     };
     if (Array.isArray(typeData) && typeData.length === 0) {
@@ -167,7 +204,7 @@ export default function AddQueContent({ rowData, useForEdit }) {
 
       if (response.status === 200) {
         const data = response.data.data.map((item) => {
-          // alert("::: " + JSON.stringify(item.attributes?.content_type));
+          
           return {
             id: item.id,
             title: item.attributes?.title,
@@ -192,9 +229,10 @@ export default function AddQueContent({ rowData, useForEdit }) {
 
   useEffect(() => {
     const fetchQuestions = async () => {
-      const response = await getHandler("question");
-
+      const response = await getHandler("questions&populate=*");
+      
       if (response.status === 200) {
+      console.log("response que data =.", response.data)
         const data = response.data.data.map((item) => {
           // alert(" <> : "+JSON.stringify(item))
           return {
@@ -205,7 +243,7 @@ export default function AddQueContent({ rowData, useForEdit }) {
         setQuestions(data);
       }
     };
-    if (Array.isArray(queData) && queData.length === 0) {
+    if (Array.isArray(queData) && queData.length <= 0) {
       fetchQuestions();
     }
   }, [queData]);
@@ -214,7 +252,7 @@ export default function AddQueContent({ rowData, useForEdit }) {
     <>
       <DialogHeader>
         <DialogTitle className="textHeader textPrimaryColor">
-        {useForEdit ? "Update" : "New"} {tabularView.currentView}
+        {useForEdit ? "Update" : "New"}  {useTabularView.currentView}
         </DialogTitle>
         {/* <DialogDescription className="textNormal textSecondaryColor">
            instructions
@@ -225,7 +263,7 @@ export default function AddQueContent({ rowData, useForEdit }) {
           className="flex flex-col gap-4 py-4 text-black text-lg"
         >
           <div className="flex flex-col gap-1">
-            <label>Select Question</label>
+            <label>Select Question </label>
             <CustomSelect
               value={selectedQue}
               options={queData}

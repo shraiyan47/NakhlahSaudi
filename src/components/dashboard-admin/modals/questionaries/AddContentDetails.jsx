@@ -1,4 +1,6 @@
 "use client";
+// import Script from "next/script"
+ 
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
 import {
@@ -6,19 +8,21 @@ import {
   useContentDetails,
   useTabularView,
 } from "../../../../store/useAdminStore";
-import { useState ,useEffect} from "react";
+import { useState, useEffect } from "react";
 import CustomButton from "@/components/ui-custom/CustomButton";
 import CustomInput from "@/components/ui-custom/CustomInput";
 import CustomSelect from "../../../ui-custom/CustomSelect";
 import { BASE_URL, config, postMap, putMap, getHandler, postHandler, putHandler } from "@/lib/requestHandler";
 import Image from "next/image";
+import RVVoiceGen from "@/app/voiceGen";
 
 
 export default function AddContentDetail({ rowData, useForEdit }) {
+
   //
   const { toast } = useToast();
   const contentData = useContent((state) => state.data);
-const setContentData = useContent( (state) => state.setContents  );
+  const setContentData = useContent((state) => state.setContents);
   const addEdit = useContentDetails((state) => state.addEdit);
   const afterAdd = useContentDetails((state) => state.afterAdd);
   const afterUpdate = useContentDetails((state) => state.afterUpdate);
@@ -35,35 +39,35 @@ const setContentData = useContent( (state) => state.setContents  );
   const [selectedContent, setSelectedContent] = useState(
     useForEdit
       ? {
-        id:rowData.content.id,
-        title:rowData.content.title,
+        id: rowData.content.id,
+        title: rowData.content.title,
       }
       : initStateSelection
   );
   const [image, setImage] = useState(
     useForEdit ? BASE_URL + rowData.icon : null
   );
-console.log("rowData", rowData)
+  
 
-useEffect(() => {
-  const fetchContents = async () => {
-    const response = await getHandler("content-all");
-    if (response.status === 200) {
-      const dataRenderable = response.data.data.map((item) => {
-        return {
-          id: item.id,
-          title: item.attributes.title,
-        };
-      });
-      setContentData(dataRenderable);
-      console.log("dhuru", dataRenderable)
+  useEffect(() => {
+    const fetchContents = async () => {
+      const response = await getHandler("content-all");
+      if (response.status === 200) {
+        const dataRenderable = response.data.data.map((item) => {
+          return {
+            id: item.id,
+            title: item.attributes.title,
+          };
+        });
+        setContentData(dataRenderable);
+        // console.log("dhuru", dataRenderable)
+      }
+    };
+    // console.log("dhuru", contentData)
+    if (Array.isArray(contentData) && contentData.length === 0) {
+      fetchContents();
     }
-  };
-   console.log("dhuru", contentData)
-  if (Array.isArray(contentData) && contentData.length === 0) {
-    fetchContents();
-  }
-}, [contentData]);
+  }, [contentData]);
 
 
 
@@ -87,12 +91,12 @@ useEffect(() => {
         `{"title":"${contentDetailsTitleInput.value}", "audio": "${contentDetailsAudioInput.value}", "content": { "connect": [${selectedContent.id}] }}`
       );
 
-     
+
 
       await fetch(
         useForEdit
           ? putMap["content-details"] + `/${rowData.id}?populate=*`
-          : postMap["content-details"]+ `?populate=*`,
+          : postMap["content-details"] + `?populate=*`,
         {
           method: useForEdit ? "PUT" : "POST",
           body: formData,
@@ -105,7 +109,7 @@ useEffect(() => {
         }
       )
         .then((res) => res.json())
-    
+
         .then((data) => {
           console.log("res", data)
           alert(JSON.stringify(data));
@@ -113,13 +117,13 @@ useEffect(() => {
             id: data.data.id,
             title: data.data.attributes?.title,
             content: {
-              id:  data.data.attributes?.content?.data?.id,
-              title:data.data.attributes?.content?.data?.attributes?.title,
+              id: data.data.attributes?.content?.data?.id,
+              title: data.data.attributes?.content?.data?.attributes?.title,
             },
             contentAudio: data.data.attributes?.audio,
             icon: data.data.attributes.image?.data?.attributes?.url,
           };
-           console.log("renderable", renderable, data.data)
+          console.log("renderable", renderable, data.data)
           useForEdit ? afterUpdate(renderable) : afterAdd(renderable);
           toast({
             title: useForEdit ? "Successfully Updated" : "Successfully Added",
@@ -185,7 +189,13 @@ useEffect(() => {
               ph="Enter Audio Text"
               style="py-0.25 px-1"
             />
-           
+
+
+            {
+              (!!contentDetailsAudio && contentDetailsAudio !== null) &&
+              <RVVoiceGen contentDetailsAudio={contentDetailsAudio} />
+            }
+
             {/* <ReactSpeechKit /> */}
             <span className="text-red-700">{error.err1}</span>
           </div>
