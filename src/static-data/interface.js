@@ -128,7 +128,8 @@ export const tabsQuestionaries = {
 
   "Questions":[],
 
-  "Question Content Types": [],
+  "Question Types": [],
+  
   // Contents: [
    
   //   "MCQ",
@@ -157,11 +158,11 @@ export const tabsContents = {
     "Sentence Making",
     "Pair Matching",
   ],
-  // "Content Types": [],
-  "Data Types": [],
+   "Content Types": [],
+  "Categories": [],
 
   "Details": [],
-  "Languages" : [],
+  // "Languages" : [],
   "Cont. Details by Languages" : [],
   "Details of Cont. Det. by Languages" : [], 
   "Syllables" : [], 
@@ -213,7 +214,8 @@ export const adminDashboard = {
               id: 1,
               title: "Languages",
               icon: <BadgeInfo className="w-6 h-6 text-slate-600" />,
-              link: "/admin/general-setup/language",
+              link: "/admin/general-setup/languages",
+              // link : "#",
               subLinks: null,
             },
           ]
@@ -290,14 +292,16 @@ export const adminDashboard = {
               id: 1,
               title: "Questions",
               icon: <BadgeInfo className="w-6 h-6 text-slate-600" />,
-              link: "/admin/questionaries",
+               link: "/admin/questionaries",
+             
               subLinks: null,
             },
             {
               id: 2,
               title: "Contents",
               icon: <Cylinder className="w-6 h-6 text-slate-600" />,
-          link: "/admin/contents",
+           link: "/admin/contents",
+        
               subLinks: null,
             },
           ]
