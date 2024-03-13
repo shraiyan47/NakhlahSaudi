@@ -13,8 +13,60 @@ import {
   PersonStanding,
   AreaChart,
   BadgeInfo,
-  Cylinder
+  Cylinder,
+  Settings
 } from "lucide-react";
+
+export const tabsGeneralSetup = {
+  "Journey Pointer": [
+    "MCQ",
+    "Fill In The Blank",
+    "True Or False",
+    "Sentence Making",
+    "Pair Matching",
+  ],
+  "Terms & Conditions" : [],
+  "Privacy Policy" : [],
+  "Learning Guide" : [],
+  "Languages" : [],
+ };
+export const tabsGeneralSetup1 = [{
+ "Journey Pointer": [],
+ "Terms & Conditions" : [],
+ "Privacy Policy" : [],
+ "Learning Guide" : []
+},
+  {
+    id: 1,
+    title: "Journey Pointer",
+    link: "",
+  },
+  {
+    id: 2,
+    title: "Terms & Conditions",
+    link: "",
+  },
+  {
+    id: 3,
+    title: "Privacy Policy",
+    link: "",
+  },
+  {
+    id: 4,
+    title: "Learning Guide",
+    link: "",
+  },
+  {
+    id: 5,
+    title: "Learning Tips",
+    link: "",
+  },
+  {
+    id: 6,
+    title: "Languages",
+    link: "",
+  },
+];
 
 export const tabsJourney = [
   {
@@ -40,6 +92,7 @@ export const tabsJourney = [
 ];
 
 export const tabsLesson = [
+ 
   {
     id: 1,
     title: "Learning Journies",
@@ -76,7 +129,8 @@ export const tabsQuestionaries = {
   "Questions":[], // Question Title
   "Questions Content":[], // Question Content
 
-  "Question Content Types": [],
+  "Question Types": [],
+  
   // Contents: [
    
   //   "MCQ",
@@ -105,11 +159,11 @@ export const tabsContents = {
     "Sentence Making",
     "Pair Matching",
   ],
-  // "Content Types": [],
-  "Data Types": [],
+   "Content Types": [],
+  "Categories": [],
 
   "Details": [],
-  "Languages" : [],
+  // "Languages" : [],
   "Cont. Details by Languages" : [],
   "Details of Cont. Det. by Languages" : [], 
   "Syllables" : [], 
@@ -150,6 +204,68 @@ export const adminDashboard = {
             },
           ],
         },
+
+        {
+          id: 3,
+          title: "General SetUp",
+          icon:  <Settings className="w-6 h-6 text-slate-700" />,
+          link: "#",
+          subLinks: [
+            {
+              id: 1,
+              title: "Languages",
+              icon: <BadgeInfo className="w-6 h-6 text-slate-600" />,
+              link: "/admin/general-setup/languages",
+              // link : "#",
+              subLinks: null,
+            },
+          ]
+          // subLinks: [
+           
+          //   {
+          //     id: 1,
+          //     title: "Journey Pointer",
+          //     icon: <Users className="w-5 h-5 text-slate-700" />,
+          //     link: "/admin/general-setup/journey-pointer",
+          //     subLinks: null,
+          //   },
+          //   {
+          //     id: 2,
+          //     title: "Terms & Conditions",
+          //     icon: <Users className="w-5 h-5 text-slate-700" />,
+          //     link: "/admin/general-setup/Terms-&-Conditions",
+          //     subLinks: null,
+          //   },
+          //   {
+          //     id: 3,
+          //     title: "Privacy Policy",
+          //     icon: <Users className="w-5 h-5 text-slate-700" />,
+          //     link: "/admin/general-setup/Privacy-Policy",
+          //     subLinks: null,
+          //   },
+          //   {
+          //     id: 4,
+          //     title: "Learning Guide",
+          //     icon: <Users className="w-5 h-5 text-slate-700" />,
+          //     link: "/admin/general-setup/Learning-Guide",
+          //     subLinks: null,
+          //   },
+          //   {
+          //     id: 5,
+          //     title: "Leaning Tips",
+          //     icon: <Users className="w-5 h-5 text-slate-700" />,
+          //     link: "/admin/general-setup/Leaning-Tips",
+          //     subLinks: null,
+          //   },
+          //   {
+          //     id: 6,
+          //     title: "Language",
+          //     icon: <BookUser className="w-5 h-5 text-slate-700" />,
+          //     link: "/admin/general-setup/language",
+          //     subLinks: null,
+          //   },
+          // ],
+        },
       ],
     },
     element: {
@@ -177,14 +293,16 @@ export const adminDashboard = {
               id: 1,
               title: "Questions",
               icon: <BadgeInfo className="w-6 h-6 text-slate-600" />,
-              link: "/admin/questionaries",
+               link: "/admin/questionaries",
+             
               subLinks: null,
             },
             {
               id: 2,
               title: "Contents",
               icon: <Cylinder className="w-6 h-6 text-slate-600" />,
-          link: "/admin/contents",
+           link: "/admin/contents",
+        
               subLinks: null,
             },
           ]

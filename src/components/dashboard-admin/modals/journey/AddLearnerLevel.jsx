@@ -70,8 +70,7 @@ export default function AddLearnerLevel({ rowData, title, useForEdit }) {
           let renderable = {
             id: data.data.id,
             level: data.data.attributes.title,
-            icon: data.data.attributes.icon?.data?.attributes?.formats?.small
-              ?.url,
+            icon: data.data.attributes.icon?.data?.attributes?.url,
           };
           useForEdit ? afterUpdate(renderable) : afterAdd(renderable);
           toast({
