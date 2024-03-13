@@ -37,6 +37,7 @@ import AddContentDetailByLanguage from "../modals/questionaries/AddContentDetail
 import AddContentByClause from "../modals/questionaries/AddContentByClause";
 import AddContentBySyllable from "../modals/questionaries/AddContentBySyllable";
 import AddDetailsOfContentDetailsByLanguage from "../modals/questionaries/AddDetailsOfContentDetailsByLanguage";
+import AddQuestionContent from "../modals/questionaries/AddQuestionContent";
 
 const viewMap = {
   // learning journey
@@ -53,9 +54,9 @@ const viewMap = {
   "question-type": "id_question_type",
   "content-type": "id_content_type",
   "content-type-category": "id_content_type_category",
-  question: "id_question_title",
+  question: "id_question_title", 
   content: "id_content",
-  "question-content": "id_question_content",
+  "questionContent": "id_question_content",
   "question-content-option": "id_question_content_option",
   
 };
@@ -75,6 +76,7 @@ export default function DataTableHeader({ table, view, filter }) {
   };
   return (
     <div className="flex items-center justify-between py-3  ">
+      
       {/* {currentView} */}
       {filter && (
         <div className="flex items-center border-b border-slate-300 rounded-none">
@@ -148,7 +150,8 @@ export default function DataTableHeader({ table, view, filter }) {
                 <AddConTypeCategory title={view} />
               )}
 
-              {view == "questionTitle" && <AddQuestionTitle title={view} />}{" "}
+              {view == "questionTitle" && <AddQuestionTitle title={view} />}
+              {/* {view == "questionContent" && <AddQuestionContent title={view} />} */}
               {view == "content" && <AddContent title={view} />}
               {view == "content-details" && < AddContentDetails title={view} />}
               {view == "language" && < AddLanguage title={view} />}
