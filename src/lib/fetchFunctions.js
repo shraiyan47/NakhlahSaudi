@@ -54,7 +54,7 @@ export function renderableLearnerLevel(arr) {
     return {
       id: item.id,
       level: item.attributes.title,
-      icon: item.attributes.icon?.data?.attributes?.formats?.small?.url,
+      icon: item.attributes.icon?.data?.attributes?.url,
     };
   });
 }
@@ -79,8 +79,8 @@ export function renderableTasks(arr) {
       id: item.id,
       title: item.attributes.title,
       learning_journey: {
-        id: learning_journey.data.id,
-        title: learning_journey.data.attributes.title,
+        id: learning_journey.data?.id,
+        title: learning_journey.data?.attributes.title,
       },
     };
   });

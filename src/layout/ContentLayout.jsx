@@ -142,12 +142,12 @@ export default function ContentLayout({ content }) {
           
   
           {/* {currentView == "Question Content Types" && <QueType />} */}
-          {/*  {currentView == "Content Types" && <ContentType />} */}
-          {currentView == "Data Types" && <ConTypeCategory />}
+            {currentView == "Content Types" && <ContentType />}  
+          {currentView == "Categories" && <ConTypeCategory />}
           {/* {currentView == "Contents" && <Content />} */}
           {/* {currentView == "Questions" && <QuestionTitle />} */}
           {currentView == "Details" && <ContentDetails />}
-          {currentView == "Languages" && <Language />}
+          {/* {currentView == "Languages" && <Language />} */}
           {currentView ==  "Cont. Details by Languages" && <ContentDetailsByLanguage />}
           {currentView == "Clauses" && <ContentsByClause />}
           {currentView ==  "Syllables" && <ContentsBySyllable />}
