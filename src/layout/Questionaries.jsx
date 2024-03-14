@@ -319,7 +319,7 @@ export default function Questionaries({ content }) {
         {/* {currentView == "Contents" && <Content />} */}
         {currentView == "Questions" && <QuestionTitle />}
 
-        {currentView == "Questions Content" && <QuestionContent />}
+        {/* {currentView == "Questions Content" && <QuestionContent />} */}
 
         {/* {currentView == "Content Details" && <ContentDetails />} */}
         {/* {currentView == "Languages" && <Language />} */}
