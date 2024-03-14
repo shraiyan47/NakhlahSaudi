@@ -110,50 +110,50 @@ const ColContent = [
     ),
   },
 
-  {
-    id: "id_question_audio",
-    accessorKey: "audio",
-    header: ({ column }) => {
-      return (
-        <Button
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="textPrimaryColor textNormal"
-        >
-          Audio
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor pl-2">
-        {row.getValue("id_question_audio")
-            ? row.getValue("id_question_audio")
-            : "Not attached"}
-      </div>
-    ),
-  },
+  // {
+  //   id: "id_question_audio",
+  //   accessorKey: "audio",
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //         className="textPrimaryColor textNormal"
+  //       >
+  //         Audio
+  //         <ArrowUpDown className="ml-2 h-4 w-4" />
+  //       </Button>
+  //     );
+  //   },
+  //   cell: ({ row }) => (
+  //     <div className="lowercase textNormal textSecondaryColor pl-2">
+  //       {row.getValue("id_question_audio")
+  //           ? row.getValue("id_question_audio")
+  //           : "Not attached"}
+  //     </div>
+  //   ),
+  // },
 
-  {
-    accessorKey: "icon",
-    header: () => <div className="textPrimaryColor textNormal">Image </div>,
-    cell: ({ row }) => {
-      return (
-       <div>
-        { (row.getValue("icon") ) ?
-          <Image
-            src={`${BASE_URL}${row.getValue("icon")}`}
-            alt=""
-            width={40}
-            height={40}
-            className="rounded-full border-2 border-black"
-          />
-       :
-     <div> No Image</div>
-    }
-        </div> 
-      );
-    },
-  },
+  // {
+  //   accessorKey: "icon",
+  //   header: () => <div className="textPrimaryColor textNormal">Image </div>,
+  //   cell: ({ row }) => {
+  //     return (
+  //      <div>
+  //       { (row.getValue("icon") ) ?
+  //         <Image
+  //           src={`${BASE_URL}${row.getValue("icon")}`}
+  //           alt=""
+  //           width={40}
+  //           height={40}
+  //           className="rounded-full border-2 border-black"
+  //         />
+  //      :
+  //    <div> No Image</div>
+  //   }
+  //       </div> 
+  //     );
+  //   },
+  // },
 
   {
     id: "actions",
