@@ -127,7 +127,7 @@ export const tabsQuestionaries = {
   // "Question Content Types": [],
 
   "Questions":[], // Question Title
-  "Questions Content":[], // Question Content
+ // "Questions Content":[], // Question Content
 
   "Question Types": [],
   
