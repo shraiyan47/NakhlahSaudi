@@ -177,7 +177,8 @@ export default function AddQuePage({ rowData, useForEdit }) {
   };
   useEffect(() => {
     const fetch = async () => {
-      const url = `api/contents?filters[content_type][title][$eq]=${selectedQueType.title}`;
+      // const url = `api/contents?filters[content_type][title][$eq]=${selectedQueType.title}`;
+      const url = `api/contents?populate=*`;
       const response = await getWithUrl(url);
       if (response.status === 200) {
         setContents(renderableContents(response.data.data));
@@ -418,7 +419,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
           (selectedQueType.title == "Fill In The Blank" &&
             wrongAns.length > 0 &&
             rightAns &&
-            question?.title.includes("-") == true))
+            question?.title.includes("-") == true || question?.title.includes("_") ))
             || (selectedQueType.title == "Pair Matching" && pairMatchingContents != undefined)
     );
     if (
@@ -430,7 +431,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
         (selectedQueType.title == "Fill In The Blank" &&
           wrongAns.length > 0 &&
           rightAns &&
-          question?.title.includes("-") == true))
+          question?.title.includes("-") == true || question?.title.includes("_")))
         || (selectedQueType.title == "Pair Matching" && pairMatchingContents != undefined)
     ) {
       console.log("called");
@@ -470,8 +471,9 @@ export default function AddQuePage({ rowData, useForEdit }) {
         } else if (selectedQueType.title == "True Or False") {
           content = tFAns.id;
         }
+        let queContResult;
         if(selectedQueType.title != "Pair Matching"){
-          const queContResult = useForEdit
+          queContResult = useForEdit
           ? await putHandler("question-content", rowData?.question_content, {
               data: {
                 question: { connect: [question.id] },
@@ -488,6 +490,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
             });
         console.log(queContResult);
         }
+        console.log(`title`, selectedQueType.title);
         if (
           selectedQueType.title == "Fill In The Blank" ||
           selectedQueType.title == "MCQ"
@@ -497,7 +500,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
             options,
             "rightAns",
             queContResult,
-            queContResult.data.data.id
+            queContResult?.data?.data?.id
           );
           const wrongAnsOptions = Object.keys(options).filter(
             (option) => !rightAndWrong[option]
@@ -592,6 +595,28 @@ export default function AddQuePage({ rowData, useForEdit }) {
           }
         }
         else if(selectedQueType.title == "Pair Matching"){
+          console.log(pairMatchingContents);
+          let contents = Object.keys(pairMatchingContents).map(pairMatching => pairMatchingContents[pairMatching].content.id);
+
+          console.log(contents);
+          console.log(contents[0]);
+          let contentOptionsList = contents.slice(1);
+          console.log(contentOptionsList);
+          queContResult = useForEdit
+          ? await putHandler("question-content", rowData?.question_content, {
+              data: {
+                question: { connect: [question.id] },
+                question_type: { connect: [selectedQueType.id] },
+                content: { connect: [contents[0]] },
+              },
+            })
+          : await postHandler("question-content", {
+              data: {
+                question: { connect: [question.id] },
+                question_type: { connect: [selectedQueType.id] },
+                content: { connect: [contents[0]] },
+              },
+            });
           const queOptionResult = useForEdit
             ? await putHandler(
                 "question-content-option",
@@ -599,11 +624,10 @@ export default function AddQuePage({ rowData, useForEdit }) {
                 {
                   data: {
                     question_content: {
-                      connect: 127,
+                      connect: [queContResult?.data?.data?.id],
                     },
                     contents: {
-                      connect: Object.keys(pairMatchingContents).map((pairMatching, index) => pairMatchingContents["option" + index + 1]
-                      ?.content.id ),
+                      connect: contentOptionsList,
                     },
                   },
                 }
@@ -611,11 +635,10 @@ export default function AddQuePage({ rowData, useForEdit }) {
             : await postHandler("question-content-option", {
                 data: {
                   question_content: {
-                    connect: 127,
+                    connect: [queContResult?.data?.data?.id],
                   },
                   contents: {
-                    connect: Object.keys(pairMatchingContents).map((pairMatching, index) => pairMatchingContents["option" + index + 1]
-                    ?.content.id ),
+                    connect: contentOptionsList,
                   },
                 },
               });
@@ -629,7 +652,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
                       connect: [selectedLesson.id],
                     },
                     question_content: {
-                      connect: 127,
+                      connect: [queContResult?.data?.data?.id],
                     },
                   },
                 })
@@ -639,7 +662,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
                       connect: [selectedLesson.id],
                     },
                     question_content: {
-                      connect: 127,
+                      connect: [queContResult?.data?.data?.id],
                     },
                   },
                 });
@@ -834,7 +857,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
   const [pairMatchingContents, setPairMatchingContents] = useState(
     initialPairMatchingObj
   );
-  console.log(pairMatchingContents);
+  console.log(pairMatchingContents); 
   const handlePairMatchingContent = async (index, obj) => {
     console.log(obj);
     let contentDetailsByLanguage = await getContentDetailsByLanguage(obj.id);
