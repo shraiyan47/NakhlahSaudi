@@ -691,6 +691,7 @@ export const useQuestionTitle = create( //// For Question Title Add Only
       }
     },
     afterAdd: (data) => {
+      console.log(" U A S => ", data)
       set((state) => {
         state.data = [data, ...state.data];
       });
