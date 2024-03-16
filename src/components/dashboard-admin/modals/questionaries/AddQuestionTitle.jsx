@@ -27,16 +27,26 @@ export default function AddQuestionTitle({ rowData, useForEdit }) {
     err1: "",
   });
 
+  function escapeQuotes(text) {
+    const escapeChars = {
+      '"': '\\"',
+      '\'': '\\\'',
+    };
+    const escapedText = text.replace(/["']/g, (match) => escapeChars[match]);
+  
+    return escapedText;
+  }
 
+  
   async function handleSubmit(e) {
     e.preventDefault();
 
     let formData = new FormData();
     var questionTitleInput = document.getElementById("inputQuestionTitle");
  
-    formData.append( // Remove Q Content
+    formData.append( 
       "data",
-      `{"question":"${questionTitleInput.value}" }`
+      `{"question":"${escapeQuotes(questionTitleInput.value)}" }`
     );
 
     console.log("Question Add : ", formData)
@@ -56,14 +66,21 @@ export default function AddQuestionTitle({ rowData, useForEdit }) {
         redirect: "follow",
       }
     )
-      .then((res) => res.json())
+      .then((res) =>  
+        res.json()
+      )
       .then((data) => {
-        alert(JSON.stringify(data));
+        // alert(JSON.stringify(data));
+        
+        console.log("DATA AQT ==> ",data)
+        
         let renderable = {
           id: data.data.id,
-          questionsTitle: title,
+          questionsTitle: data.data.attributes.question,
         };
-
+        
+        console.log(" A Q T renderable => ", renderable)
+        
         useForEdit ? afterUpdate(renderable) : afterAdd(renderable);
         toast({
           title: useForEdit ? "Successfully Updated" : "Successfully Added",
@@ -71,7 +88,8 @@ export default function AddQuestionTitle({ rowData, useForEdit }) {
         document.getElementById("closeDialog")?.click();
       })
       .catch((error) => {
-        alert("err: " + JSON.stringify(error));
+        // alert("err: " + JSON.stringify(error));
+        
         setError(JSON.stringify(error));
       });
   }
