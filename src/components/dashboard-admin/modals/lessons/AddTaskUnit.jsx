@@ -133,8 +133,8 @@ export default function AddTaskUnit({ rowData, title, useForEdit }) {
         <DialogTitle className="textHeader textPrimaryColor h-fit py-0 flex flex-col">
           {useForEdit ? "Update" : "New"} {addWhat}
           <p className="text-sm font-normal text-slate-500 my-0 py-0 h-fit flex gap-2 items-center">
-            Level <ChevronLast className="w-4 h-4" />
-            <span className="font-semibold text-slate-800">Task</span>
+            Journey <ChevronLast className="w-4 h-4" />
+            <span className="font-semibold text-slate-800">Unit</span>
           </p>
         </DialogTitle>
 
@@ -156,14 +156,14 @@ export default function AddTaskUnit({ rowData, title, useForEdit }) {
           </div>
           <div className="flex flex-col gap-1">
             <label className="flex justify-between">
-              <span>Learning Task Name</span>
+              <span>Learning Unit Name</span>
               <span className="text-red-800">{error.err0}</span>
             </label>
             <CustomInput
               type="text"
               value={taskName}
               onChange={(e) => setTaskName(e.target.value)}
-              ph="Enter task name"
+              ph="Enter Learning Unit Name"
               style="py-0.25 px-1"
             />
             <span className="text-red-700">{error.err2}</span>

@@ -234,8 +234,8 @@ export default function AddLesson({ rowData, useForEdit }) {
       <DialogTitle className="textHeader textPrimaryColor h-fit py-0 flex flex-col">
         {useForEdit ? "Update" : "New"} {addWhat}
         <p className="textNormal textSecondaryColor my-0 py-0 h-fit flex gap-2 items-center">
-          Level <ChevronLast className="w-4 h-4" /> Task
-          <ChevronLast className="w-4 h-4" /> Task Unit
+          Journey <ChevronLast className="w-4 h-4" /> Unit
+          <ChevronLast className="w-4 h-4" /> Level
           <ChevronLast className="w-4 h-4" />{" "}
           <span className="font-semibold text-slate-800">Lesson</span>
         </p>
@@ -249,7 +249,7 @@ export default function AddLesson({ rowData, useForEdit }) {
           <div className="flex flex-col ">
             <CustomSelect
               value={selectedJourney}
-              label={"Select Learning Level"}
+              label={"Select Learning Journey"}
               options={journeyData}
               bg="wh"
               onChange={(value) =>
@@ -264,7 +264,7 @@ export default function AddLesson({ rowData, useForEdit }) {
               value={selectedUnit}
               options={filteredUnits}
               bg="wh"
-              label={"Select Task"}
+              label={"Select Learning Unit"}
               onChange={(value) =>
                 setSelectedUnit({ id: value.id, title: value.title })
               }
@@ -273,7 +273,7 @@ export default function AddLesson({ rowData, useForEdit }) {
           </div>
           <div className="flex flex-col ">
             <CustomSelect
-              label={"Select Task Unit"}
+              label={"Select Learning Level"}
               value={selectedLevel}
               options={filteredLevels}
               bg="wh"
@@ -292,7 +292,7 @@ export default function AddLesson({ rowData, useForEdit }) {
               type="text"
               value={lessonName}
               onChange={(e) => setLessonName(e.target.value)}
-              ph="Enter lesson title"
+              ph="Enter Learning Lesson Name"
               style="py-0.25 px-1"
             />
             <span className="text-red-700">{error.err4}</span>

@@ -991,7 +991,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
               onChange={(value) =>
                 setSelectedQueType({ id: value.id, title: value.title })
               }
-              addNewText="New Question"
+              // addNewText="New Question Type"
               addNewAfterClick={handleAdd}
             />
             {/* {error.err1 !== "" && (
@@ -1007,7 +1007,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
               onChange={(value) =>
                 setQuestion({ id: value.id, title: value.title })
               }
-              addNewText="New Question"
+              // addNewText="New Question"
               addNewAfterClick={handleAdd}
             />
             {/* <span className="text-red-700">{error.err2}</span> */}
