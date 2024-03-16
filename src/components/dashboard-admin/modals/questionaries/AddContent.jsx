@@ -139,14 +139,14 @@ export default function AddContent({ rowData, useForEdit }) {
 
         let contentId = data.data.id;
 
-        var fileInput = document.getElementById("idInputFile");
-        var file = fileInput.files[0];
-        formDataDetails.append("files.image", file);
+        // var fileInput = document.getElementById("idInputFile");
+        // var file = fileInput.files[0];
+        // formDataDetails.append("files.image", file);
     
-        formDataDetails.append(
-          "data",
-          `{"audio": "${contentDetailsAudioInput.value}", "content": { "connect": [${contentId}] }}`
-        );
+        // formDataDetails.append(
+        //   "data",
+        //   `{"audio": "${contentDetailsAudioInput.value}", "content": { "connect": [${contentId}] }}`
+        // );
         
 
 
@@ -168,40 +168,40 @@ export default function AddContent({ rowData, useForEdit }) {
     
       
       // content details
-      await fetch(
-        useForEdit
-          ? putMap["content-details"] + `/${rowData.id}?populate=*`
-          : postMap["content-details"] + `?populate=*`,
-        {
-          method: useForEdit ? "PUT" : "POST",
-          body: formDataDetails,
-          headers: {
-            Authorization:
-              "Bearer " +
-              "5cb5acf4b96532cdad0e30d900772f5c8b5532d2dbf06e04483a3705c725ffbbdba593340718423a5975e86aa47ca1749de402ec9f3127648dbcec37b190107ba975e669811b2a2f4c8b41c27472d6fdb70e7b0be4f8490c57a406e29aedf47dd05dadb7171788ba9fa2af106d93b4f92423b8e194131891e712857b52e8ceef",
-          },
-          redirect: "follow",
-        }
-      )
-        .then((res) => res.json())
+      // await fetch(
+      //   useForEdit
+      //     ? putMap["content-details"] + `/${rowData.id}?populate=*`
+      //     : postMap["content-details"] + `?populate=*`,
+      //   {
+      //     method: useForEdit ? "PUT" : "POST",
+      //     body: formDataDetails,
+      //     headers: {
+      //       Authorization:
+      //         "Bearer " +
+      //         "5cb5acf4b96532cdad0e30d900772f5c8b5532d2dbf06e04483a3705c725ffbbdba593340718423a5975e86aa47ca1749de402ec9f3127648dbcec37b190107ba975e669811b2a2f4c8b41c27472d6fdb70e7b0be4f8490c57a406e29aedf47dd05dadb7171788ba9fa2af106d93b4f92423b8e194131891e712857b52e8ceef",
+      //     },
+      //     redirect: "follow",
+      //   }
+      // )
+      //   .then((res) => res.json())
       
-        .then((data) => {
-          console.log("res", data)
-          alert(JSON.stringify(data));
-          let renderable = {
-            id: data.data.id,
-            title: data.data.attributes?.title,
-            content: {
-              id: data.data.attributes?.content?.data?.id,
-              title: data.data.attributes?.content?.data?.attributes?.title,
-            },
-            contentAudio: data.data.attributes?.audio,
-            icon: data.data.attributes.image?.data?.attributes?.url,
-          };
+      //   .then((data) => {
+      //     console.log("res", data)
+      //     alert(JSON.stringify(data));
+      //     let renderable = {
+      //       id: data.data.id,
+      //       title: data.data.attributes?.title,
+      //       content: {
+      //         id: data.data.attributes?.content?.data?.id,
+      //         title: data.data.attributes?.content?.data?.attributes?.title,
+      //       },
+      //       contentAudio: data.data.attributes?.audio,
+      //       icon: data.data.attributes.image?.data?.attributes?.url,
+      //     };
       
       
       
-        });
+      //   });
       
       
       
@@ -321,19 +321,19 @@ export default function AddContent({ rowData, useForEdit }) {
             />
             <span className="text-red-700">{error.err3}</span>
           </div>
-          <button
+          {/* <button
             type="button"
              onClick={handleAddDetails}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 text-sm"
           >
            + Add Content Details
-          </button>
+          </button> */}
      
        
       
        
        
-          {add === true &&
+          {/* {add === true &&
 
             <div>
 
@@ -371,7 +371,7 @@ export default function AddContent({ rowData, useForEdit }) {
                 />
               </div>
             </div>
-          }
+          } */}
           <CustomButton
             txt={useForEdit ? "Update" : "Add"}
             type="submit"
