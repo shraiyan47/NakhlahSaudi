@@ -201,9 +201,9 @@ export default function AddLevel({ rowData, useForEdit }) {
         <DialogTitle className="textHeader textPrimaryColor h-fit py-0 flex flex-col">
           {useForEdit ? "Update" : "New"} {addWhat}
           <p className="textNormal textSecondaryColor my-0 py-0 h-fit flex gap-2 items-center">
-            Level <ChevronLast className="w-4 h-4" /> Task
+              Journey <ChevronLast className="w-4 h-4" /> Unit
             <ChevronLast className="w-4 h-4" />
-            <span className="font-semibold text-slate-800">Task Unit</span>
+            <span className="font-semibold text-slate-800">Level</span>
           </p>
         </DialogTitle>
 
@@ -214,7 +214,7 @@ export default function AddLevel({ rowData, useForEdit }) {
           <div className="flex flex-col gap-1">
             <CustomSelect
               value={selectedJourney}
-              label={"Select Journey"}
+              label={"Select Learning Journey"}
               options={journeyData}
               bg="wh"
               onChange={(value) =>
@@ -226,7 +226,7 @@ export default function AddLevel({ rowData, useForEdit }) {
           <div className="flex flex-col gap-1">
             <CustomSelect
               value={selectedUnit}
-              label={"Select Unit"}
+              label={"Select Learning Unit"}
               options={filteredUnits}
               bg="wh"
               onChange={(value) =>
@@ -237,14 +237,14 @@ export default function AddLevel({ rowData, useForEdit }) {
           </div>
           <div className="flex flex-col gap-1">
             <label className="flex justify-between">
-              <span>Task Unit Title</span>
+              <span>Learning Level Title</span>
               <span className=" text-red-800">{error.err0}</span>
             </label>
             <CustomInput
               type="text"
               value={levelName}
               onChange={(e) => setLevelName(e.target.value)}
-              ph="Enter task unit title"
+              ph="Enter Learning Level Title"
               style="py-0.25 px-1"
             />
             <span className="text-red-700">{error.err3}</span>
