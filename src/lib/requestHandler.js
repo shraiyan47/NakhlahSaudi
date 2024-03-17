@@ -147,7 +147,7 @@ export const getWithUrl = async (url) => {
 };
 export const getQuestionUrl = (id) => {
   // return `api/questions?populate=*&filters[question_content][question_type][id][$eq]=${id}`;
-  return `api/questions?populate=*`;
+  return `api/questions?pagination[page]=1&pagination[pageSize]=999999&populate=*`;
 }
 export const getHandler = async (key) => {
   try {

@@ -178,7 +178,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
   useEffect(() => {
     const fetch = async () => {
       // const url = `api/contents?filters[content_type][title][$eq]=${selectedQueType.title}`;
-      const url = `api/contents?populate=*`;
+      const url = `api/contents?pagination[page]=1&pagination[pageSize]=999999&populate=*`;
       const response = await getWithUrl(url);
       if (response.status === 200) {
         setContents(renderableContents(response.data.data));
