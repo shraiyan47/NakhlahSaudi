@@ -571,7 +571,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
                       connect: [queContResult.data.data.id],
                     },
                     contents: {
-                      connect: wrongAnsOptions.map(
+                      set: wrongAnsOptions.map(
                         (option) => options[option]?.content.id
                       ),
                     },
