@@ -184,7 +184,7 @@ export default function AddQueContent({ rowData, useForEdit }) {
       if (response3.status === 200) {
       console.log("response3 que data =.", response3.data)
         const data = response3.data.data.map((item) => {
-          // alert(" <> : "+JSON.stringify(item))
+          // //alert(" <> : "+JSON.stringify(item))
           return {
             id: item.id,
             title: item.attributes.question,
@@ -234,7 +234,7 @@ export default function AddQueContent({ rowData, useForEdit }) {
       if (response.status === 200) {
       console.log("response que data =.", response.data)
         const data = response.data.data.map((item) => {
-          // alert(" <> : "+JSON.stringify(item))
+          // //alert(" <> : "+JSON.stringify(item))
           return {
             id: item.id,
             title: item.attributes.question,

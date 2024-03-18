@@ -146,7 +146,7 @@ export default function AddQueContOption({ rowData, useForEdit }) {
 
       if (response.status === 200) {
         const data = response.data.data.map((item) => {
-          // alert("::: " + JSON.stringify(item.attributes?.content_type));
+          // //alert("::: " + JSON.stringify(item.attributes?.content_type));
           return {
             id: item.id,
             title: item.attributes?.title,

@@ -176,7 +176,7 @@ export default function AddLevel({ rowData, useForEdit }) {
             },
           };
         });
-        alert("task: " + JSON.stringify(data));
+        //alert("task: " + JSON.stringify(data));
         setUnits(data);
       }
     };

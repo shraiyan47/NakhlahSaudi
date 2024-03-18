@@ -3,7 +3,7 @@ import Script from 'next/script'
 import React, { useEffect, useState } from 'react'
 
 function ResponsiveVoice(x) {
-    // alert(x);
+    // //alert(x);
     const [isResponsiveVoiceLoaded, setIsResponsiveVoiceLoaded] = useState(false)
     useEffect(() => {
         // Check if ResponsiveVoice is already available in the global scope

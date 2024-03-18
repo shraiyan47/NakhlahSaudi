@@ -71,22 +71,22 @@ export const tabsGeneralSetup1 = [{
 export const tabsJourney = [
   {
     id: 1,
-    title: "Learner Purposes",
+    title: " Purposes",
     link: "/admin/learning-journey/purposes",
   },
   {
     id: 2,
-    title: "Learner Levels",
+    title: " Levels",
     link: "/admin/learning-journey/goals",
   },
   {
     id: 3,
-    title: "Learner Start Points",
+    title: " Start Points",
     link: "/admin/learning-journey/start-points",
   },
   {
     id: 4,
-    title: "Learner Goals",
+    title: " Goals",
     link: "/admin/learning-journey/levels",
   },
 ];
@@ -95,22 +95,22 @@ export const tabsLesson = [
  
   {
     id: 1,
-    title: "Learning Journies",
+    title: " Journies",
     link: "/admin/learning-materials/levels",
   },
   {
     id: 2,
-    title: "Learning Units",
+    title: " Units",
     link: "/admin/learning-materials/tasks",
   },
   {
     id: 3,
-    title: "Learning Levels",
+    title: " Levels",
     link: "/admin/learning-materials/task-units",
   },
   {
     id: 4,
-    title: "Learning Lessons",
+    title: " Lessons",
     link: "/admin/learning-materials/unit-lessons",
   },
 ];

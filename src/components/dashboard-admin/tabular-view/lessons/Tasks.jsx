@@ -21,7 +21,7 @@ export default function Tasks() {
   useEffect(() => {
     const fetch = async () => {
       const response = await getHandler("learning-unit");
-      // alert(JSON.stringify(response.data.data));
+      // ////alert(JSON.stringify(response.data.data));
       if (response) {
         toggleLoading(false);
       }

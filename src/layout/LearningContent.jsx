@@ -17,7 +17,7 @@ export default function LearningContent({ content }) {
   useEffect(() => {
     setTabularView({
       currentPage: "learning-materials",
-      currentView: "Learning Lessons",
+      currentView: " Lessons",
     });
   }, []);
 
@@ -51,10 +51,10 @@ export default function LearningContent({ content }) {
         })}
       </div>
 
-      {tabularView.currentView == "Learning Journies" && <LearningLevels />}
-      {tabularView.currentView == "Learning Units" && <Tasks />}
-      {tabularView.currentView == "Learning Levels" && <TaskUnits />}
-      {tabularView.currentView == "Learning Lessons" && <Lessons />}
+      {tabularView.currentView == " Journies" && <LearningLevels />}
+      {tabularView.currentView == " Units" && <Tasks />}
+      {tabularView.currentView == " Levels" && <TaskUnits />}
+      {tabularView.currentView == " Lessons" && <Lessons />}
     </div>
   );
 }

@@ -590,7 +590,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
                   },
                 },
               });
-          // alert("queOptionResult: " + JSON.stringify(queOptionResult));
+          // //alert("queOptionResult: " + JSON.stringify(queOptionResult));
 
           if (queOptionResult.status == 200) {
             const journeyMapResult = useForEdit
@@ -619,7 +619,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
                 title: "Question Added Successfully",
               });
             }
-            // alert("journeyMapResult: " + JSON.stringify(journeyMapResult));
+            // //alert("journeyMapResult: " + JSON.stringify(journeyMapResult));
           }
         } else if (selectedQueType.title == "True Or False") {
           const journeyMapResult = useForEdit
@@ -697,7 +697,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
                   },
                 },
               });
-          // alert("queOptionResult: " + JSON.stringify(queOptionResult));
+          // //alert("queOptionResult: " + JSON.stringify(queOptionResult));
 
           if (queOptionResult.status == 200) {
             const journeyMapResult = useForEdit
@@ -726,7 +726,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
                 title: "Question Added Successfully",
               });
             }
-            // alert("journeyMapResult: " + JSON.stringify(journeyMapResult));
+            // //alert("journeyMapResult: " + JSON.stringify(journeyMapResult));
           }
         }
 
@@ -792,7 +792,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
           : document.getElementById("closeDialog")?.click();
       } catch (error) {
         console.log(error);
-        alert(JSON.stringify(error)); // NOTE - use "error.response.data` (not "error")
+        ////alert(JSON.stringify(error)); // NOTE - use "error.response.data` (not "error")
       }
     }
     //  specific errors
