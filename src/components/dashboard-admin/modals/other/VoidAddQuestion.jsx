@@ -140,7 +140,7 @@ export default function AddQuestion({ rowData, useForEdit }) {
       const queResult = await postHandler("question", {
         data: { question: question },
       });
-      alert("queResult:: " + JSON.stringify(queResult));
+      //alert("queResult:: " + JSON.stringify(queResult));
       const contResult = await postHandler("content", {
         data: {
           title: content,
@@ -152,7 +152,7 @@ export default function AddQuestion({ rowData, useForEdit }) {
           },
         },
       });
-      alert("contResult:: " + JSON.stringify(contResult));
+      //alert("contResult:: " + JSON.stringify(contResult));
 
       const opt1Result = await postHandler("content", {
         data: {
@@ -165,7 +165,7 @@ export default function AddQuestion({ rowData, useForEdit }) {
           },
         },
       });
-      alert("opt1Result:   " + JSON.stringify(opt1Result));
+      //alert("opt1Result:   " + JSON.stringify(opt1Result));
       const opt2Result = await postHandler("content", {
         data: {
           title: ansOptions.option2,
@@ -177,7 +177,7 @@ export default function AddQuestion({ rowData, useForEdit }) {
           },
         },
       });
-      alert("opt2Result:   " + JSON.stringify(opt2Result));
+      //alert("opt2Result:   " + JSON.stringify(opt2Result));
       const opt3Result = await postHandler("content", {
         data: {
           title: ansOptions.option3,
@@ -189,7 +189,7 @@ export default function AddQuestion({ rowData, useForEdit }) {
           },
         },
       });
-      alert("opt3Result:   " + JSON.stringify(opt3Result));
+      //alert("opt3Result:   " + JSON.stringify(opt3Result));
       const opt4Result = await postHandler("content", {
         data: {
           title: ansOptions.option4,
@@ -201,7 +201,7 @@ export default function AddQuestion({ rowData, useForEdit }) {
           },
         },
       });
-      alert("opt4Result:   " + JSON.stringify(opt4Result));
+      //alert("opt4Result:   " + JSON.stringify(opt4Result));
 
       const queContResult = await postHandler("question-content", {
         data: {
@@ -232,13 +232,13 @@ export default function AddQuestion({ rowData, useForEdit }) {
           },
         },
       });
-      alert("queOptionResult: " + JSON.stringify(queOptionResult));
+      //alert("queOptionResult: " + JSON.stringify(queOptionResult));
 
       // postHandler("question", {
       //   data: { question: question },
       // })
       //   .then((queResult) => {
-      //     alert("queResult:: " + JSON.stringify(queResult));
+      //     //alert("queResult:: " + JSON.stringify(queResult));
       //     postHandler("content", {
       //       data: {
       //         title: content,
@@ -251,7 +251,7 @@ export default function AddQuestion({ rowData, useForEdit }) {
       //       },
       //     })
       //       .then((contResult) => {
-      //         alert("contResult :: " + JSON.stringify(contResult));
+      //         //alert("contResult :: " + JSON.stringify(contResult));
       //         postHandler("question-content", {
       //           data: {
       //             question: {
@@ -266,7 +266,7 @@ export default function AddQuestion({ rowData, useForEdit }) {
       //           },
       //         })
       //           .then((queContResult) => {
-      //             alert("queContResult  :: " + JSON.stringify(queContResult));
+      //             //alert("queContResult  :: " + JSON.stringify(queContResult));
 
       //             postHandler("question-content-option", {
       //               data: {
@@ -289,7 +289,7 @@ export default function AddQuestion({ rowData, useForEdit }) {
       //             document.getElementById("closeDialog")?.click();
       //           })
       //           .catch((err3) => {
-      //             alert("err: " + JSON.stringify(err3));
+      //             //alert("err: " + JSON.stringify(err3));
       //             let errors = result.data.error.details.errors;
       //             setError({
       //               err0: "errors[0].message",
@@ -300,9 +300,9 @@ export default function AddQuestion({ rowData, useForEdit }) {
       //             });
       //           });
       //       })
-      //       .catch((err2) => alert(JSON.stringify(err2)));
+      //       .catch((err2) => ////alert(JSON.stringify(err2)));
       //   })
-      //   .catch((err1) => alert(JSON.stringify(err1)));
+      //   .catch((err1) => ////alert(JSON.stringify(err1)));
     }
 
     //  specific errors

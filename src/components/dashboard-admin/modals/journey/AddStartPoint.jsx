@@ -64,13 +64,12 @@ export default function AddStartingPoint({ rowData, useForEdit }) {
       )
         .then((res) => res.json())
         .then((data) => {
-          alert(JSON.stringify(data));
+          ////alert(JSON.stringify(data));
           let renderable = {
             id: data.data.id,
             title: title,
             subtitle: subtitle,
-            icon: data.data.attributes.icon?.data?.attributes?.formats?.small
-              ?.url,
+            icon: data.data.attributes.icon?.data?.attributes?.url,
           };
 
           useForEdit ? afterUpdate(renderable) : afterAdd(renderable);
@@ -80,7 +79,7 @@ export default function AddStartingPoint({ rowData, useForEdit }) {
           document.getElementById("closeDialog")?.click();
         })
         .catch((error) => {
-          alert("err: " + JSON.stringify(error));
+          //alert("err: " + JSON.stringify(error));
           setError(JSON.stringify(error));
         });
     }

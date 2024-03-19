@@ -317,6 +317,7 @@ export const useLearnerStartPoint = create(
             id: data.id,
             title: data.attributes.title,
             subtitle: data.attributes.subtitle,
+            icon: item.attributes.icon?.data?.attributes?.url,
           },
         };
       }

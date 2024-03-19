@@ -120,7 +120,7 @@ export default function AddContent({ rowData, useForEdit }) {
       .then((res) => res.json())
       .then((data) => {
       
-      //  alert(JSON.stringify(data));
+      //  ////alert(JSON.stringify(data));
         let renderable = {
           id: data.data.id,
           audio: data.data.attributes?.audio,
@@ -159,7 +159,7 @@ export default function AddContent({ rowData, useForEdit }) {
       }) 
       .catch((error) => {
      
-        alert("err: " + JSON.stringify(error));
+        //alert("err: " + JSON.stringify(error));
         setError(JSON.stringify(error));
       });
 
@@ -187,7 +187,7 @@ export default function AddContent({ rowData, useForEdit }) {
       
       //   .then((data) => {
       //     console.log("res", data)
-      //     alert(JSON.stringify(data));
+      //     ////alert(JSON.stringify(data));
       //     let renderable = {
       //       id: data.data.id,
       //       title: data.data.attributes?.title,

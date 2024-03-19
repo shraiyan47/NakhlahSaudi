@@ -305,7 +305,7 @@ export default function AddSM({ rowData, useForEdit }) {
                 },
               });
 
-          // alert("queContResult: " + JSON.stringify(queContResult));
+          // //alert("queContResult: " + JSON.stringify(queContResult));
 
           useForEdit
             ? afterUpdate(data)
@@ -342,13 +342,13 @@ export default function AddSM({ rowData, useForEdit }) {
           resetForm();
         } else if (queResult.status == 400) {
           let errors = queResult.data.error.details.errors;
-          alert("errors: " + JSON.stringify(errors));
+          //alert("errors: " + JSON.stringify(errors));
           setError({
             err2: errors[0]?.message,
           });
         }
       } catch (error) {
-        alert(JSON.stringify(error.response.data)); // NOTE - use "error.response.data` (not "error")
+        ////alert(JSON.stringify(error.response.data)); // NOTE - use "error.response.data` (not "error")
       }
     }
     //  specific errors

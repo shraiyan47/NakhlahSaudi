@@ -40,7 +40,7 @@ export const getMap = {
   "content-by-clause" : `${BASE_URL}/api/content-by-clauses?populate=*`,
   "content-by-syllable" : `${BASE_URL}/api/content-by-syllables?populate=*`,
   "content": `${BASE_URL}/api/contents?populate=*`,
-   "content-all": `${BASE_URL}/api/contents?populate=*`,
+   "content-all": `${BASE_URL}/api/contents?pagination[page]=1&pagination[pageSize]=999999&populate=*`,
    "content-fitb": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Fill In The Blank`,
  "content-tof": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=True Or False`,
   // "content-mcq": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=MCQ`,
@@ -147,7 +147,7 @@ export const getWithUrl = async (url) => {
 };
 export const getQuestionUrl = (id) => {
   // return `api/questions?populate=*&filters[question_content][question_type][id][$eq]=${id}`;
-  return `api/questions?populate=*`;
+  return `api/questions?pagination[page]=1&pagination[pageSize]=999999&populate=*`;
 }
 export const getHandler = async (key) => {
   try {

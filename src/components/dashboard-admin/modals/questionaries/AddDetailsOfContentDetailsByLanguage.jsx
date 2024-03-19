@@ -120,7 +120,7 @@ useEffect(() => {
     
         .then((data) => {
         
-          alert(JSON.stringify(data));
+          ////alert(JSON.stringify(data));
           console.log("data1", data)
           let renderable = {
             id: data.data.id,
@@ -142,7 +142,7 @@ useEffect(() => {
           document.getElementById("closeDialog")?.click();
         })
         .catch((error) => {
-          alert("err: " + JSON.stringify(error));
+          //alert("err: " + JSON.stringify(error));
           setError(JSON.stringify(error));
         });
 

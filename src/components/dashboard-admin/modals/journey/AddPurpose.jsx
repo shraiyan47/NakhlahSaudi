@@ -71,7 +71,7 @@ console.log(formData);
         document.getElementById("closeDialog")?.click();
       })
       .catch((error) => {
-        alert(JSON.stringify(error));
+        // ////alert(JSON.stringify(error));
       });
   }
   const currentView = useTabularView((state) => state.data.currentView);

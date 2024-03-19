@@ -108,7 +108,7 @@ export default function AddContentDetail({ rowData, useForEdit }) {
 
         .then((data) => {
           console.log("res", data)
-          alert(JSON.stringify(data));
+          ////alert(JSON.stringify(data));
           let renderable = {
             id: data.data.id,
             title: data.data.attributes?.title,
@@ -127,7 +127,7 @@ export default function AddContentDetail({ rowData, useForEdit }) {
           document.getElementById("closeDialog")?.click();
         })
         .catch((error) => {
-          alert("err: " + JSON.stringify(error));
+          //alert("err: " + JSON.stringify(error));
           setError(JSON.stringify(error));
         });
 

@@ -41,7 +41,7 @@ export default function AddPurpose({ rowData, title, useForEdit }) {
       formData.append("files.icon", image);
       formData.append("data", `{"purpose":"purposeregergreg"}`);
       // axios.post(getMap["learner-purpose"], formData).then((response) => {
-      //   alert("response::: "+JSON.stringify(response));
+      //   //alert("response::: "+JSON.stringify(response));
       // });
 
       const result = await addEdit({

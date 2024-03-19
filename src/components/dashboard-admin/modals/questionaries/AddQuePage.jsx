@@ -178,7 +178,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
   useEffect(() => {
     const fetch = async () => {
       // const url = `api/contents?filters[content_type][title][$eq]=${selectedQueType.title}`;
-      const url = `api/contents?populate=*`;
+      const url = `api/contents?pagination[page]=1&pagination[pageSize]=999999&populate=*`;
       const response = await getWithUrl(url);
       if (response.status === 200) {
         setContents(renderableContents(response.data.data));
@@ -313,49 +313,96 @@ export default function AddQuePage({ rowData, useForEdit }) {
   const initOptionData = {
     content: initStateSelection,
   };
-  const initOptions = {
-    option1: useForEdit ? { content: rowData?.content } : initOptionData,
-    option2:
-      (useForEdit && questionContentOptions.length) > 0
-        ? {
-            content: {
-              id: questionContentOptions[0]?.id,
-              title: questionContentOptions[0]?.attributes?.title,
-            },
-          }
-        : initOptionData,
-    /* optionThree:
-      (useForEdit && questionContentOptions.length) > 0
-        ? {
-            content: {
-              id: questionContentOptions[1]?.id,
-              title: questionContentOptions[1]?.attributes?.title,
-            },
-          }
-        : initOptionData,
-    optionFour:
-      (useForEdit && questionContentOptions.length) > 0
-        ? {
-            content: {
-              id: questionContentOptions[2]?.id,
-              title: questionContentOptions[2]?.attributes?.title,
-            },
-          }
-        : initOptionData, */
-  };
-  console.log(initOptions);
-  const initRightWrong = {
-    option1: useForEdit ? true : false,
-    option2: false,
-    /* optionThree: false,
-    optionFour: false, */
-  };
+  const generateInitOptions = (questionContentOptions, useForEdit, initOptionData) => {
+    const initOptions = {};
 
+    if (useForEdit) {
+        // In edit mode, the first option is populated from rowData?.content
+        initOptions.option1 = { content: rowData?.content };
+
+        // Populate the remaining options dynamically from questionContentOptions
+        questionContentOptions.forEach((option, index) => {
+            // Since option1 is reserved for rowData?.content, start adding from option2
+            initOptions[`option${index + 2}`] = {
+                content: {
+                    id: option.id,
+                    title: option.attributes.title,
+                },
+            };
+        });
+    } else {
+        // Not in edit mode, only add two options with initOptionData
+        initOptions.option1 = initOptionData;
+        initOptions.option2 = initOptionData;
+    }
+
+    return initOptions;
+  }
+  // const initOptions = {
+  //   option1: useForEdit ? { content: rowData?.content } : initOptionData,
+  //   option2:
+  //     (useForEdit && questionContentOptions.length) > 0
+  //       ? {
+  //           content: {
+  //             id: questionContentOptions[0]?.id,
+  //             title: questionContentOptions[0]?.attributes?.title,
+  //           },
+  //         }
+  //       : initOptionData,
+  //   /* optionThree:
+  //     (useForEdit && questionContentOptions.length) > 0
+  //       ? {
+  //           content: {
+  //             id: questionContentOptions[1]?.id,
+  //             title: questionContentOptions[1]?.attributes?.title,
+  //           },
+  //         }
+  //       : initOptionData,
+  //   optionFour:
+  //     (useForEdit && questionContentOptions.length) > 0
+  //       ? {
+  //           content: {
+  //             id: questionContentOptions[2]?.id,
+  //             title: questionContentOptions[2]?.attributes?.title,
+  //           },
+  //         }
+  //       : initOptionData, */
+  // };
+  const initOptions = generateInitOptions(questionContentOptions, useForEdit, initOptionData);
+  console.log(initOptions);
+/*   const initRightWrong = {
+    option1: useForEdit ? true : false,
+    option2: false
+  }; */
+  const generateInitRightWrong = (useForEdit, questionContentOptions) => {
+    const initRightWrong = {};
+
+    // Adjust the number of options based on the requirements.
+    // In edit mode, add 1 to include the first always-true option,
+    // ensuring there are always at least 2 options for consistency in non-edit mode.
+    const numOptions = useForEdit ? questionContentOptions.length + 1 : Math.max(questionContentOptions.length, 2);
+
+    for (let i = 1; i <= numOptions; i++) {
+        // Set the first option to true if in edit mode
+        if (i === 1 && useForEdit) {
+            initRightWrong[`option${i}`] = true;
+        } else {
+            // All other cases, including the additional options in edit mode and all options in non-edit mode, are false
+            initRightWrong[`option${i}`] = false;
+        }
+    }
+
+    return initRightWrong;
+};
+
+  const initRightWrong = generateInitRightWrong(useForEdit, questionContentOptions);
+  console.log(initRightWrong);
   const [options, setOptions] = useState(initOptions);
   console.log(options);
   const [rightAndWrong, setRightAndWrong] = useState(initRightWrong);
+  
   console.log(rightAndWrong);
-  useEffect(() => {
+  /* useEffect(() => {
     setOptions({
       option1: useForEdit ? { content: rowData?.content } : initOptionData,
       option2:
@@ -368,7 +415,15 @@ export default function AddQuePage({ rowData, useForEdit }) {
             }
           : initOptionData,
     });
-  }, questionContentOptions);
+  }, questionContentOptions); */
+  useEffect(() => {
+    // Generate the initial options based on the current mode and data
+    const newInitOptions = generateInitOptions(questionContentOptions, useForEdit, initOptionData);
+    const newInitRightWrong = generateInitRightWrong(useForEdit, questionContentOptions);
+    // Update the state with the new options
+    setOptions(newInitOptions);
+    setRightAndWrong(newInitRightWrong)
+  }, [questionContentOptions, useForEdit, rowData]); 
   function handleMark(obj) {
     // setRightAndWrong({ ...rightAndWrong, ...obj });
     const updatedRightAndWrong = {};
@@ -515,8 +570,8 @@ export default function AddQuePage({ rowData, useForEdit }) {
                     question_content: {
                       connect: [queContResult.data.data.id],
                     },
-                    content: {
-                      connect: wrongAnsOptions.map(
+                    contents: {
+                      set: wrongAnsOptions.map(
                         (option) => options[option]?.content.id
                       ),
                     },
@@ -535,7 +590,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
                   },
                 },
               });
-          // alert("queOptionResult: " + JSON.stringify(queOptionResult));
+          // //alert("queOptionResult: " + JSON.stringify(queOptionResult));
 
           if (queOptionResult.status == 200) {
             const journeyMapResult = useForEdit
@@ -564,7 +619,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
                 title: "Question Added Successfully",
               });
             }
-            // alert("journeyMapResult: " + JSON.stringify(journeyMapResult));
+            // //alert("journeyMapResult: " + JSON.stringify(journeyMapResult));
           }
         } else if (selectedQueType.title == "True Or False") {
           const journeyMapResult = useForEdit
@@ -642,7 +697,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
                   },
                 },
               });
-          // alert("queOptionResult: " + JSON.stringify(queOptionResult));
+          // //alert("queOptionResult: " + JSON.stringify(queOptionResult));
 
           if (queOptionResult.status == 200) {
             const journeyMapResult = useForEdit
@@ -671,7 +726,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
                 title: "Question Added Successfully",
               });
             }
-            // alert("journeyMapResult: " + JSON.stringify(journeyMapResult));
+            // //alert("journeyMapResult: " + JSON.stringify(journeyMapResult));
           }
         }
 
@@ -737,7 +792,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
           : document.getElementById("closeDialog")?.click();
       } catch (error) {
         console.log(error);
-        alert(JSON.stringify(error)); // NOTE - use "error.response.data` (not "error")
+        ////alert(JSON.stringify(error)); // NOTE - use "error.response.data` (not "error")
       }
     }
     //  specific errors

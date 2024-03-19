@@ -17,7 +17,7 @@ export default function LearningJourney({ content }) {
   useEffect(() => {
     setTabularView({
       currentPage: "learning-journey",
-      currentView: "Learner Purposes",
+      currentView: " Purposes",
     });
   }, []);
 
@@ -51,10 +51,10 @@ export default function LearningJourney({ content }) {
         })}
       </div>
 
-      {tabularView.currentView == "Learner Purposes" && <Purposes />}
-      {tabularView.currentView == "Learner Start Points" && <StartPoints />}
-      {tabularView.currentView == "Learner Levels" && <LearnerLevel />}
-      {tabularView.currentView == "Learner Goals" && <Goals />}
+      {tabularView.currentView == " Purposes" && <Purposes />}
+      {tabularView.currentView == " Start Points" && <StartPoints />}
+      {tabularView.currentView == " Levels" && <LearnerLevel />}
+      {tabularView.currentView == " Goals" && <Goals />}
     </div>
   );
 }
