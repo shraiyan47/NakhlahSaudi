@@ -59,7 +59,9 @@ export default function AddLevel({ rowData, useForEdit }) {
     err2: "",
     err3: "",
   });
-
+  console.log("rowData.learning_journey_unit.learning_journey.title", rowData.learning_journey_unit.learning_journey.title)
+  console.log("rowData.learning_journey_unit.title", rowData.learning_journey_unit.title)
+  console.log("selectedUnit", selectedUnit, "selectedJourney", selectedJourney)
   const journeyData = useLearningJourney((state) => state.data);
   const setJournies = useLearningJourney((state) => state.setJournies);
   //
@@ -91,7 +93,11 @@ export default function AddLevel({ rowData, useForEdit }) {
         : await postHandler("learning-level", {
             data,
           });
-
+  //  const result = useForEdit
+  //       ? await putHandler("learning-level"+ `/${rowData.id}?populate=*` ,{ data } )
+  //       : await postHandler("learning-level" `?populate=*`, {
+  //           data,
+  //         });
       if (result.status == 200) {
         let data = result.data.data;
 
@@ -111,7 +117,7 @@ export default function AddLevel({ rowData, useForEdit }) {
         useForEdit ? afterUpdate(data) : afterAdd(data);
         toast({
           title: useForEdit
-            ? "Item Updated Succesfully"
+            ? "Item Updated Successfully"
             : "Item Added Successfully",
         });
         document.getElementById("closeDialog")?.click();
@@ -188,7 +194,7 @@ export default function AddLevel({ rowData, useForEdit }) {
 
   useEffect(() => {
     if (selectedJourney.id != null) {
-      setSelectedUnit(initStateSelection);
+      // setSelectedUnit(initStateSelection);
       filterUnitsByJourney(selectedJourney.id);
     }
   }, [selectedJourney]);
@@ -226,7 +232,9 @@ export default function AddLevel({ rowData, useForEdit }) {
           <div className="flex flex-col gap-1">
             <CustomSelect
               value={selectedUnit}
+              //value="hhuhu"
               label={"Select Learning Unit"}
+              
               options={filteredUnits}
               bg="wh"
               onChange={(value) =>

@@ -105,7 +105,7 @@ export const tabsLesson = [
   },
   {
     id: 3,
-    title: " Levels",
+    title: "Tasks",
     link: "/admin/learning-materials/task-units",
   },
   {
