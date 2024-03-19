@@ -53,7 +53,7 @@ export default function LearningContent({ content }) {
 
       {tabularView.currentView == " Journies" && <LearningLevels />}
       {tabularView.currentView == " Units" && <Tasks />}
-      {tabularView.currentView == " Levels" && <TaskUnits />}
+      {tabularView.currentView == "Tasks" && <TaskUnits />}
       {tabularView.currentView == " Lessons" && <Lessons />}
     </div>
   );

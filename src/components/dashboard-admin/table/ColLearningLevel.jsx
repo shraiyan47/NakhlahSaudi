@@ -47,7 +47,7 @@ const colLearningLevel = [
     },
   },
   {
-    id: "id_level_titel",
+    id: "id_level_title",
     accessorKey: "title",
     header: ({ column }) => {
       return (
@@ -55,14 +55,14 @@ const colLearningLevel = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="textPrimaryColor textNormal"
         >
-          Level
+         Task
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => (
       <div className=" textNormal textSecondaryColor">
-        {row.getValue("id_level_titel")}
+        {row.getValue("id_level_title")}
       </div>
     ),
   },

@@ -66,7 +66,7 @@ export default function DataTableHeader({ table, view, filter }) {
   const currentSubView = useTabularView((state) => state.data.currentSubView);
   const setTabularView = useTabularView((state) => state.setTabularView);
   const addWhat = currentView.slice(0, currentView.length - 1);
-  console.log(view, currentView, currentSubView);
+  // console.log(view, currentView, currentSubView);
   const contentMapId = {
     "MCQ": 1,
     "Fill In The Blank": 2,
