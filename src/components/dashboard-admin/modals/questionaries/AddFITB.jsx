@@ -331,12 +331,12 @@ export default function AddFITB({ rowData, useForEdit }) {
           }
         );
 
-        // alert(
+        // //alert(
         //   "formData : " +
         //     JSON.stringify(formData.get("files.image")) +
         //     JSON.stringify(formData.get("data"))
         // );
-        // alert("queResult: " + JSON.stringify(data));
+        // //alert("queResult: " + JSON.stringify(data));
 
         // const queResult = useForEdit
         //   ? await putHandler("question", rowData.id, {
@@ -350,7 +350,7 @@ export default function AddFITB({ rowData, useForEdit }) {
         //       },
         //     });
 
-        // alert("queResult: " + JSON.stringify(queResult));
+        // //alert("queResult: " + JSON.stringify(queResult));
         if (queResult?.data?.data?.id) {
           const queContResult = useForEdit
             ? await putHandler("question-content", rowData.id, {
@@ -364,7 +364,7 @@ export default function AddFITB({ rowData, useForEdit }) {
                 },
               });
 
-          // alert("queContResult: " + JSON.stringify(queContResult));
+          // //alert("queContResult: " + JSON.stringify(queContResult));
 
           // if mcq or fib
           if (
@@ -387,7 +387,7 @@ export default function AddFITB({ rowData, useForEdit }) {
                     },
                   },
                 });
-            // alert("queOptionResult: " + JSON.stringify(queOptionResult));
+            // //alert("queOptionResult: " + JSON.stringify(queOptionResult));
 
             if (queOptionResult.status == 200) {
               const journeyMapResult = useForEdit
@@ -407,7 +407,7 @@ export default function AddFITB({ rowData, useForEdit }) {
                   title: "Question Added Successfully",
                 });
               }
-              // alert("journeyMapResult: " + JSON.stringify(journeyMapResult));
+              // //alert("journeyMapResult: " + JSON.stringify(journeyMapResult));
             }
           }
 
@@ -446,13 +446,13 @@ export default function AddFITB({ rowData, useForEdit }) {
           resetForm();
         } else if (queResult.status == 400) {
           let errors = queResult.data.error.details.errors;
-          alert("errors: " + JSON.stringify(errors));
+          //alert("errors: " + JSON.stringify(errors));
           setError({
             err2: errors[0]?.message,
           });
         }
       } catch (error) {
-        alert(JSON.stringify(error.response.data)); // NOTE - use "error.response.data` (not "error")
+        ////alert(JSON.stringify(error.response.data)); // NOTE - use "error.response.data` (not "error")
       }
     }
     //  specific errors

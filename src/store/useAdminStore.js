@@ -238,7 +238,8 @@ export const useLearnerLevel = create(
           message: useForEdit ? "Updated Successfully" : "Added Successfully",
           data: {
             id: data.id,
-            level: data.attributes.level,
+            level: data.attributes.title,
+            icon: item.attributes.icon?.data?.attributes?.url,
           },
         };
       }
@@ -316,6 +317,7 @@ export const useLearnerStartPoint = create(
             id: data.id,
             title: data.attributes.title,
             subtitle: data.attributes.subtitle,
+            icon: item.attributes.icon?.data?.attributes?.url,
           },
         };
       }

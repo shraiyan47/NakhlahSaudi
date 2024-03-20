@@ -60,7 +60,7 @@ export default function AddJourney({ rowData, useForEdit }) {
               type="text"
               value={journey}
               onChange={(e) => setJourney(e.target.value)}
-              ph="New Learning Journey" style="py-0.25 px-1"
+              ph="Enter New Learning Journey. Ex. Basic" style="py-0.25 px-1"
             />
             <span className="text-red-700">{error}</span>
           </div>

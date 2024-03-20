@@ -44,7 +44,7 @@ export function renderableStartPoint(arr) {
       id: item.id,
       title: item.attributes.title,
       subtitle: item.attributes.subtitle,
-      icon: item.attributes.icon?.data?.attributes?.formats?.small?.url,
+      icon: item.attributes.icon?.data?.attributes?.url,
     };
   });
 }
@@ -54,7 +54,7 @@ export function renderableLearnerLevel(arr) {
     return {
       id: item.id,
       level: item.attributes.title,
-      icon: item.attributes.icon?.data?.attributes?.formats?.small?.url,
+      icon: item.attributes.icon?.data?.attributes?.url,
     };
   });
 }
@@ -64,8 +64,8 @@ export function renderableLearnerLevel(arr) {
 export function renderableLearningLevels(arr) {
   const renderable = arr.map((item) => {
     return {
-      id: item.id,
-      title: item.attributes.title,
+      id: item?.id,
+      title: item?.attributes?.title,
     };
   });
   return renderable;
@@ -73,14 +73,14 @@ export function renderableLearningLevels(arr) {
 
 export function renderableTasks(arr) {
   return arr.map((item) => {
-    // alert("item: " + JSON.stringify(item));
+    // //alert("item: " + JSON.stringify(item));
     const { learning_journey } = item.attributes;
     return {
       id: item.id,
       title: item.attributes.title,
       learning_journey: {
-        id: learning_journey.data.id,
-        title: learning_journey.data.attributes.title,
+        id: learning_journey.data?.id,
+        title: learning_journey.data?.attributes.title,
       },
     };
   });
@@ -88,17 +88,17 @@ export function renderableTasks(arr) {
 
 export function renderableTaskUnits(arr) {
   return arr.map((item) => {
-    const { learning_journey_unit } = item.attributes;
-    const { learning_journey } = learning_journey_unit.data.attributes;
+    const { learning_journey_unit } = item?.attributes;
+    const { learning_journey } = learning_journey_unit?.data?.attributes;
     return {
-      id: item.id,
-      title: item.attributes.title,
+      id: item?.id,
+      title: item?.attributes?.title,
       learning_journey_unit: {
-        id: learning_journey_unit.data.id,
-        title: learning_journey_unit.data.attributes.title,
+        id: learning_journey_unit?.data?.id,
+        title: learning_journey_unit?.data?.attributes?.title,
         learning_journey: {
-          id: learning_journey.data.id,
-          title: learning_journey.data.attributes.title,
+          id: learning_journey?.data?.id,
+          title: learning_journey?.data?.attributes?.title,
         },
       },
     };

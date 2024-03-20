@@ -72,7 +72,7 @@ export default function AddGoal({ rowData, useForEdit }) {
       )
         .then((res) => res.json())
         .then((data) => {
-          alert(JSON.stringify(data));
+          // ////alert(JSON.stringify(data));
           let renderable = {
             id: data.data?.id,
             time: data.data?.attributes?.time,
@@ -87,7 +87,7 @@ export default function AddGoal({ rowData, useForEdit }) {
           document.getElementById("closeDialog")?.click();
         })
         .catch((error) => {
-          alert("err: " + JSON.stringify(error));
+          //alert("err: " + JSON.stringify(error));
           setError(JSON.stringify(error));
         });
     }
@@ -115,7 +115,7 @@ export default function AddGoal({ rowData, useForEdit }) {
   //       setError(result.errors);
   //     }
   //   } else {
-  //     alert(":::: "+JSON.stringify(isNumeric(targetTime)));
+  //     //alert(":::: "+JSON.stringify(isNumeric(targetTime)));
   //     if (goalName?.length < 3) {
   //       err_0 = "Too Short";
   //     }

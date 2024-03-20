@@ -59,7 +59,9 @@ export default function AddLevel({ rowData, useForEdit }) {
     err2: "",
     err3: "",
   });
-
+  console.log("rowData.learning_journey_unit.learning_journey.title", rowData.learning_journey_unit.learning_journey.title)
+  console.log("rowData.learning_journey_unit.title", rowData.learning_journey_unit.title)
+  console.log("selectedUnit", selectedUnit, "selectedJourney", selectedJourney)
   const journeyData = useLearningJourney((state) => state.data);
   const setJournies = useLearningJourney((state) => state.setJournies);
   //
@@ -91,7 +93,11 @@ export default function AddLevel({ rowData, useForEdit }) {
         : await postHandler("learning-level", {
             data,
           });
-
+  //  const result = useForEdit
+  //       ? await putHandler("learning-level"+ `/${rowData.id}?populate=*` ,{ data } )
+  //       : await postHandler("learning-level" `?populate=*`, {
+  //           data,
+  //         });
       if (result.status == 200) {
         let data = result.data.data;
 
@@ -111,7 +117,7 @@ export default function AddLevel({ rowData, useForEdit }) {
         useForEdit ? afterUpdate(data) : afterAdd(data);
         toast({
           title: useForEdit
-            ? "Item Updated Succesfully"
+            ? "Item Updated Successfully"
             : "Item Added Successfully",
         });
         document.getElementById("closeDialog")?.click();
@@ -176,7 +182,7 @@ export default function AddLevel({ rowData, useForEdit }) {
             },
           };
         });
-        alert("task: " + JSON.stringify(data));
+        //alert("task: " + JSON.stringify(data));
         setUnits(data);
       }
     };
@@ -188,7 +194,7 @@ export default function AddLevel({ rowData, useForEdit }) {
 
   useEffect(() => {
     if (selectedJourney.id != null) {
-      setSelectedUnit(initStateSelection);
+      // setSelectedUnit(initStateSelection);
       filterUnitsByJourney(selectedJourney.id);
     }
   }, [selectedJourney]);
@@ -201,9 +207,9 @@ export default function AddLevel({ rowData, useForEdit }) {
         <DialogTitle className="textHeader textPrimaryColor h-fit py-0 flex flex-col">
           {useForEdit ? "Update" : "New"} {addWhat}
           <p className="textNormal textSecondaryColor my-0 py-0 h-fit flex gap-2 items-center">
-            Level <ChevronLast className="w-4 h-4" /> Task
+              Journey <ChevronLast className="w-4 h-4" /> Unit
             <ChevronLast className="w-4 h-4" />
-            <span className="font-semibold text-slate-800">Task Unit</span>
+            <span className="font-semibold text-slate-800">Level</span>
           </p>
         </DialogTitle>
 
@@ -214,7 +220,7 @@ export default function AddLevel({ rowData, useForEdit }) {
           <div className="flex flex-col gap-1">
             <CustomSelect
               value={selectedJourney}
-              label={"Select Journey"}
+              label={"Select Learning Journey"}
               options={journeyData}
               bg="wh"
               onChange={(value) =>
@@ -226,7 +232,9 @@ export default function AddLevel({ rowData, useForEdit }) {
           <div className="flex flex-col gap-1">
             <CustomSelect
               value={selectedUnit}
-              label={"Select Unit"}
+              //value="hhuhu"
+              label={"Select Learning Unit"}
+              
               options={filteredUnits}
               bg="wh"
               onChange={(value) =>
@@ -237,14 +245,14 @@ export default function AddLevel({ rowData, useForEdit }) {
           </div>
           <div className="flex flex-col gap-1">
             <label className="flex justify-between">
-              <span>Task Unit Title</span>
+              <span>Learning Level Title</span>
               <span className=" text-red-800">{error.err0}</span>
             </label>
             <CustomInput
               type="text"
               value={levelName}
               onChange={(e) => setLevelName(e.target.value)}
-              ph="Enter task unit title"
+              ph="Enter Learning Level Title"
               style="py-0.25 px-1"
             />
             <span className="text-red-700">{error.err3}</span>

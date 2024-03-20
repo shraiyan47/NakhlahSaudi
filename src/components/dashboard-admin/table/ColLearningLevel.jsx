@@ -16,28 +16,28 @@ import Deletion from "../modals/other/Deletion";
 import AddLevel from "../modals/lessons/AddLevel";
 
 const colLearningLevel = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
+  // {
+  //   id: "select",
+  //   header: ({ table }) => (
+  //     <Checkbox
+  //       checked={
+  //         table.getIsAllPageRowsSelected() ||
+  //         (table.getIsSomePageRowsSelected() && "indeterminate")
+  //       }
+  //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+  //       aria-label="Select all"
+  //     />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <Checkbox
+  //       checked={row.getIsSelected()}
+  //       onCheckedChange={(value) => row.toggleSelected(!!value)}
+  //       aria-label="Select row"
+  //     />
+  //   ),
+  //   enableSorting: false,
+  //   enableHiding: false,
+  // },
   {
     accessorKey: "id",
     header: () => <div className="textNormal textPrimaryColor">ID</div>,
@@ -47,7 +47,7 @@ const colLearningLevel = [
     },
   },
   {
-    id: "id_level_titel",
+    id: "id_level_title",
     accessorKey: "title",
     header: ({ column }) => {
       return (
@@ -55,14 +55,14 @@ const colLearningLevel = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="textPrimaryColor textNormal"
         >
-          Level
+         Task
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => (
       <div className=" textNormal textSecondaryColor">
-        {row.getValue("id_level_titel")}
+        {row.getValue("id_level_title")}
       </div>
     ),
   },

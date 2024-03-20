@@ -73,11 +73,7 @@ export default function AddContentDetail({ rowData, useForEdit }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (contentDetailsTitle.length < 3) {
-      setError({ ...error, err0: "Too Short" });
-    } else if (contentDetailsAudio.length < 3) {
-      setError({ ...error, err1: "Too Short" });
-    } else {
+   
       let formData = new FormData();
       var contentDetailsTitleInput = document.getElementById("idInputContentDetailsTitle");
       var contentDetailsAudioInput = document.getElementById("idInputContentDetailsAudio");
@@ -85,10 +81,10 @@ export default function AddContentDetail({ rowData, useForEdit }) {
 
       var file = fileInput.files[0];
       formData.append("files.image", file);
-
+      // "title":"${contentDetailsTitleInput.value}",
       formData.append(
         "data",
-        `{"title":"${contentDetailsTitleInput.value}", "audio": "${contentDetailsAudioInput.value}", "content": { "connect": [${selectedContent.id}] }}`
+        `{ "audio": "${contentDetailsAudioInput.value}", "content": { "connect": [${selectedContent.id}] }}`
       );
 
 
@@ -112,7 +108,7 @@ export default function AddContentDetail({ rowData, useForEdit }) {
 
         .then((data) => {
           console.log("res", data)
-          alert(JSON.stringify(data));
+          ////alert(JSON.stringify(data));
           let renderable = {
             id: data.data.id,
             title: data.data.attributes?.title,
@@ -131,12 +127,12 @@ export default function AddContentDetail({ rowData, useForEdit }) {
           document.getElementById("closeDialog")?.click();
         })
         .catch((error) => {
-          alert("err: " + JSON.stringify(error));
+          //alert("err: " + JSON.stringify(error));
           setError(JSON.stringify(error));
         });
 
 
-    }
+    
   }
 
   const currentView = useTabularView((state) => state.data.currentView);
@@ -152,7 +148,7 @@ export default function AddContentDetail({ rowData, useForEdit }) {
           onSubmit={handleSubmit}
           className="flex flex-col gap-4 py-2 text-black text-lg"
         >
-          <div className="flex flex-col ">
+          {/* <div className="flex flex-col ">
             <label>Content Detail Title</label>
             <CustomInput
               id="idInputContentDetailsTitle"
@@ -163,7 +159,7 @@ export default function AddContentDetail({ rowData, useForEdit }) {
               style="py-0.25 px-1"
             />
             <span className="text-red-700">{error.err0}</span>
-          </div>
+          </div> */}
 
           <div className="flex flex-col gap-1">
             <CustomSelect

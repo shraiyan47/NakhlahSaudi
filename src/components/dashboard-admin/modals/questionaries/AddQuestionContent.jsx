@@ -56,7 +56,7 @@ export default function AddQuestionContent({ rowData, useForEdit }) {
     )
       .then((res) => res.json())
       .then((data) => {
-        alert(JSON.stringify(data));
+        ////alert(JSON.stringify(data));
         let renderable = {
           id: data.data.id,
           questionsTitle: title,
@@ -69,7 +69,7 @@ export default function AddQuestionContent({ rowData, useForEdit }) {
         document.getElementById("closeDialog")?.click();
       })
       .catch((error) => {
-        alert("err: " + JSON.stringify(error));
+        //alert("err: " + JSON.stringify(error));
         setError(JSON.stringify(error));
       });
   }

@@ -70,7 +70,7 @@ export default function AddQuestionTitle({ rowData, useForEdit }) {
         res.json()
       )
       .then((data) => {
-        // alert(JSON.stringify(data));
+        // ////alert(JSON.stringify(data));
         
         console.log("DATA AQT ==> ",data)
         
@@ -88,7 +88,7 @@ export default function AddQuestionTitle({ rowData, useForEdit }) {
         document.getElementById("closeDialog")?.click();
       })
       .catch((error) => {
-        // alert("err: " + JSON.stringify(error));
+        // //alert("err: " + JSON.stringify(error));
         
         setError(JSON.stringify(error));
       });

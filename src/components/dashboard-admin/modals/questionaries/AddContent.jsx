@@ -21,6 +21,7 @@ import CustomSelect from "../../../ui-custom/CustomSelect";
 import CustomButton from "../../../ui-custom/CustomButton";
 
 import { BASE_URL, config, postMap, putMap, getHandler, postHandler, putHandler } from "@/lib/requestHandler";
+import { boolean } from "zod";
 
 export default function AddContent({ rowData, useForEdit }) {
   //
@@ -65,40 +66,35 @@ export default function AddContent({ rowData, useForEdit }) {
   //
   const afterUpdate = useContent((state) => state.afterUpdate);
   const afterAdd = useContent((state) => state.afterAdd);
+  const [add, setAdd] = useState(false);
+  // const [contentId, setContentId] =useState("");
   const [image, setImage] = useState(
     useForEdit ? BASE_URL + rowData.icon : null
   );
 
+
+  function handleAddDetails() {
+   setAdd(true)
+  }
+
+
   // before
   async function handleSubmit(e) {
     e.preventDefault();
-    let err_1 = "";
-    let err_2 = "";
-    let err_3 = "";
+  
     let formData = new FormData();
+    let formDataDetails = new FormData();
     var categoryInput = document.getElementById("idSelectedCategory");
     var questionTypeInput = document.getElementById("idQuestionType");
     var contentInput = document.getElementById("idContent");
-    var audioTextInput = document.getElementById("idAudioText");
-    var fileInput = document.getElementById("idInputFile");
-    //var file = fileInput.files[0];
-   // formData.append("files.image", file);
-
+    var contentDetailsAudioInput= document.getElementById("idAudioText");
+   
     if (
       selectedCategory.title != "" &&
       selectedType.title != "" &&
       !(content.length < 3)
     ) {
-      // const data = {
-      //   title: contentInput.value,
-      //   content_type: {
-      //     connect: [selectedType.id],
-      //   },
-      //   content_type_category: {
-      //     connect: [selectedCategory.id],
-      //   },
-      //   audio: audioTextInput.value
-      // };
+      
   
       formData.append(
         "data",
@@ -124,7 +120,7 @@ export default function AddContent({ rowData, useForEdit }) {
       .then((res) => res.json())
       .then((data) => {
       
-      //  alert(JSON.stringify(data));
+      //  ////alert(JSON.stringify(data));
         let renderable = {
           id: data.data.id,
           audio: data.data.attributes?.audio,
@@ -139,7 +135,22 @@ export default function AddContent({ rowData, useForEdit }) {
           },
           icon: data.data.attributes.image?.data?.attributes?.url,
         };
+
+
+        let contentId = data.data.id;
+
+        // var fileInput = document.getElementById("idInputFile");
+        // var file = fileInput.files[0];
+        // formDataDetails.append("files.image", file);
     
+        // formDataDetails.append(
+        //   "data",
+        //   `{"audio": "${contentDetailsAudioInput.value}", "content": { "connect": [${contentId}] }}`
+        // );
+        
+
+
+
         useForEdit ? afterUpdate(renderable) : afterAdd(renderable);
         toast({
           title: useForEdit ? "Successfully Updated" : "Successfully Added",
@@ -148,12 +159,59 @@ export default function AddContent({ rowData, useForEdit }) {
       }) 
       .catch((error) => {
      
-        alert("err: " + JSON.stringify(error));
+        //alert("err: " + JSON.stringify(error));
         setError(JSON.stringify(error));
       });
+
+
+
+    
+      
+      // content details
+      // await fetch(
+      //   useForEdit
+      //     ? putMap["content-details"] + `/${rowData.id}?populate=*`
+      //     : postMap["content-details"] + `?populate=*`,
+      //   {
+      //     method: useForEdit ? "PUT" : "POST",
+      //     body: formDataDetails,
+      //     headers: {
+      //       Authorization:
+      //         "Bearer " +
+      //         "5cb5acf4b96532cdad0e30d900772f5c8b5532d2dbf06e04483a3705c725ffbbdba593340718423a5975e86aa47ca1749de402ec9f3127648dbcec37b190107ba975e669811b2a2f4c8b41c27472d6fdb70e7b0be4f8490c57a406e29aedf47dd05dadb7171788ba9fa2af106d93b4f92423b8e194131891e712857b52e8ceef",
+      //     },
+      //     redirect: "follow",
+      //   }
+      // )
+      //   .then((res) => res.json())
+      
+      //   .then((data) => {
+      //     console.log("res", data)
+      //     ////alert(JSON.stringify(data));
+      //     let renderable = {
+      //       id: data.data.id,
+      //       title: data.data.attributes?.title,
+      //       content: {
+      //         id: data.data.attributes?.content?.data?.id,
+      //         title: data.data.attributes?.content?.data?.attributes?.title,
+      //       },
+      //       contentAudio: data.data.attributes?.audio,
+      //       icon: data.data.attributes.image?.data?.attributes?.url,
+      //     };
+      
+      
+      
+      //   });
+      
+      
+      
+
+
     }
   }
 
+
+  
   const currentView = useTabularView((state) => state.data.currentView);
   const addWhat = currentView.slice(0, currentView.length - 1);
   
@@ -263,39 +321,57 @@ export default function AddContent({ rowData, useForEdit }) {
             />
             <span className="text-red-700">{error.err3}</span>
           </div>
-          {/* <div className="flex gap-2 flex-col items-start">
-            <input
-              type="file"
-              id="idInputFile"
-              name="file"
-              onChange={(e) => {
-                let files = e.target.files;
-                let reader = new FileReader();
-                reader.onload = (r) => {
-                  setImage(r.target.result);
-                };
-                reader.readAsDataURL(files[0]);
-              }}
-            />
-            {image && (
-              <img
-                alt=" image"
-                src={image}
-                className="w-5.0 h-5.0 rounded-full border border-slate-400 bg-slate-50"
-              />
-            )}
-          </div> */}
-          {/* <div className="flex flex-col gap-1 w-2/3 ">
-            <span className="">Attach Audio Texth</span>
-            <textarea
-              id="idAudioText"
-              value={queAudio}
-              onChange={(e) => setQueAudio(e.target.value)}
-              rows={2}
-              className="py-0.12 px-1 rounded-md border border-slate-400 outline-none"
-            />
-          </div> */}
-          
+          {/* <button
+            type="button"
+             onClick={handleAddDetails}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 text-sm"
+          >
+           + Add Content Details
+          </button> */}
+     
+       
+      
+       
+       
+          {/* {add === true &&
+
+            <div>
+
+              <div className="flex gap-2 flex-col items-start">
+                <input
+                  type="file"
+                  id="idInputFile"
+                  name="file"
+                  onChange={(e) => {
+                    let files = e.target.files;
+                    let reader = new FileReader();
+                    reader.onload = (r) => {
+                      setImage(r.target.result);
+                    };
+                    reader.readAsDataURL(files[0]);
+                  }}
+                />
+                {image && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    alt="image"
+                    src={image}
+                    className="w-5.0 h-5.0 rounded-full border border-slate-400 bg-slate-50"
+                  />
+                )}
+              </div>
+              <div className="flex flex-col gap-1 w-2/3 ">
+                <span className="">Attach Audio Text</span>
+                <textarea
+                  id="idAudioText"
+                  value={queAudio}
+                  onChange={(e) => setQueAudio(e.target.value)}
+                  rows={2}
+                  className="py-0.12 px-1 rounded-md border border-slate-400 outline-none"
+                />
+              </div>
+            </div>
+          } */}
           <CustomButton
             txt={useForEdit ? "Update" : "Add"}
             type="submit"

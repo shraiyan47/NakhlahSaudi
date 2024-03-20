@@ -20,7 +20,7 @@
 //         let contentData = [];
 
 //         response.data.data.forEach((item) => {
-//           // alert(JSON.stringify(item));
+//           // ////alert(JSON.stringify(item));
 
 //           let options=[];
 

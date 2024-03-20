@@ -313,13 +313,13 @@ export default function Questionaries({ content }) {
           currentAct == "view" &&
           currentSubView == "Sentence Making" && <SM />} 
 
-        {currentView == "Question Content Types" && <QueType />}
+        {currentView == "Question Types" && <QueType />}
         {/* {currentView == "Content Types" && <ContentType />} */}
         {currentView == "Content Data Types" && <ConTypeCategory />}
         {/* {currentView == "Contents" && <Content />} */}
         {currentView == "Questions" && <QuestionTitle />}
 
-        {currentView == "Questions Content" && <QuestionContent />}
+        {/* {currentView == "Questions Content" && <QuestionContent />} */}
 
         {/* {currentView == "Content Details" && <ContentDetails />} */}
         {/* {currentView == "Languages" && <Language />} */}

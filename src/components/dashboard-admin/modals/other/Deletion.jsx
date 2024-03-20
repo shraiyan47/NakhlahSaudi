@@ -88,7 +88,7 @@ export default function Deletion({ rowData, what }) {
         </span>
         {/* {JSON.stringify(rowData)} */}
         <span className="text-lg underline font-semibold ">
-          {rowData.id}
+          {(rowData.title)&&rowData.title}
         </span>
       </p>
 
