@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
+import { ArrowUpDown, ClipboardEdit, Info, Trash2 } from "lucide-react";
 import Deletion from "../modals/other/Deletion";
 import AddContent from "../modals/questionaries/AddContent";
 import Image from "next/image";
@@ -167,11 +167,11 @@ const ColContent = [
           <Dialog className="">
             <DialogTrigger asChild>
               <Button className="hover:text-[--uDText]">
-                <Trash2 className="w-5 h-5" />
+                <Info className="w-5 h-5" />
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <Deletion rowData={row.original} what="content" />
+              HELLO WORLD
             </DialogContent>
           </Dialog>
           <Dialog className="">
@@ -186,6 +186,16 @@ const ColContent = [
                 useForEdit={true}
                 rowData={row.original}
               />
+            </DialogContent>
+          </Dialog>
+          <Dialog className="">
+            <DialogTrigger asChild>
+              <Button className="hover:text-[--uDText]">
+                <Trash2 className="w-5 h-5" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[500px]">
+              <Deletion rowData={row.original} what="content" />
             </DialogContent>
           </Dialog>
         </div>

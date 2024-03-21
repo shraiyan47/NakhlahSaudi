@@ -70,7 +70,7 @@ const ColQuestion = [
       );
     },
     cell: ({ row }) => {
-      console.log(row);
+      // console.log(row);
       return (
         <div className="lowercase textNormal textSecondaryColor">
           {row.getValue("id_question_title")}
@@ -224,7 +224,7 @@ const ColQuestion = [
     ),
     enableHiding: false,
     cell: ({ row }) => {
-      console.log(row.original);
+      // console.log(row.original);
       return (
         <div className="flex gap-1 justify-center items-center textSecondaryColor textSemiHeader">
           <Dialog className="">
