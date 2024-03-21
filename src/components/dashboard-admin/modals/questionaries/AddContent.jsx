@@ -20,7 +20,7 @@ import {
 import CustomSelect from "../../../ui-custom/CustomSelect";
 import CustomButton from "../../../ui-custom/CustomButton";
 import RVVoiceGen from "@/app/voiceGen";
-import { BASE_URL, config, postMap, putMap, getHandler, postHandler, putHandler } from "@/lib/requestHandler";
+import { BASE_URL, config, postMap, putMap, getHandler, postHandler, putHandler, getWithUrl } from "@/lib/requestHandler";
 import { boolean } from "zod";
 import AddContentDetail from "./AddContentDetails";
 
@@ -265,7 +265,22 @@ console.log("queAUDIO", queAudio)
     }
   }, [typeData]);
 
- 
+  useEffect(() => {
+
+    const fetchTypes = async () => {
+      const response = await getWithUrl(`api/content-details?populate=*&filters[content][id][$eq]=${rowData.id}`);
+
+      if (response.status === 200) {
+        const dataRenderable = response
+        alert(JSON.stringify(dataRenderable))
+        // setConTypes(dataRenderable);
+      }
+    };
+
+    // if (Array.isArray(typeData) && typeData.length === 0) {
+      fetchTypes();
+    // }
+  }, []);
 
   return (
     <>
