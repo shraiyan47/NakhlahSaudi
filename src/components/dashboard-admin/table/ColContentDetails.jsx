@@ -46,6 +46,29 @@ const ColContentDetails = [
   //     </div>
   //   ),
   // },
+
+  {
+    id: "id_content_language",
+    accessorKey: "language.title",
+    header: ({ column }) => {
+      return (
+        <Button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="textPrimaryColor textNormal"
+        >
+      Language
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="lowercase textNormal textSecondaryColor">
+        {row.getValue("id_content_language")
+         ? row.getValue("id_content_language")
+         : "Not attached"}
+      </div>
+    ),
+  },
   {
     id: "id_content_title",
     accessorKey: "content.title",

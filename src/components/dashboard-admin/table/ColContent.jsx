@@ -164,7 +164,7 @@ const ColContent = [
     cell: ({ row }) => {
       return (
         <div className="flex gap-2 justify-center textSecondaryColor textSemiHeader">
-          <Dialog className="">
+          {/* <Dialog className="">
             <DialogTrigger asChild>
               <Button className="hover:text-[--uDText]">
                 <Info className="w-5 h-5" />
@@ -173,7 +173,7 @@ const ColContent = [
             <DialogContent className="sm:max-w-[500px]">
               HELLO WORLD
             </DialogContent>
-          </Dialog>
+          </Dialog> */}
           <Dialog className="">
             <DialogTrigger asChild>
               <Button className="hover:text-[--uDText]">

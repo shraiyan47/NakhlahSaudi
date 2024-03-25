@@ -6,6 +6,7 @@ import { useToast } from "@/components/ui/use-toast";
 import {
   useContent,
   useContentDetails,
+  useLanguage,
   useTabularView,
 } from "../../../../store/useAdminStore";
 import { useState, useEffect } from "react";
@@ -23,6 +24,8 @@ export default function AddContentDetail({ rowData, useForEdit }) {
   const { toast } = useToast();
   const contentData = useContent((state) => state.data);
   const setContentData = useContent((state) => state.setContents);
+  const languageData = useLanguage((state) => state.data);
+  const setLanguageData = useLanguage((state) => state.setLanguage);
   const addEdit = useContentDetails((state) => state.addEdit);
   const afterAdd = useContentDetails((state) => state.afterAdd);
   const afterUpdate = useContentDetails((state) => state.afterUpdate);
@@ -44,10 +47,19 @@ export default function AddContentDetail({ rowData, useForEdit }) {
       }
       : initStateSelection
   );
+
+  const [selectedLanguage, setSelectedLanguage] = useState(
+    useForEdit
+      ? {
+        id: rowData.language.id,
+        title: rowData.language.title,
+      }
+      : initStateSelection
+  );
   const [image, setImage] = useState(
     useForEdit ? BASE_URL + rowData.icon : null
   );
-  
+  console.log("rowdata", rowData)
 
   useEffect(() => {
     const fetchContents = async () => {
@@ -70,6 +82,27 @@ export default function AddContentDetail({ rowData, useForEdit }) {
   }, [contentData]);
 
 
+  useEffect(() => {
+    const fetchLanguages = async () => {
+      const response = await getHandler("language");
+      if (response.status === 200) {
+        const dataRenderable = response.data.data.map((item) => {
+          return {
+            id: item.id,
+            title: item.attributes.name,
+          };
+        });
+        setLanguageData(dataRenderable);
+       console.log("dhuru", dataRenderable)
+      }
+    };
+    // console.log("dhuru", contentData)
+    if (Array.isArray(languageData) && languageData.length === 0) {
+      fetchLanguages();
+    }
+  }, [languageData]);
+
+
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -84,7 +117,8 @@ export default function AddContentDetail({ rowData, useForEdit }) {
       // "title":"${contentDetailsTitleInput.value}",
       formData.append(
         "data",
-        `{ "audio": "${contentDetailsAudioInput.value}", "content": { "connect": [${selectedContent.id}] }}`
+        `{  "language" : {"connect": [${selectedLanguage.id}]},
+        "audio": "${contentDetailsAudioInput.value}", "content": { "connect": [${selectedContent.id}] }}`
       );
 
 
@@ -112,6 +146,10 @@ export default function AddContentDetail({ rowData, useForEdit }) {
           let renderable = {
             id: data.data.id,
             title: data.data.attributes?.title,
+            language : {
+              id: data.data.attributes?.language?.data?.id,
+             title: data.attributes?.language.data?.attributes?.name
+            },
             content: {
               id: data.data.attributes?.content?.data?.id,
               title: data.data.attributes?.content?.data?.attributes?.title,
@@ -160,7 +198,19 @@ export default function AddContentDetail({ rowData, useForEdit }) {
             />
             <span className="text-red-700">{error.err0}</span>
           </div> */}
-
+ <div className="flex flex-col gap-1">
+            <CustomSelect
+              id="idSelectedlanguage"
+              label={"Languages"}
+              value={selectedLanguage}
+              options={languageData}
+              bg="wh"
+              onChange={(value) =>
+                setSelectedLanguage({ id: value.id, title: value.title })
+              }
+            />
+            <span className="text-red-700">{error.err1}</span>
+          </div>
           <div className="flex flex-col gap-1">
             <CustomSelect
               id="idSelectedContent"

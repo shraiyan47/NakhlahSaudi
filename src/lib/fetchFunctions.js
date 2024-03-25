@@ -297,6 +297,10 @@ export function renderableContentDetails(arr) {
     return {
       id: item.id,
       title: item.attributes?.title,
+      language: {
+        id: item.attributes?.language?.data?.id,
+        title: item.attributes?.language?.data?.attributes?.name,
+      },
       content: {
         id: item.attributes?.content?.data?.id,
         title: item.attributes?.content?.data?.attributes?.title,
