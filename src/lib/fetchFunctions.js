@@ -273,10 +273,15 @@ export function renderableQuetions(arr) {
 
 export function renderableContents(arr) {
   const renderable = arr?.map((item) => {
+    console.log("arr", arr)
     return {
       id: item.id,
       audio: item.attributes?.audio,
       title: item.attributes?.title,
+      language: {
+        id: item.attributes?.language?.data?.id,
+        title: item.attributes?.language?.data?.attributes?.name,
+      },
       content_type: {
         id: item.attributes?.content_type?.data?.id,
         title: item.attributes?.content_type?.data?.attributes?.title,

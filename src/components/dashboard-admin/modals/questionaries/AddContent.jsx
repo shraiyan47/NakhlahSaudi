@@ -15,7 +15,8 @@ import {
   useConType,
   useContent,
   useTabularView,
-  useContentDetails
+  useContentDetails,
+  useLanguage
   
 } from "../../../../store/useAdminStore";
 import CustomSelect from "../../../ui-custom/CustomSelect";
@@ -32,12 +33,14 @@ export default function AddContent({ rowData, useForEdit }) {
     id: null,
     title: "",
   };
-
-
+  const languageData = useLanguage((state) => state.data);
+  const setLanguageData = useLanguage((state) => state.setLanguage);
   console.log(" rowData, useForEdit", rowData, useForEdit)
   const [content, setContent] = useState(useForEdit ? rowData.title : "");
 
   const [audio, setAudio] = useState("");
+  const [contentDetailsData, setContentDetailsData] = useState("");
+  const [language, setLanguage] = useState("");
     const [queAudio, setQueAudio] = useState(useForEdit ?audio : "");
   const [details, setDetails] = useState(useForEdit ? true: false);
   const[contentDetailsId, setContentDetailsId] =useState("");
@@ -80,14 +83,22 @@ export default function AddContent({ rowData, useForEdit }) {
   const afterUpdate1 = useContentDetails((state) => state.afterUpdate);
   const afterAdd1 = useContentDetails((state) => state.afterAdd);
   const [add, setAdd] = useState(false);
+  const [new1, setNew1] = useState(false);
   // const contentId = rowData.id
   // const [image, setImage] = useState(
   //   useForEdit ? BASE_URL + rowData.icon : null
   // );
   const [pic, setPic] = useState("");
-  const [image, setImage] = useState("");
-
-
+  const [image, setImage] = useState(BASE_URL+"");
+  // const [selectedLanguage, setSelectedLanguage] = useState(
+  //   useForEdit
+  //     ? {
+  //       id: rowData.language.id,
+  //       title: rowData.language.title,
+  //     }
+  //     : initStateSelection
+  // );
+console.log("rowdata", rowData)
   function handleAddDetails() {
    setAdd(true)
   }
@@ -186,7 +197,7 @@ console.log("queAUDIO", queAudio)
       // content details
       await fetch(
         useForEdit
-          ? putMap["content-details"] + `/${rowData.id}?populate=*`
+          ? putMap["content-details"] + `/${contentDetailsId}?populate=*`
           : postMap["content-details"] + `?populate=*`,
         {
           method: useForEdit ? "PUT" : "POST",
@@ -428,13 +439,16 @@ console.log("response.data.data", response.data.data)
             id: item.id,
            audio: item?.attributes?.audio,
           icon: item?.attributes?.image?.data?.attributes?.url,
+          language : item?.attributes?.language?.data?.attributes?.name,
           };
         });
         console.log("dataRenderable", dataRenderable)
+        setContentDetailsData(dataRenderable[0])
         setContentDetailsId(dataRenderable[0]?.id);
         setConDetails(dataRenderable);
         setAudio(dataRenderable[0]?.audio)
         setImage(dataRenderable[0]?.icon)
+        setLanguage(dataRenderable[0]?.language)
       }
     };
 
@@ -443,7 +457,27 @@ console.log("response.data.data", response.data.data)
     //}
   }, []);
 
-console.log(" setAudio(dataRenderable[0].audio)",   audio)
+  useEffect(() => {
+    const fetchLanguages = async () => {
+      const response = await getHandler("language");
+      if (response.status === 200) {
+        const dataRenderable = response.data.data.map((item) => {
+          return {
+            id: item.id,
+            title: item.attributes.name,
+          };
+        });
+        setLanguageData(dataRenderable);
+       console.log("dhuru", dataRenderable)
+      }
+    };
+    // console.log("dhuru", contentData)
+    if (Array.isArray(languageData) && languageData.length === 0) {
+      fetchLanguages();
+    }
+  }, [languageData]);
+
+console.log("ContentDetailsData)",  contentDetailsData)
 
   return (
     <>
@@ -535,7 +569,19 @@ console.log(" setAudio(dataRenderable[0].audio)",   audio)
        {add && (
      
             <div>
-
+              <div className="flex flex-col gap-1">
+                <CustomSelect
+                  id="idSelectedlanguage"
+                  label={"Languages"}
+                  value={language}
+                  options={languageData}
+                  bg="wh"
+                  onChange={(value) =>
+                    setSelectedLanguage({ id: value.id, title: value.title })
+                  }
+                />
+                <span className="text-red-700">{error.err1}</span>
+              </div>
               <div className="flex gap-2 flex-col items-start">
                 <input
                   type="file"
@@ -546,6 +592,7 @@ console.log(" setAudio(dataRenderable[0].audio)",   audio)
                     let reader = new FileReader();
                     reader.onload = (r) => {
                       setImage(r.target.result);
+                      setNew1(true)
                     };
                     reader.readAsDataURL(files[0]);
                   }}
@@ -554,7 +601,7 @@ console.log(" setAudio(dataRenderable[0].audio)",   audio)
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     alt="image"
-                 src={BASE_URL+image}
+                 src={ new1 ?  image : BASE_URL+image }
                 
                     className="w-5.0 h-5.0 rounded-full border border-slate-400 bg-slate-50"
                   />

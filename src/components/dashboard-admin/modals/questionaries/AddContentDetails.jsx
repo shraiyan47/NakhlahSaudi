@@ -141,14 +141,14 @@ export default function AddContentDetail({ rowData, useForEdit }) {
         .then((res) => res.json())
 
         .then((data) => {
-          console.log("res", data)
+          console.log("res", data, data.data.attributes?.language?.data?.id, data.data.attributes?.language.data?.attributes?.name)
           ////alert(JSON.stringify(data));
           let renderable = {
             id: data.data.id,
             title: data.data.attributes?.title,
-            language : {
+            language: {
               id: data.data.attributes?.language?.data?.id,
-             title: data.attributes?.language.data?.attributes?.name
+             title: data.data.attributes?.language.data?.attributes?.name
             },
             content: {
               id: data.data.attributes?.content?.data?.id,
@@ -157,7 +157,7 @@ export default function AddContentDetail({ rowData, useForEdit }) {
             contentAudio: data.data.attributes?.audio,
             icon: data.data.attributes.image?.data?.attributes?.url,
           };
-          console.log("renderable", renderable, data.data)
+          console.log("renderable111111", renderable, data.data)
           useForEdit ? afterUpdate(renderable) : afterAdd(renderable);
           toast({
             title: useForEdit ? "Successfully Updated" : "Successfully Added",
