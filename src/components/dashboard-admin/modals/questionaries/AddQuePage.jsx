@@ -313,31 +313,35 @@ export default function AddQuePage({ rowData, useForEdit }) {
   const initOptionData = {
     content: initStateSelection,
   };
-  const generateInitOptions = (questionContentOptions, useForEdit, initOptionData) => {
+  const generateInitOptions = (
+    questionContentOptions,
+    useForEdit,
+    initOptionData
+  ) => {
     const initOptions = {};
 
     if (useForEdit) {
-        // In edit mode, the first option is populated from rowData?.content
-        initOptions.option1 = { content: rowData?.content };
+      // In edit mode, the first option is populated from rowData?.content
+      initOptions.option1 = { content: rowData?.content };
 
-        // Populate the remaining options dynamically from questionContentOptions
-        questionContentOptions.forEach((option, index) => {
-            // Since option1 is reserved for rowData?.content, start adding from option2
-            initOptions[`option${index + 2}`] = {
-                content: {
-                    id: option.id,
-                    title: option.attributes.title,
-                },
-            };
-        });
+      // Populate the remaining options dynamically from questionContentOptions
+      questionContentOptions.forEach((option, index) => {
+        // Since option1 is reserved for rowData?.content, start adding from option2
+        initOptions[`option${index + 2}`] = {
+          content: {
+            id: option.id,
+            title: option.attributes.title,
+          },
+        };
+      });
     } else {
-        // Not in edit mode, only add two options with initOptionData
-        initOptions.option1 = initOptionData;
-        initOptions.option2 = initOptionData;
+      // Not in edit mode, only add two options with initOptionData
+      initOptions.option1 = initOptionData;
+      initOptions.option2 = initOptionData;
     }
 
     return initOptions;
-  }
+  };
   // const initOptions = {
   //   option1: useForEdit ? { content: rowData?.content } : initOptionData,
   //   option2:
@@ -368,9 +372,13 @@ export default function AddQuePage({ rowData, useForEdit }) {
   //         }
   //       : initOptionData, */
   // };
-  const initOptions = generateInitOptions(questionContentOptions, useForEdit, initOptionData);
+  const initOptions = generateInitOptions(
+    questionContentOptions,
+    useForEdit,
+    initOptionData
+  );
   console.log(initOptions);
-/*   const initRightWrong = {
+  /*   const initRightWrong = {
     option1: useForEdit ? true : false,
     option2: false
   }; */
@@ -380,27 +388,32 @@ export default function AddQuePage({ rowData, useForEdit }) {
     // Adjust the number of options based on the requirements.
     // In edit mode, add 1 to include the first always-true option,
     // ensuring there are always at least 2 options for consistency in non-edit mode.
-    const numOptions = useForEdit ? questionContentOptions.length + 1 : Math.max(questionContentOptions.length, 2);
+    const numOptions = useForEdit
+      ? questionContentOptions.length + 1
+      : Math.max(questionContentOptions.length, 2);
 
     for (let i = 1; i <= numOptions; i++) {
-        // Set the first option to true if in edit mode
-        if (i === 1 && useForEdit) {
-            initRightWrong[`option${i}`] = true;
-        } else {
-            // All other cases, including the additional options in edit mode and all options in non-edit mode, are false
-            initRightWrong[`option${i}`] = false;
-        }
+      // Set the first option to true if in edit mode
+      if (i === 1 && useForEdit) {
+        initRightWrong[`option${i}`] = true;
+      } else {
+        // All other cases, including the additional options in edit mode and all options in non-edit mode, are false
+        initRightWrong[`option${i}`] = false;
+      }
     }
 
     return initRightWrong;
-};
+  };
 
-  const initRightWrong = generateInitRightWrong(useForEdit, questionContentOptions);
+  const initRightWrong = generateInitRightWrong(
+    useForEdit,
+    questionContentOptions
+  );
   console.log(initRightWrong);
   const [options, setOptions] = useState(initOptions);
   console.log(options);
   const [rightAndWrong, setRightAndWrong] = useState(initRightWrong);
-  
+
   console.log(rightAndWrong);
   /* useEffect(() => {
     setOptions({
@@ -418,12 +431,19 @@ export default function AddQuePage({ rowData, useForEdit }) {
   }, questionContentOptions); */
   useEffect(() => {
     // Generate the initial options based on the current mode and data
-    const newInitOptions = generateInitOptions(questionContentOptions, useForEdit, initOptionData);
-    const newInitRightWrong = generateInitRightWrong(useForEdit, questionContentOptions);
+    const newInitOptions = generateInitOptions(
+      questionContentOptions,
+      useForEdit,
+      initOptionData
+    );
+    const newInitRightWrong = generateInitRightWrong(
+      useForEdit,
+      questionContentOptions
+    );
     // Update the state with the new options
     setOptions(newInitOptions);
-    setRightAndWrong(newInitRightWrong)
-  }, [questionContentOptions, useForEdit, rowData]); 
+    setRightAndWrong(newInitRightWrong);
+  }, [questionContentOptions, useForEdit, rowData]);
   function handleMark(obj) {
     // setRightAndWrong({ ...rightAndWrong, ...obj });
     const updatedRightAndWrong = {};
@@ -464,30 +484,37 @@ export default function AddQuePage({ rowData, useForEdit }) {
     );
     console.log(question);
     console.log(tFAns);
-    console.log(pairMatchingContents );
+    console.log(pairMatchingContents);
+    console.log(selectedQueType.title);
     console.log(
-      question?.title.length > 2 &&
+      (question?.title.length > 2 &&
         selectedLesson.id &&
         ((selectedQueType.title == "MCQ" && wrongAns.length > 0 && rightAns) ||
+          (selectedQueType.title == "MCQ with Images" && wrongAns.length > 0 && rightAns) ||
+          (selectedQueType.title == "MCQ with Audio" && wrongAns.length > 0 && rightAns) ||
           (selectedQueType.title == "True Or False" && tFAns.id != null) ||
           (selectedQueType.title == "Sentence Making" && smAns.id != null) ||
           (selectedQueType.title == "Fill In The Blank" &&
             wrongAns.length > 0 &&
             rightAns &&
-            question?.title.includes("-") == true || question?.title.includes("_") ))
-            || (selectedQueType.title == "Pair Matching" && pairMatchingContents != undefined)
+            question?.title.includes("-") == true) ||
+          question?.title.includes("_"))) ||
+        (selectedQueType.title == "Pair Matching" &&
+          pairMatchingContents != undefined)
     );
     if (
-      question?.title.length > 2 &&
-      selectedLesson.id &&
-      ((selectedQueType.title == "MCQ" && wrongAns.length > 0 && rightAns) ||
-        (selectedQueType.title == "True Or False" && tFAns.id != null) ||
-        (selectedQueType.title == "Sentence Making" && smAns.id != null) ||
-        (selectedQueType.title == "Fill In The Blank" &&
-          wrongAns.length > 0 &&
-          rightAns &&
-          question?.title.includes("-") == true || question?.title.includes("_")))
-        || (selectedQueType.title == "Pair Matching" && pairMatchingContents != undefined)
+      (question?.title.length > 2 &&
+        selectedLesson.id &&
+        ((selectedQueType.title == "MCQ" && wrongAns.length > 0 && rightAns) ||
+          (selectedQueType.title == "MCQ with Images" && wrongAns.length > 0 && rightAns) ||
+          (selectedQueType.title == "MCQ with Audio" && wrongAns.length > 0 && rightAns) ||
+          (selectedQueType.title == "True Or False" && tFAns.id != null) ||
+          (selectedQueType.title == "Sentence Making" && smAns.id != null) ||
+          (selectedQueType.title == "Pair Matching" && pairMatchingContents != undefined) ||
+          (selectedQueType.title == "Fill In The Blank" && wrongAns.length > 0 && rightAns && question?.title.includes("-") == true) 
+          (selectedQueType.title == "F I T B : Audio" && wrongAns.length > 0 && rightAns && question?.title.includes("-") == true) 
+          (selectedQueType.title == "F I T B : Images" && wrongAns.length > 0 && rightAns && question?.title.includes("-") == true) 
+        )) 
     ) {
       console.log("called");
       //
@@ -520,35 +547,43 @@ export default function AddQuePage({ rowData, useForEdit }) {
         let content = "";
         if (
           selectedQueType.title == "Fill In The Blank" ||
-          selectedQueType.title == "MCQ"
+          selectedQueType.title == "MCQ" ||
+          selectedQueType.title === "MCQ with Images"||
+          selectedQueType.title === "MCQ with Audio" ||
+          selectedQueType.title === "F I T B : Images" ||
+          selectedQueType.title === "F I T B : Audio" 
         ) {
           content = getQueContent(rightAns);
         } else if (selectedQueType.title == "True Or False") {
           content = tFAns.id;
         }
         let queContResult;
-        if(selectedQueType.title != "Pair Matching"){
+        if (selectedQueType.title != "Pair Matching") {
           queContResult = useForEdit
-          ? await putHandler("question-content", rowData?.question_content, {
-              data: {
-                question: { connect: [question.id] },
-                question_type: { connect: [selectedQueType.id] },
-                content: { connect: [content] },
-              },
-            })
-          : await postHandler("question-content", {
-              data: {
-                question: { connect: [question.id] },
-                question_type: { connect: [selectedQueType.id] },
-                content: { connect: [content] },
-              },
-            });
-        console.log(queContResult);
+            ? await putHandler("question-content", rowData?.question_content, {
+                data: {
+                  question: { connect: [question.id] },
+                  question_type: { connect: [selectedQueType.id] },
+                  content: { connect: [content] },
+                },
+              })
+            : await postHandler("question-content", {
+                data: {
+                  question: { connect: [question.id] },
+                  question_type: { connect: [selectedQueType.id] },
+                  content: { connect: [content] },
+                },
+              });
+          console.log(queContResult);
         }
         console.log(`title`, selectedQueType.title);
         if (
           selectedQueType.title == "Fill In The Blank" ||
-          selectedQueType.title == "MCQ"
+          selectedQueType.title == "MCQ" ||
+          selectedQueType.title === "MCQ with Images" ||
+          selectedQueType.title === "MCQ with Audio" ||
+          selectedQueType.title === "F I T B : Images" ||
+          selectedQueType.title === "F I T B : Audio" 
         ) {
           console.log(
             "options",
@@ -648,30 +683,31 @@ export default function AddQuePage({ rowData, useForEdit }) {
               title: "Question Added Successfully",
             });
           }
-        }
-        else if(selectedQueType.title == "Pair Matching"){
+        } else if (selectedQueType.title == "Pair Matching") {
           console.log(pairMatchingContents);
-          let contents = Object.keys(pairMatchingContents).map(pairMatching => pairMatchingContents[pairMatching].content.id);
+          let contents = Object.keys(pairMatchingContents).map(
+            (pairMatching) => pairMatchingContents[pairMatching].content.id
+          );
 
           console.log(contents);
           console.log(contents[0]);
           let contentOptionsList = contents.slice(1);
           console.log(contentOptionsList);
           queContResult = useForEdit
-          ? await putHandler("question-content", rowData?.question_content, {
-              data: {
-                question: { connect: [question.id] },
-                question_type: { connect: [selectedQueType.id] },
-                content: { connect: [contents[0]] },
-              },
-            })
-          : await postHandler("question-content", {
-              data: {
-                question: { connect: [question.id] },
-                question_type: { connect: [selectedQueType.id] },
-                content: { connect: [contents[0]] },
-              },
-            });
+            ? await putHandler("question-content", rowData?.question_content, {
+                data: {
+                  question: { connect: [question.id] },
+                  question_type: { connect: [selectedQueType.id] },
+                  content: { connect: [contents[0]] },
+                },
+              })
+            : await postHandler("question-content", {
+                data: {
+                  question: { connect: [question.id] },
+                  question_type: { connect: [selectedQueType.id] },
+                  content: { connect: [contents[0]] },
+                },
+              });
           const queOptionResult = useForEdit
             ? await putHandler(
                 "question-content-option",
@@ -846,7 +882,11 @@ export default function AddQuePage({ rowData, useForEdit }) {
   function getQueContent(rightAns) {
     if (
       selectedQueType.title == "Fill In The Blank" ||
-      selectedQueType.title == "MCQ"
+      selectedQueType.title == "MCQ" ||
+      selectedQueType.title === "MCQ with Images" ||
+      selectedQueType.title === "MCQ with Audio" ||
+      selectedQueType.title === "F I T B : Audio" ||
+      selectedQueType.title === "F I T B : Images"
     ) {
       return options[rightAns].content.id;
     } else if (selectedQueType.title == "True 0r False") {
@@ -912,7 +952,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
   const [pairMatchingContents, setPairMatchingContents] = useState(
     initialPairMatchingObj
   );
-  console.log(pairMatchingContents); 
+  console.log(pairMatchingContents);
   const handlePairMatchingContent = async (index, obj) => {
     console.log(obj);
     let contentDetailsByLanguage = await getContentDetailsByLanguage(obj.id);
@@ -1161,7 +1201,12 @@ export default function AddQuePage({ rowData, useForEdit }) {
                 )}
 
                 {(selectedQueType.title === "MCQ" ||
-                  selectedQueType.title === "Fill In The Blank") && (
+                  selectedQueType.title === "MCQ with Audio" ||
+                  selectedQueType.title === "MCQ with Images" ||
+                  selectedQueType.title === "Fill In The Blank" ||
+                  selectedQueType.title === "F I T B : Images" ||
+                  selectedQueType.title === "F I T B : Audio"
+                  ) && (
                   <>
                     {Object.keys(options).map((option, index) => {
                       console.log(option, options[option]?.content);
