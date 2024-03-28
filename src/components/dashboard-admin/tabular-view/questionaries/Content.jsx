@@ -47,19 +47,32 @@ export default function Content() {
   //   fetch();
   // }, [contents, currentSubView]);
 
+ 
+
   useEffect(() => {
+  
     const fetch = async () => {
-      const response = await getHandler("content-all");
+      // const response = await getHandler("QuestionsTitleFull");
+     
+      const response = await getHandler("content-all")
+      //console.log("Questions Title =------------->>>>> ", response.data)
       if (response.status === 200) {
-        setContents(renderableContents(response.data.data));
+
+         
+           setContents(renderableContents(response.data.data));
         toggleLoading(false);
       }
     };
-    if (loading == false && Array.isArray(contents) && contents.length === 0) {
-      toggleLoading(true);
-      fetch();
-    }
+    // if (
+    //   loading == false &&
+    //   Array.isArray(QuestionTitle) &&
+    //   QuestionTitle.length === 0
+    // ) {
+    //   toggleLoading(true);
+    fetch();
+    //   }
   }, []);
+
 
   return (
     <div className="w-full bg-white rounded-xl">
