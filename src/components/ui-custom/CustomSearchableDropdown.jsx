@@ -48,7 +48,7 @@ const CustomSearchableDropdown = ({
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
-    alert(e.target.value)
+   // alert(e.target.value)
   };
   const styles = {
     wh: "bg-wh border border-slate-300",
