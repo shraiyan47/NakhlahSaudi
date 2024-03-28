@@ -60,7 +60,7 @@ const goalColumns = [
   //   },
   //   cell: ({ row }) => {
   //     return (
-  //       <div className="lowercase textNormal textSecondaryColor  ">
+  //       <div className="  textNormal textSecondaryColor  ">
   //         {row.getValue("id_learner_goal")}
   //       </div>
   //     );
@@ -81,7 +81,7 @@ const goalColumns = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor  ">
+      <div className="  textNormal textSecondaryColor  ">
         {row.getValue("id_learner_goal")}
       </div>
     ),

@@ -46,7 +46,7 @@ import Image from "next/image";
 import CustomSearchableDropdown from "@/components/ui-custom/CustomSearchableDropdown";
 
 export default function AddQuePage({ rowData, useForEdit }) {
-  console.log(rowData);
+  //console.log(rowData);
   const { toast } = useToast();
   //
 
@@ -66,7 +66,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
   const [error, setError] = useState(initErrors);
   //
   const [questionContentOptions, setQuestionContentOptions] = useState([]);
-  console.log(questionContentOptions);
+  //console.log(questionContentOptions);
   const queTypeData = useQueType((state) => state.data);
   const setQueTypes = useQueType((state) => state.setQueTypes);
   const [selectedQueType, setSelectedQueType] = useState(
@@ -109,7 +109,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
         }
       : initStateSelection // { id: 3, title: "Advanced" }
   );
-  console.log(selectedJourney);
+  // console.log(selectedJourney);
   useEffect(() => {
     if (selectedJourney.id != null) {
       useForEdit ? "" : setSelectedUnit(initStateSelection);
@@ -226,7 +226,62 @@ export default function AddQuePage({ rowData, useForEdit }) {
   }
   const [filteredLessons, setFilteredLessons] = useState([]);
 
-  function handleAdd() {}
+  async function handleAdd(x) {
+    // let formData = new FormData();
+ 
+    // formData.append( 
+    //   "data",
+    //   `{"question":"${escapeQuotes(x)}" }`
+    // );
+
+    alert("LOL")
+
+    console.log("Question Add : ", x)
+
+    // await fetch(
+    //   useForEdit
+    //     ? putMap["QuestionsTitleFull"] + `/${rowData.id}?populate=*`
+    //     : postMap["QuestionsTitleFull"],
+    //   {
+    //     method: useForEdit ? "PUT" : "POST",
+    //     body: formData,
+    //     headers: {
+    //       Authorization:
+    //         "Bearer " +
+    //         "5cb5acf4b96532cdad0e30d900772f5c8b5532d2dbf06e04483a3705c725ffbbdba593340718423a5975e86aa47ca1749de402ec9f3127648dbcec37b190107ba975e669811b2a2f4c8b41c27472d6fdb70e7b0be4f8490c57a406e29aedf47dd05dadb7171788ba9fa2af106d93b4f92423b8e194131891e712857b52e8ceef",
+    //     },
+    //     redirect: "follow",
+    //   }
+    // )
+    //   .then((res) =>  
+    //     res.json()
+    //   )
+    //   .then((data) => {
+    //     // ////alert(JSON.stringify(data));
+        
+    //     console.log("DATA AQT ==> ",data)
+        
+    //     let renderable = {
+    //       id: data.data.id,
+    //       questionsTitle: data.data.attributes.question,
+    //     };
+        
+    //     console.log(" A Q T renderable => ", renderable)
+        
+    //     useForEdit ? afterUpdate(renderable) : afterAdd(renderable);
+    //     toast({
+    //       title: useForEdit ? "Successfully Updated" : "Successfully Added",
+    //     });
+    //     document.getElementById("closeDialog")?.click();
+    //   })
+    //   .catch((error) => {
+    //     // //alert("err: " + JSON.stringify(error));
+        
+    //     setError(JSON.stringify(error));
+    //   });
+  }
+
+
   useEffect(() => {
     const fetch = async () => {
       const response = await getHandler("question-type");
@@ -372,6 +427,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
   //         }
   //       : initOptionData, */
   // };
+
   const initOptions = generateInitOptions(
     questionContentOptions,
     useForEdit,
@@ -379,6 +435,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
   );
   console.log(initOptions);
   /*   const initRightWrong = {
+
     option1: useForEdit ? true : false,
     option2: false
   }; */
@@ -405,16 +462,20 @@ export default function AddQuePage({ rowData, useForEdit }) {
     return initRightWrong;
   };
 
+
   const initRightWrong = generateInitRightWrong(
     useForEdit,
     questionContentOptions
   );
   console.log(initRightWrong);
+
   const [options, setOptions] = useState(initOptions);
-  console.log(options);
+  // console.log(options);
   const [rightAndWrong, setRightAndWrong] = useState(initRightWrong);
 
+
   console.log(rightAndWrong);
+
   /* useEffect(() => {
     setOptions({
       option1: useForEdit ? { content: rowData?.content } : initOptionData,
@@ -478,10 +539,11 @@ export default function AddQuePage({ rowData, useForEdit }) {
     let rightAns = Object.keys(rightAndWrong).find(
       (item) => rightAndWrong[item] == true
     );
-    console.log(rightAns);
+    // console.log(rightAns);
     let wrongAns = Object.keys(rightAndWrong).filter(
       (item) => rightAndWrong[item] == false
     );
+
     console.log(question);
     console.log(tFAns);
     console.log(pairMatchingContents);
@@ -502,6 +564,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
         (selectedQueType.title == "Pair Matching" &&
           pairMatchingContents != undefined)
     );
+
     if (
       (question?.title.length > 2 &&
         selectedLesson.id &&
@@ -516,7 +579,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
           (selectedQueType.title == "F I T B : Images" && wrongAns.length > 0 && rightAns && question?.title.includes("-") == true) 
         )) 
     ) {
-      console.log("called");
+      // console.log("called");
       //
       /*  let formData = new FormData();
       var fileInput = document.getElementById("idInputFile");
@@ -560,6 +623,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
         let queContResult;
         if (selectedQueType.title != "Pair Matching") {
           queContResult = useForEdit
+
             ? await putHandler("question-content", rowData?.question_content, {
                 data: {
                   question: { connect: [question.id] },
@@ -575,8 +639,9 @@ export default function AddQuePage({ rowData, useForEdit }) {
                 },
               });
           console.log(queContResult);
+
         }
-        console.log(`title`, selectedQueType.title);
+        // console.log(`title`, selectedQueType.title);
         if (
           selectedQueType.title == "Fill In The Blank" ||
           selectedQueType.title == "MCQ" ||
@@ -585,17 +650,20 @@ export default function AddQuePage({ rowData, useForEdit }) {
           selectedQueType.title === "F I T B : Images" ||
           selectedQueType.title === "F I T B : Audio" 
         ) {
-          console.log(
-            "options",
-            options,
-            "rightAns",
-            queContResult,
-            queContResult?.data?.data?.id
-          );
+          // console.log(
+          //   "options",
+          //   options,
+          //   "rightAns",
+          //   queContResult,
+          //   queContResult?.data?.data?.id
+          // );
+
           const wrongAnsOptions = Object.keys(options).filter(
             (option) => !rightAndWrong[option]
           );
-          console.log(wrongAnsOptions);
+
+          // console.log(wrongAnsOptions);
+
           const queOptionResult = useForEdit
             ? await putHandler(
                 "question-content-option",
@@ -916,7 +984,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
   const [tFAns, setTFAns] = useState(
     useForEdit ? rowData?.content : initStateSelection
   );
-  console.log(tFAns);
+  // console.log(tFAns);
   const trueFalseOptions = [
     { id: 31, title: "False" },
     { id: 30, title: "True " },
@@ -940,7 +1008,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
   const [selectedMatchingMethod, setSelectedMatchingMethod] =
     useState("language");
   const handleMatchingOptionMethod = (method) => {
-    console.log(method);
+    // console.log(method);
     setSelectedMatchingMethod(method);
   };
   const initialPairMatchingObj = {
@@ -952,11 +1020,13 @@ export default function AddQuePage({ rowData, useForEdit }) {
   const [pairMatchingContents, setPairMatchingContents] = useState(
     initialPairMatchingObj
   );
+
   console.log(pairMatchingContents);
+
   const handlePairMatchingContent = async (index, obj) => {
-    console.log(obj);
+    // console.log(obj);
     let contentDetailsByLanguage = await getContentDetailsByLanguage(obj.id);
-    console.log(contentDetailsByLanguage);
+    // console.log(contentDetailsByLanguage);
     setPairMatchingContents({
       ...pairMatchingContents,
       ["option" + index]: {
@@ -1087,7 +1157,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
                 setSelectedQueType({ id: value.id, title: value.title })
               }
               // addNewText="New Question Type"
-              addNewAfterClick={handleAdd}
+              // addNewAfterClick={handleAdd}
             />
             {/* {error.err1 !== "" && (
               <span className="text-red-700">{error.err1}</span>
@@ -1102,46 +1172,13 @@ export default function AddQuePage({ rowData, useForEdit }) {
               onChange={(value) =>
                 setQuestion({ id: value.id, title: value.title })
               }
-              // addNewText="New Question"
-              addNewAfterClick={handleAdd}
+              addNewText="Add New Question"
+              addNewAfterClick={() => alert("BOOM BOOM "+question.title)}
             />
             {/* <span className="text-red-700">{error.err2}</span> */}
           </div>
-          {/* <div className="flex gap-2 flex-col items-start">
-            <input
-              type="file"
-              id="idInputFile"
-              name="file"
-              onChange={(e) => {
-                let files = e.target.files;
-                let reader = new FileReader();
-                reader.onload = (r) => {
-                  setImage(r.target.result);
-                };
-                reader.readAsDataURL(files[0]);
-              }}
-            />
-            {image && (
-              <img
-                alt=" image"
-                src={image}
-                className="w-5.0 h-5.0 rounded-full border border-slate-400 bg-slate-50"
-              />
-            )}
-          </div>
-          <div className="flex flex-col gap-1 w-2/3 ">
-            <span className="">Attach Audio Text</span>
-            <textarea
-              value={queAudio}
-              onChange={(e) => setQueAudio(e.target.value)}
-              rows={2}
-              className="py-0.12 px-1 rounded-md border border-slate-400 outline-none"
-            />
-
-          </div> */}
-        </div>
-
-        {/* {JSON.stringify(selectedQueType)} */}
+           
+        </div> 
         {/* sao Set answer option */}
         <div className="flex flex-col gap-2 rounded-md py-0.75 px-2">
           {selectedQueType && (
@@ -1191,8 +1228,8 @@ export default function AddQuePage({ rowData, useForEdit }) {
                         label="Select Content"
                         options={contents}
                         onChange={(selected) => setSmAns(selected)}
-                        addNewText="New Sentence"
-                        addNewAfterClick={handleAdd}
+                        // addNewText="New Sentence"
+                        // addNewAfterClick={handleAdd}
                         bg="wh"
                       />
                       <span className="text-red-700">{error.err2}</span>
@@ -1209,7 +1246,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
                   ) && (
                   <>
                     {Object.keys(options).map((option, index) => {
-                      console.log(option, options[option]?.content);
+                      //console.log(option, options[option]?.content);
                       return (
                         <div
                           key={index}
@@ -1251,8 +1288,8 @@ export default function AddQuePage({ rowData, useForEdit }) {
                                 },
                               })
                             }
-                            addNewText="New Content"
-                            addNewAfterClick={handleAdd}
+                            // addNewText="New Content"
+                            // addNewAfterClick={handleAdd}
                             bg="wh"
                           />
                         </div>
@@ -1262,7 +1299,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
                     <button
                       type="button"
                       onClick={handleAddOption}
-                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 text-sm"
+                      className="bg-violet-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 text-sm"
                     >
                       Add New Option
                     </button>
@@ -1315,8 +1352,8 @@ export default function AddQuePage({ rowData, useForEdit }) {
                                 onChange={(selected) =>
                                   handlePairMatchingContent(index + 1, selected)
                                 }
-                                addNewText="New Pair Matching"
-                                addNewAfterClick={handleAdd}
+                                // addNewText="New Pair Matching"
+                                // addNewAfterClick={handleAdd}
                                 bg="white"
                               />
                             )
@@ -1386,7 +1423,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
             <CustomButton
               txt="Submit"
               type="submit"
-              style="text-lg w-full my-1 shadow-sm  py-0.12 h-fit font-semibold text-blue-900 bg-blue-200 leading-1"
+              style="text-lg w-full my-1 shadow-sm  py-0.12 h-fit font-semibold text-white bg-violet-800 leading-1"
             />
           </div>
         </div>

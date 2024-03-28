@@ -58,7 +58,12 @@ const viewMap = {
   content: "id_content",
   "questionContent": "id_question_content",
   "question-content-option": "id_question_content_option",
-  
+  //content
+ "content-details" : "id_content_title" ,
+  "content-details-by-language" : "id_content",
+  "details-of-content-details-by-language" :"id_content_details_by_language",
+  "content-by-clause" : "id_contentByClause_title",
+  "content-by-syllable" : "id_contentByClause_title",
 };
 
 export default function DataTableHeader({ table, view, filter }) {

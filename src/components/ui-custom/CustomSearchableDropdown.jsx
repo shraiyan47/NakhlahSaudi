@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { ChevronDown, ListPlus } from "lucide-react";
 import { BsCaretDown } from "react-icons/bs";
 import CustomButton from "./CustomButton";
+import { Button } from "../ui/button";
 
 const CustomSearchableDropdown = ({
   options,
@@ -17,7 +18,7 @@ const CustomSearchableDropdown = ({
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState(value ? value.title : "");
   const dropdownRef = useRef(null);
-  const labelRef = useRef(null); 
+  const labelRef = useRef(null);
   const filteredOptions = options?.filter((option) =>
     option.title.toLowerCase().includes(searchTerm?.toLowerCase())
   );
@@ -42,16 +43,19 @@ const CustomSearchableDropdown = ({
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
+    setSearchTerm("")
   };
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
+    alert(e.target.value)
   };
   const styles = {
     wh: "bg-wh border border-slate-300",
     light: "bg-slate-200 text-black border border-slate-500",
     blue: "bg-blue-700 text-white",
   };
+
   return (
     <div className="relative " ref={dropdownRef}>
       <div
@@ -108,11 +112,10 @@ const CustomSearchableDropdown = ({
             {filteredOptions.map((option, index) => (
               <li
                 key={option.id}
-                className={`${
-                  value?.title === option?.title
+                className={`${value?.title === option?.title
                     ? "bg-slate-200 border-blue-300"
                     : "bg-white text-black"
-                } capitalize py-0.12 px-4 cursor-pointer   hover:bg-blue-800 hover:text-white`}
+                  } capitalize py-0.12 px-4 cursor-pointer   hover:bg-blue-800 hover:text-white`}
                 onClick={() => {
                   setSearchTerm(option.title);
                   onChange(option);
@@ -124,14 +127,21 @@ const CustomSearchableDropdown = ({
             ))}
           </ul>
           {addNewText && (
-            <CustomButton
-              startIcon={<ListPlus className="w-5 h-5" />}
-              txt={addNewText}
-              click={addNewAfterClcik}
-              style={
-                "gap-2 bg-blue-200 border border-blue-600 rounded-md py-0.12 px-2"
-              }
-            />
+            <Button
+              className="gap-2 bg-violet-800 border border-violet rounded-md py-0.12 px-2 text-white"
+              onClick={addNewAfterClcik}
+            >
+              {addNewText}
+            </Button>
+
+            // <CustomButton
+            //   startIcon={<ListPlus className="w-5 h-5" />}
+            //   txt={addNewText}
+            //   click={addNewAfterClcik}
+            //   style={
+            //     "gap-2 bg-blue-200 border border-blue-600 rounded-md py-0.12 px-2"
+            //   }
+            // />
           )}
         </div>
       )}

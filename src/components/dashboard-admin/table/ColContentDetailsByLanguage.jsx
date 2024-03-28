@@ -41,7 +41,7 @@ const ColContentDetailsByLanguage = [
     },
     cell: ({ row }) => (
         
-      <div className="lowercase textNormal textSecondaryColor">
+      <div className="textNormal textSecondaryColor">
         {row.getValue("id_contentDetailsByLanguage_title")
          ? row.getValue("id_contentDetailsByLanguage_title")
          : "Not attached"}
@@ -64,7 +64,7 @@ const ColContentDetailsByLanguage = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor">
+      <div className="textNormal textSecondaryColor">
         {row.getValue("id_content")
          ? row.getValue("id_content")
          : "Not attached"}
@@ -86,7 +86,7 @@ const ColContentDetailsByLanguage = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor pl-2">
+      <div className="  textNormal textSecondaryColor pl-2">
         {row.getValue("id_language")
             ? row.getValue("id_language")
             : "Not attached"}

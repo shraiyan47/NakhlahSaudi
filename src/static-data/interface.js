@@ -153,11 +153,11 @@ export const tabsContents = {
  
   "Contents": [
       
-    "MCQ",
-    "Fill In The Blank",
-    "True Or False",
-    "Sentence Making",
-    "Pair Matching",
+    // "MCQ",
+    // "Fill In The Blank",
+    // "True Or False",
+    // "Sentence Making",
+    // "Pair Matching",
   ],
    "Content Types": [],
   "Categories": [],

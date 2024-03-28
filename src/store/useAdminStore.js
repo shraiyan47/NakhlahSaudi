@@ -1026,6 +1026,10 @@ export const useContent = create(
             id: data.id,
             title: data.attributes.title,
             audio: data.attributes.audio,
+            language: {
+              id: item.attributes?.language?.data?.id,
+              title: item.attributes?.language?.data?.attributes?.name,
+            },
             content_type: {
               id:  data.attributes?.content_type?.data?.id,
               title:data.attributes?.content_type?.attributes?.title,
@@ -1099,6 +1103,10 @@ export const useContentDetails = create(
             id: data.id,
             title: data.attributes.title,
             audio: data.attributes.audio,
+            language: {
+              id:  data.attributes?.language?.data?.id,
+              title:item.attributes?.language?.data?.attributes?.name,
+            },
             content: {
               id:  data.attributes?.content?.data?.id,
               title:data.attributes?.content?.data?.attributes?.title,

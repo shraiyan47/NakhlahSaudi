@@ -59,7 +59,7 @@ const CustomSelect = ({
           </span>
         )}
         {icon && icon}
-        <span>{value.title ? value.title : ph}</span>
+        <span>{value?.title ? value?.title : ph}</span>
         <BsCaretDown className="w-[1.2rem] h-[1.2rem] ms-1" />
       </div>
 
@@ -70,7 +70,7 @@ const CustomSelect = ({
               <li
                 key={option.id}
                 className={`${
-                  value.title === option.title
+                  value?.title === option?.title
                     ? "bg-slate-200 border-blue-300"
                     : "bg-white text-black"
                 } capitalize py-0.12 px-4 cursor-pointer   hover:bg-blue-800 hover:text-white`}

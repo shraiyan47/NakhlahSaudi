@@ -18,7 +18,7 @@ export default function CustomButton({
       onClick={click}
       className={style ? `${style}` : `${cmn_style}`}
     >
-      {startIcon}
+      {/* {startIcon} */}
       {txt}
     </Button>
   );
