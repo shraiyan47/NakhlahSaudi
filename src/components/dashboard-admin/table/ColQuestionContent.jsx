@@ -59,7 +59,7 @@ const ColQuestionContent = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor">
+      <div className="  textNormal textSecondaryColor">
         {row.getValue("questionsTitle")}
       </div>
     ),
@@ -79,7 +79,7 @@ const ColQuestionContent = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor">
+      <div className="  textNormal textSecondaryColor">
         {row.getValue("questionsType")}
       </div>
     ),

@@ -58,7 +58,7 @@ const ColContent = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor">
+      <div className=" textNormal textSecondaryColor">
         {row.getValue("id_content")}
       </div>
     ),
@@ -100,7 +100,7 @@ const ColContent = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor">
+      <div className=" textNormal textSecondaryColor">
       
 
         {row.getValue("id_category")

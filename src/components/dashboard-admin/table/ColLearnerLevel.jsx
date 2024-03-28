@@ -57,7 +57,7 @@ const ColLearnerLevel = [
     },
     cell: ({ row }) => {
       return (
-        <div className="lowercase textNormal textSecondaryColor">
+        <div className="  textNormal textSecondaryColor">
           {row.getValue("id_learner_level")}
         </div>
       );

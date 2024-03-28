@@ -61,6 +61,24 @@ export default function AddContent({ rowData, useForEdit }) {
       }
       : initStateSelection
   );
+  const [selectedLanguage, setSelectedLanguage] = useState(
+    useForEdit
+     ? 
+    {
+        id: "",
+        title: "",
+      }
+      : initStateSelection
+  );
+
+  // const [selectedLanguage, setSelectedLanguage] = useState(
+  //   useForEdit
+  //     ? {
+  //       id: rowData.language.id,
+  //       title: rowData.language.title,
+  //     }
+  //     : initStateSelection
+  // );
   const [error, setError] = useState({
     err0: "",
     err1: "",
@@ -169,10 +187,12 @@ console.log("queAUDIO", queAudio)
         var file = fileInput.files[0];
         console.log("formDataDetails",  formDataDetails)
         formDataDetails.append("files.image", file);
-    
+  
         formDataDetails.append(
           "data",
-          `{"audio": "${contentDetailsAudioInput.value}", "content": { "connect": [${contentId}] }}`
+          `{
+            "language" : {"connect": [${selectedLanguage.id}]},
+            "audio": "${contentDetailsAudioInput.value}", "content": { "connect": [${contentId}] }}`
         );
         
 
@@ -439,7 +459,9 @@ console.log("response.data.data", response.data.data)
             id: item.id,
            audio: item?.attributes?.audio,
           icon: item?.attributes?.image?.data?.attributes?.url,
-          language : item?.attributes?.language?.data?.attributes?.name,
+          language : {
+            id:  item?.attributes?.language?.data?.id,
+            title: item?.attributes?.language?.data?.attributes?.name,}
           };
         });
         console.log("dataRenderable", dataRenderable)
@@ -448,7 +470,7 @@ console.log("response.data.data", response.data.data)
         setConDetails(dataRenderable);
         setAudio(dataRenderable[0]?.audio)
         setImage(dataRenderable[0]?.icon)
-        setLanguage(dataRenderable[0]?.language)
+        setSelectedLanguage(dataRenderable[0]?.language)
       }
     };
 
@@ -477,8 +499,8 @@ console.log("response.data.data", response.data.data)
     }
   }, [languageData]);
 
-console.log("ContentDetailsData)",  contentDetailsData)
-
+console.log("ContentDetailsData)",  contentDetailsData, language)
+console.log("selectedLanguage.id", selectedLanguage.id)
   return (
     <>
       <DialogHeader>
@@ -573,12 +595,13 @@ console.log("ContentDetailsData)",  contentDetailsData)
                 <CustomSelect
                   id="idSelectedlanguage"
                   label={"Languages"}
-                  value={language}
+                  value={selectedLanguage}
                   options={languageData}
                   bg="wh"
                   onChange={(value) =>
                     setSelectedLanguage({ id: value.id, title: value.title })
-                  }
+                   
+                 }
                 />
                 <span className="text-red-700">{error.err1}</span>
               </div>

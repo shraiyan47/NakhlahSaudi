@@ -39,7 +39,7 @@ const ColContentDetails = [
   //     );
   //   },
   //   cell: ({ row }) => (
-  //     <div className="lowercase textNormal textSecondaryColor">
+  //     <div className="  textNormal textSecondaryColor">
   //       {row.getValue("id_content")
   //        ? row.getValue("id_content")
   //        : "Not attached"}
@@ -47,28 +47,7 @@ const ColContentDetails = [
   //   ),
   // },
 
-  {
-    id: "id_content_language",
-    accessorKey: "language.title",
-    header: ({ column }) => {
-      return (
-        <Button
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="textPrimaryColor textNormal"
-        >
-      Language
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor">
-        {row.getValue("id_content_language")
-         ? row.getValue("id_content_language")
-         : "Not attached"}
-      </div>
-    ),
-  },
+
   {
     id: "id_content_title",
     accessorKey: "content.title",
@@ -84,9 +63,32 @@ const ColContentDetails = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor">
+
+      <div className="textNormal textSecondaryColor">
         {row.getValue("id_content_title")
          ? row.getValue("id_content_title")
+         : "Not attached"}
+      </div>
+    ),
+  },
+  {
+    id: "id_content_language",
+    accessorKey: "language.title",
+    header: ({ column }) => {
+      return (
+        <Button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="textPrimaryColor textNormal"
+        >
+      Language
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="textNormal textSecondaryColor">
+        {row.getValue("id_content_language")
+         ? row.getValue("id_content_language")
          : "Not attached"}
       </div>
     ),
@@ -106,7 +108,7 @@ const ColContentDetails = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor pl-2">
+      <div className=" textNormal textSecondaryColor pl-2">
         {row.getValue("id_content_Audio")
             ? row.getValue("id_content_Audio")
             : "Not attached"}
