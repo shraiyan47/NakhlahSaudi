@@ -161,9 +161,11 @@ export default function ContentLayout({ content }) {
   {/* contents filters*/}
   <div className="flex-grow overflow-y-scroll  ">
 
-  {currentView == "Contents" &&
+  {/* {currentView == "Contents" &&
             currentAct == "view" &&
-            currentSubView == "All Type" && <Content/>}
+            currentSubView == "All Type" && <Content/>} */}
+             {currentView == "Contents" &&
+            currentAct == "view"  && <Content/>}
             
           {currentView == "Contents" &&
             currentAct == "view" &&
