@@ -45,7 +45,7 @@ const ColContentBySyllable = [
     },
     cell: ({ row }) => (
         
-      <div className="lowercase textNormal textSecondaryColor">
+      <div className="textNormal textSecondaryColor">
         {row.getValue("id_contentByClause_title")
          ? row.getValue("id_contentByClause_title")
          : "Not attached"}
@@ -69,7 +69,7 @@ const ColContentBySyllable = [
     },
     cell: ({ row }) => (
         
-      <div className="lowercase textNormal textSecondaryColor">
+      <div className="textNormal textSecondaryColor">
         {row.getValue("id_sequence")
          ? row.getValue("id_sequence")
          : "Not attached"}
@@ -96,7 +96,7 @@ const ColContentBySyllable = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor">
+      <div className="textNormal textSecondaryColor">
         {row.getValue("id_content")
          ? row.getValue("id_content")
          : "Not attached"}
@@ -118,7 +118,7 @@ const ColContentBySyllable = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor pl-2">
+      <div className=" textNormal textSecondaryColor pl-2">
         {row.getValue("id_language")
             ? row.getValue("id_language")
             : "Not attached"}
@@ -143,7 +143,7 @@ const ColContentBySyllable = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor pl-2">
+      <div className="textNormal textSecondaryColor pl-2">
         {row.getValue("id_content_details_by_language")
             ? row.getValue("id_content_details_by_language")
             : "Not attached"}

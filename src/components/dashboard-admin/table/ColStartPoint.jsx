@@ -58,7 +58,7 @@ const ColStartPoint = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor">
+      <div className="  textNormal textSecondaryColor">
         {row.getValue("id_learner_start_point")}
       </div>
     ),
@@ -77,7 +77,7 @@ const ColStartPoint = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor pl-2">
+      <div className="  textNormal textSecondaryColor pl-2">
         {row.getValue("subtitle")}
       </div>
     ),

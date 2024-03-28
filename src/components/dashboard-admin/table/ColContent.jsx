@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
+import { ArrowUpDown, ClipboardEdit, Info, Trash2 } from "lucide-react";
 import Deletion from "../modals/other/Deletion";
 import AddContent from "../modals/questionaries/AddContent";
 import Image from "next/image";
@@ -58,7 +58,7 @@ const ColContent = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor">
+      <div className=" textNormal textSecondaryColor">
         {row.getValue("id_content")}
       </div>
     ),
@@ -100,7 +100,7 @@ const ColContent = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor">
+      <div className=" textNormal textSecondaryColor">
       
 
         {row.getValue("id_category")
@@ -164,16 +164,16 @@ const ColContent = [
     cell: ({ row }) => {
       return (
         <div className="flex gap-2 justify-center textSecondaryColor textSemiHeader">
-          <Dialog className="">
+          {/* <Dialog className="">
             <DialogTrigger asChild>
               <Button className="hover:text-[--uDText]">
-                <Trash2 className="w-5 h-5" />
+                <Info className="w-5 h-5" />
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <Deletion rowData={row.original} what="content" />
+              HELLO WORLD
             </DialogContent>
-          </Dialog>
+          </Dialog> */}
           <Dialog className="">
             <DialogTrigger asChild>
               <Button className="hover:text-[--uDText]">
@@ -186,6 +186,16 @@ const ColContent = [
                 useForEdit={true}
                 rowData={row.original}
               />
+            </DialogContent>
+          </Dialog>
+          <Dialog className="">
+            <DialogTrigger asChild>
+              <Button className="hover:text-[--uDText]">
+                <Trash2 className="w-5 h-5" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[500px]">
+              <Deletion rowData={row.original} what="content" />
             </DialogContent>
           </Dialog>
         </div>

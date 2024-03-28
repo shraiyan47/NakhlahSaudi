@@ -42,7 +42,7 @@ const ColDetailsOfContentDetailsByLanguage = [
 //     },
 //     cell: ({ row }) => (
         
-//       <div className="lowercase textNormal textSecondaryColor">
+//       <div className="  textNormal textSecondaryColor">
 //         {row.getValue("id_contentDetailsByLanguage_title")
 //          ? row.getValue("id_contentDetailsByLanguage_title")
 //          : "Not attached"}
@@ -65,7 +65,7 @@ const ColDetailsOfContentDetailsByLanguage = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor">
+      <div className="  textNormal textSecondaryColor">
         {row.getValue("id_content_details_by_language")
          ? row.getValue("id_content_details_by_language")
          : "Not attached"}
@@ -87,7 +87,7 @@ const ColDetailsOfContentDetailsByLanguage = [
 //       );
 //     },
 //     cell: ({ row }) => (
-//       <div className="lowercase textNormal textSecondaryColor pl-2">
+//       <div className="  textNormal textSecondaryColor pl-2">
 //         {row.getValue("id_language")
 //             ? row.getValue("id_language")
 //             : "Not attached"}
@@ -131,7 +131,7 @@ const ColDetailsOfContentDetailsByLanguage = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor pl-2">
+      <div className="  textNormal textSecondaryColor pl-2">
         {row.getValue("id_Audio")
             ? row.getValue("id_Audio")
             : "Not attached"}

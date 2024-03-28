@@ -40,7 +40,7 @@ const ColLanguage = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor">
+      <div className="  textNormal textSecondaryColor">
         {row.getValue("id_language")
          ? row.getValue("id_language")
          : "Not attached"}
@@ -62,7 +62,7 @@ const ColLanguage = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor">
+      <div className="  textNormal textSecondaryColor">
         {row.getValue("id_country")
          ? row.getValue("id_country")
          : "Not attached"}
